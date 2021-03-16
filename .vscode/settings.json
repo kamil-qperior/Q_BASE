@@ -1,0 +1,8 @@
+{
+    "appService.zipIgnorePattern": [
+        "node_modules{,/**}",
+        ".vscode{,/**}"
+    ],
+    "appService.defaultWebAppToDeploy": "/subscriptions/fd073562-9f60-416d-9cb9-b872f952ea04/resourceGroups/appsvc_linux_centralus/providers/Microsoft.Web/sites/kamil-react-azure-test",
+    "appService.deploySubpath": "."
+}
