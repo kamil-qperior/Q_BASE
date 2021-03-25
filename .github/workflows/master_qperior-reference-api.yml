@@ -11,7 +11,7 @@ on:
 
 jobs:
   build-and-deploy:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     steps:
     - uses: actions/checkout@master
@@ -32,5 +32,5 @@ jobs:
       with:
         app-name: 'qperior-reference-api'
         slot-name: 'production'
-        publish-profile: ${{ secrets.AzureAppService_PublishProfile_a8f5de1d46c24451959127108c0eb827 }}
+        publish-profile: ${{ secrets.AzureAppService_PublishProfile_4bedee9c877f44eeb275d3448afb2bad }}
         package: .
