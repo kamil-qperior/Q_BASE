@@ -1,9 +1,10 @@
 import logo from './logo.svg';
 import './App.css';
 import { useEffect, useState } from 'react'
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, withStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
+import Button from '@material-ui/core/Button';
 import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
@@ -21,14 +22,33 @@ function App() {
     },
   });
 
+  const StyledTableCell = withStyles((theme) => ({
+    head: {
+      backgroundColor: theme.palette.common.black,
+      color: theme.palette.common.white,
+    },
+    body: {
+      fontSize: 14,
+    },
+  }))(TableCell);
+  
+  const StyledTableRow = withStyles((theme) => ({
+    root: {
+      '&:nth-of-type(odd)': {
+        backgroundColor: theme.palette.action.hover,
+      },
+    },
+  }))(TableRow);
+
   const classes = useStyles();
   useEffect(() => {
     const fetchData = async () => {
       const result = await fetch(
-        'https://sql-connector-azure.azurewebsites.net/slide-infos',
+        'https://qperior-reference-mgmt-api.azurewebsites.net/slide-infos',
       );
       const dataFromSql = await result.json();
       const array = Object.values(dataFromSql);
+      console.log("slides", dataFromSql)
       setSlides(array)
     };
     fetchData();
@@ -41,38 +61,27 @@ function App() {
     <div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload in Azure.
-        </p>
-        <div>
-          {slides.map(element => (
-            <ul  >
-              <li>{element.titel}</li>
-              <li>{element.sektor}</li>
-              <li>{element.kunde}</li>
-              <li>{element.id}</li>
-            </ul>
-          ))}
-        </div>;
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+
+        <Button href = "https://qperior-reference-mgmt-api.azurewebsites.net/slide-deck" variant="contained" color="primary">
+          Download Slides</Button>
       </header>
       <TableContainer component={Paper}>
-        <Table className={classes.table} aria-label="simple table">
+        <Table color="primary" className={classes.table} aria-label="simple table">
           <TableHead>
-            <TableRow>
-              <TableCell>Dessert (100g serving)</TableCell>
-              <TableCell align="right">Titel</TableCell>
-              <TableCell align="right">Sektor</TableCell>
-              <TableCell align="right">Kunde</TableCell>
-              <TableCell align="right">id</TableCell>
-            </TableRow>
+            <StyledTableRow>
+              <StyledTableCell>Slide Reference Info</StyledTableCell>
+              <StyledTableCell align="right">Titel</StyledTableCell>
+              <StyledTableCell align="right">Sektor</StyledTableCell>
+              <StyledTableCell align="right">Kunde</StyledTableCell>
+              <StyledTableCell align="right">Ort</StyledTableCell>
+              <StyledTableCell align="right">Vorgehen</StyledTableCell>
+              <StyledTableCell align="right">Ziele Des Projektes</StyledTableCell>
+              <StyledTableCell align="right">Ergebnisse</StyledTableCell>
+              <StyledTableCell align="right">Logo</StyledTableCell>
+              <StyledTableCell align="right">Bild</StyledTableCell>
+              <StyledTableCell align="right">Id</StyledTableCell>
+
+            </StyledTableRow>
           </TableHead>
           <TableBody>
             {slides.map((row) => (
@@ -83,6 +92,12 @@ function App() {
                 <TableCell align="right">{row.titel}</TableCell>
                 <TableCell align="right">{row.sektor}</TableCell>
                 <TableCell align="right">{row.kunde}</TableCell>
+                <TableCell align="right">{row.ort}</TableCell>
+                <TableCell align="right">{row.vorgehen}</TableCell>
+                <TableCell align="right">{row.ziele_Des_Projektes}</TableCell>
+                <TableCell align="right">{row.ergebnisse}</TableCell>
+                <TableCell align="right">{row.logo}</TableCell>
+                <TableCell align="right">{row.bild}</TableCell>
                 <TableCell align="right">{row.id}</TableCell>
               </TableRow>
             ))}
