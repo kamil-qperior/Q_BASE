@@ -31,7 +31,7 @@ function App() {
       fontSize: 14,
     },
   }))(TableCell);
-  
+
   const StyledTableRow = withStyles((theme) => ({
     root: {
       '&:nth-of-type(odd)': {
@@ -59,12 +59,8 @@ function App() {
 
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-
-        <Button href = "https://qperior-reference-mgmt-api.azurewebsites.net/slide-deck" variant="contained" color="primary">
-          Download Slides</Button>
-      </header>
+      {//  <header className="App-header"></header> 
+      }
       <TableContainer component={Paper}>
         <Table color="primary" className={classes.table} aria-label="simple table">
           <TableHead>
@@ -104,6 +100,8 @@ function App() {
           </TableBody>
         </Table>
       </TableContainer>
+      <Button href="https://qperior-reference-mgmt-api.azurewebsites.net/slide-deck" variant="contained" color="primary">
+        Download Slides</Button>
     </div>
   );
 }
