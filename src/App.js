@@ -1,108 +1,86 @@
 import './App.css';
 import { useEffect, useState } from 'react'
-import { makeStyles, withStyles } from '@material-ui/core/styles';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
+
 import Button from '@material-ui/core/Button';
-import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
+import {getDeck, token} from './services/slidedeck/slideDeckServ.js'
+import {fetchAllReferenceData, fetchReferenceDatabyName, fetchReferenceDatabyParam, fetchReferenceDatabyParamArrays} from './services/referenceService.js'
+import Dashboard from './components/dashboard'
+
+import CssBaseline from '@material-ui/core/CssBaseline';
 
 
 function App() {
+   
+  const [references, setReferences] = useState([]);
+  const [isLoading, setIsLoading] = useState([]);
+  const [searchQuery, setSearchQuery] = useState([]);   //  {val : "", param: ""}
+  const [searchQueryTag, setSearchQueryTag] = useState([]);
 
-  const [slides, setSlides] = useState([]);
+ 
 
-  const useStyles = makeStyles({
-    table: {
-      minWidth: 650,
-    },
-  });
-
-  const StyledTableCell = withStyles((theme) => ({
-    head: {
-      backgroundColor: theme.palette.common.black,
-      color: theme.palette.common.white,
-    },
-    body: {
-      fontSize: 14,
-    },
-  }))(TableCell);
-
-  const StyledTableRow = withStyles((theme) => ({
-    root: {
-      '&:nth-of-type(odd)': {
-        backgroundColor: theme.palette.action.hover,
-      },
-    },
-  }))(TableRow);
-
-  const classes = useStyles();
   useEffect(() => {
-    const fetchData = async () => {
-      const result = await fetch(
-        'https://qperior-reference-mgmt-api.azurewebsites.net/slide-infos',
-      );
-      const dataFromSql = await result.json();
-      const array = Object.values(dataFromSql);
-      console.log("slides", dataFromSql)
-      setSlides(array)
-    };
-    fetchData();
-  }, []);
+    setIsLoading(true);
+    console.log('query name before use', searchQuery);
+    console.log(' searchQueryTag', searchQueryTag);
 
+    if(searchQuery) {
+      fetchReferenceDatabyParam(searchQuery).then((res)=> {
+        console.log('result by query ', res);
+        setReferences(res)
+      });
 
-  console.log("slides", slides)
+    } else if(searchQueryTag.length>0) {
 
-  return (
-    <div className="App">
-      {//  <header className="App-header"></header> 
-      }
-      <TableContainer component={Paper}>
-        <Table color="primary" className={classes.table} aria-label="simple table">
-          <TableHead>
-            <StyledTableRow>
-              <StyledTableCell>Slide Reference Info</StyledTableCell>
-              <StyledTableCell align="right">Titel</StyledTableCell>
-              <StyledTableCell align="right">Sektor</StyledTableCell>
-              <StyledTableCell align="right">Kunde</StyledTableCell>
-              <StyledTableCell align="right">Ort</StyledTableCell>
-              <StyledTableCell align="right">Vorgehen</StyledTableCell>
-              <StyledTableCell align="right">Ziele Des Projektes</StyledTableCell>
-              <StyledTableCell align="right">Ergebnisse</StyledTableCell>
-              <StyledTableCell align="right">Logo</StyledTableCell>
-              <StyledTableCell align="right">Bild</StyledTableCell>
-              <StyledTableCell align="right">Id</StyledTableCell>
+      fetchReferenceDatabyParamArrays(searchQueryTag, "technologyTag").then((res)=> {
+        console.log('result by tag ', res);
+        setReferences(res)
+      })
+    }
+    else {
+      fetchAllReferenceData().then((res)=> {
+        console.log('result by default ',res);
+        setReferences(res)
+      });
 
-            </StyledTableRow>
-          </TableHead>
-          <TableBody>
-            {slides.map((row) => (
-              <TableRow key={row.titel}>
-                <TableCell component="th" scope="row">
-                  {row.titel}
-                </TableCell>
-                <TableCell align="right">{row.titel}</TableCell>
-                <TableCell align="right">{row.sektor}</TableCell>
-                <TableCell align="right">{row.kunde}</TableCell>
-                <TableCell align="right">{row.ort}</TableCell>
-                <TableCell align="right">{row.vorgehen}</TableCell>
-                <TableCell align="right">{row.ziele_Des_Projektes}</TableCell>
-                <TableCell align="right">{row.ergebnisse}</TableCell>
-                <TableCell align="right">{row.logo}</TableCell>
-                <TableCell align="right">{row.bild}</TableCell>
-                <TableCell align="right">{row.id}</TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-      <Button href="https://qperior-reference-mgmt-api.azurewebsites.net/slide-deck" variant="contained" color="primary">
-        Download Slides</Button>
-    </div>
-  );
+    }
+
+    
+    setIsLoading(false);
+  }, [searchQuery, searchQueryTag]);
+  
+  
+  
+  
+  //create api methods for different calls
+  //pass the methods to dashboard 
+  //
+  if(isLoading) {
+    return (
+      <div>Loading</div>
+      )
+    } else {
+      console.log('references in ap', references);
+      return (
+        <div className="App">
+       
+        {//  <header className="App-header"></header> 
+        }
+        <Dashboard references={references}  setReferences = {setReferences}
+        setQuery = {setSearchQuery} searchQuery= {searchQuery}
+        setSearchQueryTag= {setSearchQueryTag} searchQueryTag={searchQueryTag}
+        
+        >
+  
+        </Dashboard>
+        
+  
+        <Button onClick={getDeck} variant="contained" color="primary" download>
+          Download Slides</Button>
+      </div>
+    );
+    }
+    
+    
 }
 
 export default App;
