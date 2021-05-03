@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {  useState } from 'react'
+import { useState } from 'react'
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -24,7 +24,9 @@ import { mainListItems, secondaryListItems } from './listItems';
 //import Deposits from './Deposits';
 import RefTable from './referencesTable';
 import ReferenceSearch from './searchField';
-import {fetchAllReferenceData} from '../services/referenceService';
+import FormDialog from './formDialog';
+import { fetchAllReferenceData } from '../services/referenceService';
+import { getDeck, token } from '../services/slidedeck/slideDeckServ.js'
 
 
 function Copyright(props) {
@@ -101,20 +103,20 @@ const useStyles = makeStyles((theme) => ({
 
 
 
-export default function Dashboard( {references, setReferences, setQuery, searchQuery, setSearchQueryTag, searchQueryTag }) {
+export default function Dashboard({ references, setReferences, setQuery, searchQuery, setSearchQueryTag, searchQueryTag }) {
     const classes = useStyles();
     const [open, setOpen] = useState(false);
     const toggleDrawer = () => {
         setOpen(!open);
     };
-    
-  const [isLoading, setIsLoading] = useState([]);
- 
+
+    const [isLoading, setIsLoading] = useState([]);
+
 
     return (
         <Box sx={{ display: 'flex' }} >
             <CssBaseline />
-            <AppBar 
+            <AppBar
                 position="absolute"
                 className={clsx(classes.appBar, open && classes.appBarShift)}
             >
@@ -135,7 +137,7 @@ export default function Dashboard( {references, setReferences, setQuery, searchQ
                         noWrap
                         sx={{ flexGrow: 1 }}
                     >
-                        Dashboard 
+                        Dashboard
           </Typography>
                     <IconButton color="inherit">
                         <Badge badgeContent={4} color="secondary">
@@ -145,7 +147,7 @@ export default function Dashboard( {references, setReferences, setQuery, searchQ
                 </Toolbar>
             </AppBar>
             <Drawer
-                
+
                 classes={{
                     paper: clsx(classes.drawerPaper, !open && classes.drawerPaperClose),
                 }}
@@ -161,7 +163,7 @@ export default function Dashboard( {references, setReferences, setQuery, searchQ
                 <Divider />
                 <List>{secondaryListItems}</List>
             </Drawer>
-            <Box  
+            <Box
                 component="main"
                 sx={{
                     backgroundColor: (theme) =>
@@ -175,37 +177,46 @@ export default function Dashboard( {references, setReferences, setQuery, searchQ
             >
                 <div className={classes.appBarSpacer} />
                 <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }} >
-                    <Grid container spacing={10} >
+                    <Grid direction="row" justify="center" alignItems="center" container spacing={5} >
 
-                        
-                        <Grid item xs={12} md={4} lg={3} >
-                            <Paper 
-                                sx={{ p: 2, display: 'flex', flexDirection: 'column', height: 240, }} >
+                        {/* Buttons */}
+                        <Grid container alignItems="center" spacing={4} item xs={12} md={4} lg={3} >
+                            <Grid item>
                                 <Button onClick={e => {
-                                        fetchAllReferenceData().then(res => {
-                                        setReferences(res)})}}
+                                    fetchAllReferenceData().then(res => {
+                                        setReferences(res)
+                                    })
+                                }}
                                     variant="contained" color="primary" download>
                                     reset filter</Button>
-                            </Paper>
+                            </Grid>
+                            <Grid item>
+                                <Button onClick={getDeck} variant="contained" color="primary" download>
+                                    Download Slides</Button>
+                            </Grid>
+                            <Grid item>
+                                <FormDialog ></FormDialog>
+                            </Grid>
                         </Grid>
 
                         {/* ReferenceSearch */}
-                        <Grid  item xs={12} md={4} lg={3} >
-                            <Paper 
+                        <Grid item xs={12} md={4} lg={3}  >
+                            <Paper alignItems="center"
                                 sx={{ p: 2, display: 'flex', flexDirection: 'row', height: 240, }}
                             >
-                                {<ReferenceSearch setSearchQuery ={setQuery} value={searchQuery} />}
+                                {<ReferenceSearch setSearchQuery={setQuery} value={searchQuery} />}
                             </Paper>
 
                         </Grid>
 
-                        {/* Recent Orders */}
-                        <Grid item xs={12}>
-                            <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                                <RefTable isLoading={isLoading} references ={references}  setSearchQueryTag ={setSearchQueryTag}
-                                 searchQueryTag={searchQueryTag}/>
-                            </Paper>
-                        </Grid>
+                    </Grid>
+
+                    {/* Separate Results Table */}
+                    <Grid item xs={12} >
+                        <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
+                            <RefTable isLoading={isLoading} references={references} setSearchQueryTag={setSearchQueryTag}
+                                searchQueryTag={searchQueryTag} />
+                        </Paper>
                     </Grid>
                     <Copyright sx={{ pt: 4 }} />
                 </Container>

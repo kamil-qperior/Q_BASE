@@ -21,17 +21,17 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function getSteps() {
-    return ['Select campaign settings', 'Create an ad group', 'Create an ad'];
+    return ['Basic Project Info', 'Goals','Procedures', 'Results' ];
 }
 
 function getStepContent(step) {
     switch (step) {
         case 0:
-            return 'Select campaign settings...';
+            return 'Enter Information';
         case 1:
-            return 'What is an ad group anyways?';
+            return 'Enter Information';
         case 2:
-            return 'This is the bit I really care about!';
+            return 'Finish saving reference';
         default:
             return 'Unknown step';
     }
@@ -58,7 +58,7 @@ function getStepForms(step) {
         case 2:
             return (<TextField
                 autoFocus
-                margin="dense"
+                margin="normal"
                 id="date"
                 label="date"
                 type="date"

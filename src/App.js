@@ -1,12 +1,10 @@
 import './App.css';
 import { useEffect, useState } from 'react'
 
-import Button from '@material-ui/core/Button';
-import {getDeck, token} from './services/slidedeck/slideDeckServ.js'
+
 import {fetchAllReferenceData, fetchReferenceDatabyName, fetchReferenceDatabyParam, fetchReferenceDatabyParamArrays} from './services/referenceService.js'
 import Dashboard from './components/dashboard'
 
-import CssBaseline from '@material-ui/core/CssBaseline';
 
 
 function App() {
@@ -74,8 +72,7 @@ function App() {
         </Dashboard>
         
   
-        <Button onClick={getDeck} variant="contained" color="primary" download>
-          Download Slides</Button>
+      
       </div>
     );
     }
