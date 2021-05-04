@@ -1,55 +1,59 @@
 
-import {token} from './slidedeck/slideDeckServ.js'
+import { token } from './slidedeck/slideDeckServ.js'
 
 
 export const fetchAllReferenceData = async () => {
-    const result = await fetch(`${referenceUrl}`, {
-      headers: new Headers({ 'Authorization': token })})
+  const result = await fetch(`${referenceUrl}`, {
+    headers: new Headers({ 'Authorization': token })
+  })
 
-    const dataFromDB = await result.json();
-    return dataFromDB
-  };
+  const dataFromDB = await result.json();
+  return dataFromDB
+};
 
 
-  export const fetchReferenceDatabyName = async (name) => {
-    const result = await fetch(
-      `${referenceUrl}?filter=${encodeURI(JSON.stringify({"where":{"name":name}}))}`, {
-      headers: new Headers({ 'Authorization': token })})
-    const dataFromDB = await result.json();
+export const fetchReferenceDatabyName = async (name) => {
+  const result = await fetch(
+    `${referenceUrl}?filter=${encodeURI(JSON.stringify({ "where": { "name": name } }))}`, {
+    headers: new Headers({ 'Authorization': token })
+  })
+  const dataFromDB = await result.json();
 
-    return dataFromDB
-  };
+  return dataFromDB
+};
 
-  export const fetchReferenceDatabyParam = async (searchQuery) => {
+export const fetchReferenceDatabyParam = async (searchQuery) => {
 
-      if(searchQuery.value===null) {
+  if (searchQuery.value === null) {
 
-        return fetchAllReferenceData()}
+    return fetchAllReferenceData()
+  }
 
-    const result = await fetch(
-      `${referenceUrl}?filter=${encodeURI(JSON.stringify({"where":{[searchQuery.param]: { like: searchQuery.value}}}))}`, {
-      headers: new Headers({ 'Authorization': token })})
+  const result = await fetch(
+    `${referenceUrl}?filter=${encodeURI(JSON.stringify({ "where": { [searchQuery.param]: { like: searchQuery.value   } } }))}`, {
+    headers: new Headers({ 'Authorization': token })
+  })
 
-    const dataFromDB = await result.json();
+  const dataFromDB = await result.json();
 
-    return dataFromDB
-  };
+  return dataFromDB
+};
 
-  //checks if reference with array contains value
-  export const fetchReferenceDatabyParamArrays = async (value, param) => {
+//checks if reference with array contains value
+export const fetchReferenceDatabyParamArrays = async (value, param) => {
 
-    //TODO add like { like: value }
 
-    const result = await fetch(
-      `${referenceUrl}?filter=${encodeURI(JSON.stringify({"where":{[param]: value}}))}`, {
-      headers: new Headers({ 'Authorization': token })})
+  const result = await fetch(
+    `${referenceUrl}?filter=${encodeURI(JSON.stringify({ "where": { [param]: { like: value, options: "i" } } }))}`, {
+    headers: new Headers({ 'Authorization': token })
+  })
 
-    const dataFromDB = await result.json();
+  const dataFromDB = await result.json();
 
-    return dataFromDB
-  };
+  return dataFromDB
+};
 
-  const referenceUrl= "https://qperior-reference-mgmt-api.azurewebsites.net/references"
+const referenceUrl = "https://qperior-reference-mgmt-api.azurewebsites.net/references"
 
 
 

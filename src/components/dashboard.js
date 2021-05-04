@@ -17,9 +17,10 @@ import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import Link from '@material-ui/core/Link';
+
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import NotificationsIcon from '@material-ui/icons/Notifications';
+import HowToVoteIcon from '@material-ui/icons/HowToVote';
 import { mainListItems, secondaryListItems } from './listItems';
 //import Deposits from './Deposits';
 import RefTable from './referencesTable';
@@ -42,9 +43,12 @@ function Copyright(props) {
     );
 }
 
-const drawerWidth = 240;
+const drawerWidth = 280;
 
 const useStyles = makeStyles((theme) => ({
+    container: {
+        height: "30%"
+    },
     toolbar: {
         paddingRight: 24, // keep right padding when drawer closed
     },
@@ -137,11 +141,11 @@ export default function Dashboard({ references, setReferences, setQuery, searchQ
                         noWrap
                         sx={{ flexGrow: 1 }}
                     >
-                        Dashboard
+                        Reference Management
           </Typography>
                     <IconButton color="inherit">
-                        <Badge badgeContent={4} color="secondary">
-                            <NotificationsIcon />
+                        <Badge badgeContent={2} color="secondary">
+                            <HowToVoteIcon />
                         </Badge>
                     </IconButton>
                 </Toolbar>
@@ -160,8 +164,8 @@ export default function Dashboard({ references, setReferences, setQuery, searchQ
                 </div>
                 <Divider />
                 <List>{mainListItems}</List>
-                <Divider />
-                <List>{secondaryListItems}</List>
+                {/*                 <Divider />
+                <List>{secondaryListItems}</List> */}
             </Drawer>
             <Box
                 component="main"
@@ -176,11 +180,11 @@ export default function Dashboard({ references, setReferences, setQuery, searchQ
                 }}
             >
                 <div className={classes.appBarSpacer} />
-                <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }} >
-                    <Grid direction="row" justify="center" alignItems="center" container spacing={5} >
+                <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}  >
+                    <Grid direction="row" container spacing={1} >
 
-                        {/* Buttons */}
-                        <Grid container alignItems="center" spacing={4} item xs={12} md={4} lg={3} >
+                        <Grid container justify="flex-start" alignItems="center" spacing={3} item xs={12} md={4} lg={3} >
+                            {/* Buttons */}
                             <Grid item>
                                 <Button onClick={e => {
                                     fetchAllReferenceData().then(res => {
@@ -188,32 +192,39 @@ export default function Dashboard({ references, setReferences, setQuery, searchQ
                                     })
                                 }}
                                     variant="contained" color="primary" download>
-                                    reset filter</Button>
+                                    Reset filter</Button>
                             </Grid>
-                            <Grid item>
+                            {/*               TODOmove later to end of variant creation   
+                                   <Grid item>
                                 <Button onClick={getDeck} variant="contained" color="primary" download>
                                     Download Slides</Button>
-                            </Grid>
-                            <Grid item>
-                                <FormDialog ></FormDialog>
+                                    
+                            </Grid> */}
+                            <Grid item >
+                                <FormDialog variant="contained" ></FormDialog>
                             </Grid>
                         </Grid>
 
                         {/* ReferenceSearch */}
-                        <Grid item xs={12} md={4} lg={3}  >
+                        <Grid container className={classes.container} item xs={12} md={4} lg={3} variant="contained" >
                             <Paper alignItems="center"
-                                sx={{ p: 2, display: 'flex', flexDirection: 'row', height: 240, }}
+                                sx={{ p: 7, display: 'flex', flexDirection: 'row', height: 240, }}
                             >
-                                {<ReferenceSearch setSearchQuery={setQuery} value={searchQuery} />}
+                                {<ReferenceSearch setSearchQuery={setQuery} value={searchQuery}
+                                    setSearchQueryTag={setSearchQueryTag} searchQueryTag={searchQueryTag}
+                                />}
                             </Paper>
 
                         </Grid>
 
                     </Grid>
 
+                    <Divider />
+
                     {/* Separate Results Table */}
                     <Grid item xs={12} >
-                        <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
+
+                        <Paper sx={{ p: 4, display: 'flex', flexDirection: 'column' }}>
                             <RefTable isLoading={isLoading} references={references} setSearchQueryTag={setSearchQueryTag}
                                 searchQueryTag={searchQueryTag} />
                         </Paper>
@@ -221,6 +232,6 @@ export default function Dashboard({ references, setReferences, setQuery, searchQ
                     <Copyright sx={{ pt: 4 }} />
                 </Container>
             </Box>
-        </Box>
+        </Box >
     );
 }

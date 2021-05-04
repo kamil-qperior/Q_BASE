@@ -50,7 +50,7 @@ export default function RefTable({ isLoading, references, setSearchQueryTag, sea
   return (
     <React.Fragment>
       {/* <Title>Recent Orders</Title> */}
-      <Table size="small">
+      <Table >
         <TableHead>
           <TableRow>
             <TableCell>Name</TableCell>

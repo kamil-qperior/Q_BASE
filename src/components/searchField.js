@@ -5,7 +5,9 @@ import Grid from '@material-ui/core/Grid';
 import { Container } from '@material-ui/core';
 
 
-export default function ReferenceSearch({ setSearchQuery, searchQuery }) {
+export default function ReferenceSearch({ setSearchQuery, searchQuery,
+
+  setSearchQueryTag, searchQueryTag }) {
 
   const style = { width: 150 }
 
@@ -84,6 +86,20 @@ export default function ReferenceSearch({ setSearchQuery, searchQuery }) {
           />
         </Grid>
 
+        <Grid item>
+          <Autocomplete
+            id="referenceTechTags"
+            style={style}
+            value={setSearchQuery.value}
+
+            onChange={handleChangeTag(setSearchQueryTag, "technology")}
+            options={technologies.map((option) => option.title)}
+            freeSolo
+            disableClearable
+            renderInput={createTextField("Technology")}
+          />
+        </Grid>
+
 
       </Grid>
 
@@ -134,6 +150,12 @@ function handleChange(setSearchQuery, param) {
   };
 }
 
+function handleChangeTag(setSearchQueryTag, param) {
+  return (e, newValue) => {
+    setSearchQueryTag(newValue);
+  };
+}
+
 
 
 export function createTextField(label) {
@@ -168,6 +190,11 @@ const projectNames = [
 
 const policies = [
   { title: "pm contact approved - on request" },
+]
+
+const technologies = [
+  { title: "SAP" },
+  { title: "Java" },
 ]
 
 const status = [

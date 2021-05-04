@@ -6,6 +6,14 @@ import StepLabel from '@material-ui/core/StepLabel';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
+import Grid from '@material-ui/core/Grid';
+
+import Radio from '@material-ui/core/Radio';
+import RadioGroup from '@material-ui/core/RadioGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import FormControl from '@material-ui/core/FormControl';
+import FormLabel from '@material-ui/core/FormLabel';
+
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -21,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function getSteps() {
-    return ['Basic Project Info', 'Goals','Procedures', 'Results' ];
+    return ['Basic Project Info', 'Goals', 'Procedures', 'Results', "Images"];
 }
 
 function getStepContent(step) {
@@ -32,6 +40,8 @@ function getStepContent(step) {
             return 'Enter Information';
         case 2:
             return 'Finish saving reference';
+        case 3:
+            return 'Upload Images';
         default:
             return 'Unknown step';
     }
@@ -40,22 +50,19 @@ function getStepContent(step) {
 function getStepForms(step) {
     switch (step) {
         case 0:
-            return (<TextField
-                autoFocus
-                margin="dense"
-                id="name"
-                label="Name"
-                fullWidth
-            />)
+            return getReferenceBasicInfoTextFields()
         case 1:
+            return getGoalsFields()
+        case 2:
             return (<TextField
                 autoFocus
-                margin="dense"
-                id="client"
-                label="client"
+                margin="normal"
+                id="date"
+                label="date"
+                type="date"
                 fullWidth
             />)
-        case 2:
+        case 3:
             return (<TextField
                 autoFocus
                 margin="normal"
@@ -66,6 +73,76 @@ function getStepForms(step) {
             />)
         default:
             return 'Unknown step';
+    }
+
+    function getGoalsFields() {
+        return (
+            <div>
+                <TextField
+                    autoFocus
+                    margin="normal"
+                    id="date"
+                    label="content"
+                    xs={6}
+                />
+                <FormControl component="legend">
+                    <FormLabel component="legend">Language</FormLabel>
+                    <RadioGroup aria-label="gender" name="gender1"  >
+                        <FormControlLabel value="EN" control={<Radio />} label="english" />
+                        <FormControlLabel value="DE" control={<Radio />} label="german" />
+                    </RadioGroup>
+                </FormControl>
+
+            </div>
+        );
+    }
+    function getReferenceBasicInfoTextFields() {
+
+        return [
+            "Name",
+            "Status",
+            "Client Id",
+            "Client Name",
+            "Industry",
+            "Country",
+            "City",
+            "Project Partner Id",
+            "Project Partner Name",
+            "Project Lead Id",
+            "Project Lead Name",
+            "Client Contact Id",
+            "Client Contact Name",
+            "Policy",
+            "Project Begin",
+            "Project End",
+            "Person Days Total",
+            "Person Days Q_PERIOR Total",
+            "Person Days Q_PERIOR Intern",
+            "Technology Tag",
+            "Process Tags",
+        ].map(param => {
+
+            return (
+                <div>
+
+                    <Grid direction="row" style={{ "flex-wrap": "wrap"} } container spacing={1} >
+                        <Grid item xs={5}>
+                            <TextField
+
+                                //margin="dense"
+                                id={param}
+                                key={param}
+                                label={param}
+                                fullWidth />
+
+                        </Grid>
+                        <Grid item> </Grid>
+                    </Grid>
+                </div>
+
+            )
+        })
+
     }
 }
 
@@ -134,7 +211,6 @@ export default function HorizontalLinearStepper() {
                     }
                     return (
                         <Step key={label} {...stepProps}>
-
 
 
                             <StepLabel {...labelProps}>{label}</StepLabel>

@@ -25,15 +25,15 @@ export default function FormDialog() {
       <Button variant="outlined" color="primary" onClick={handleClickOpen}>
         Create Reference
       </Button>
-      <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
+      <Dialog maxWidth="xl" open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
         <DialogTitle id="form-dialog-title">Create Reference</DialogTitle>
         <DialogContent>
           <DialogContentText>
             Enter new Reference Basic Information
           </DialogContentText>
-        <HorizontalLinearStepper>
+          <HorizontalLinearStepper>
 
-        </HorizontalLinearStepper>
+          </HorizontalLinearStepper>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color="primary">
