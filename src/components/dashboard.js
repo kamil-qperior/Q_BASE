@@ -28,6 +28,7 @@ import ReferenceSearch from './searchField';
 import FormDialog from './formDialog';
 import { fetchAllReferenceData } from '../services/referenceService';
 import { getDeck, token } from '../services/slidedeck/slideDeckServ.js'
+import { TableHead } from '@material-ui/core';
 
 
 function Copyright(props) {
@@ -102,6 +103,10 @@ const useStyles = makeStyles((theme) => ({
         },
     },
     appBarSpacer: theme.mixins.toolbar,
+    title: {
+        flex: '1 1 100%',
+    },
+
 }));
 
 
@@ -148,10 +153,19 @@ export default function Dashboard({ references, setReferences, setQuery, searchQ
                             <HowToVoteIcon />
                         </Badge>
                     </IconButton>
+                    <Button onClick={e => {
+                        fetchAllReferenceData().then(res => {
+                            setReferences(res)
+                        })
+                    }}
+                        variant="contained" color="primary" download>
+                        Reset Filter</Button>
+
+                    <FormDialog  ></FormDialog>
                 </Toolbar>
+
             </AppBar>
             <Drawer
-
                 classes={{
                     paper: clsx(classes.drawerPaper, !open && classes.drawerPaperClose),
                 }}
@@ -167,71 +181,45 @@ export default function Dashboard({ references, setReferences, setQuery, searchQ
                 {/*                 <Divider />
                 <List>{secondaryListItems}</List> */}
             </Drawer>
-            <Box
-                component="main"
-                sx={{
-                    backgroundColor: (theme) =>
-                        theme.palette.mode === 'light'
-                            ? theme.palette.grey[100]
-                            : theme.palette.grey[900],
-                    flexGrow: 1,
-                    height: '100vh',
-                    overflow: 'auto',
-                }}
-            >
+
+            <div className={classes.appBarSpacer} />
+
+
+            <Grid alignItems="center" justify="center" container spacing={2} >
+
+                {/* ReferenceSearch */}
+                <Grid xs={10}  className={classes.container} item  >
+                    <Paper >
+                        <Toolbar >
+                            <Typography className={classes.title} variant="h6" id="tableTitle" component="div">
+                                Search filters
+                        </Typography>
+                        </Toolbar>
+                        {<ReferenceSearch setSearchQuery={setQuery} value={searchQuery}
+                            setSearchQueryTag={setSearchQueryTag} searchQueryTag={searchQueryTag}
+                        />}
+                    </Paper>
+
+                </Grid>
+
                 <div className={classes.appBarSpacer} />
-                <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}  >
-                    <Grid direction="row" container spacing={1} >
+                {/* Separate Results Table */}
+                <Grid item alignItems="center" justify="center">
+                    <Paper >
+                        <Toolbar >
+                            <Typography className={classes.title} variant="h6" id="tableTitle" component="div">
+                                Project References
+                        </Typography>
+                        </Toolbar>
+                        <RefTable isLoading={isLoading} references={references} setSearchQueryTag={setSearchQueryTag}
+                            searchQueryTag={searchQueryTag} />
+                    </Paper>
+                </Grid>
+            </Grid>
+            <Copyright sx={{ pt: 4 }} />
 
-                        <Grid container justify="flex-start" alignItems="center" spacing={3} item xs={12} md={4} lg={3} >
-                            {/* Buttons */}
-                            <Grid item>
-                                <Button onClick={e => {
-                                    fetchAllReferenceData().then(res => {
-                                        setReferences(res)
-                                    })
-                                }}
-                                    variant="contained" color="primary" download>
-                                    Reset filter</Button>
-                            </Grid>
-                            {/*               TODOmove later to end of variant creation   
-                                   <Grid item>
-                                <Button onClick={getDeck} variant="contained" color="primary" download>
-                                    Download Slides</Button>
-                                    
-                            </Grid> */}
-                            <Grid item >
-                                <FormDialog variant="contained" ></FormDialog>
-                            </Grid>
-                        </Grid>
 
-                        {/* ReferenceSearch */}
-                        <Grid container className={classes.container} item xs={12} md={4} lg={3} variant="contained" >
-                            <Paper alignItems="center"
-                                sx={{ p: 7, display: 'flex', flexDirection: 'row', height: 240, }}
-                            >
-                                {<ReferenceSearch setSearchQuery={setQuery} value={searchQuery}
-                                    setSearchQueryTag={setSearchQueryTag} searchQueryTag={searchQueryTag}
-                                />}
-                            </Paper>
 
-                        </Grid>
-
-                    </Grid>
-
-                    <Divider />
-
-                    {/* Separate Results Table */}
-                    <Grid item xs={12} >
-
-                        <Paper sx={{ p: 4, display: 'flex', flexDirection: 'column' }}>
-                            <RefTable isLoading={isLoading} references={references} setSearchQueryTag={setSearchQueryTag}
-                                searchQueryTag={searchQueryTag} />
-                        </Paper>
-                    </Grid>
-                    <Copyright sx={{ pt: 4 }} />
-                </Container>
-            </Box>
         </Box >
     );
 }

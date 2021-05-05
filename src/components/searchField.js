@@ -3,13 +3,23 @@ import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import Grid from '@material-ui/core/Grid';
 import { Container } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
 
+
+const useStyles = makeStyles((theme) => ({
+  datePicker: {
+    marginBottom: theme.spacing(2),
+    marginTop: theme.spacing(2),
+
+  }
+}));
 
 export default function ReferenceSearch({ setSearchQuery, searchQuery,
-
   setSearchQueryTag, searchQueryTag }) {
 
-  const style = { width: 150 }
+
+  const classes = useStyles()
+  const style = { width: 140 }
 
   //TODO connect options to meta data
   //TODO empty input resets filter
@@ -56,7 +66,7 @@ export default function ReferenceSearch({ setSearchQuery, searchQuery,
             options={["DE", "CH"].map((option) => option)}
             freeSolo
             disableClearable
-            renderInput={createTextField("country")}
+            renderInput={createTextField("Country")}
           />
         </Grid>
 
@@ -69,7 +79,7 @@ export default function ReferenceSearch({ setSearchQuery, searchQuery,
             options={projectNames.map((option) => option.title)}
             freeSolo
             disableClearable
-            renderInput={createTextField("industry")}
+            renderInput={createTextField("Industry")}
           />
         </Grid>
         <Grid item>
@@ -82,7 +92,7 @@ export default function ReferenceSearch({ setSearchQuery, searchQuery,
             options={policies.map((option) => option.title)}
             freeSolo
             disableClearable
-            renderInput={createTextField("policy")}
+            renderInput={createTextField("Policy")}
           />
         </Grid>
 
@@ -100,6 +110,20 @@ export default function ReferenceSearch({ setSearchQuery, searchQuery,
           />
         </Grid>
 
+        <Grid item>
+          <Autocomplete
+            id="referenceProcedureTags"
+            style={style}
+            value={setSearchQuery.value}
+
+            onChange={handleChangeTag(setSearchQueryTag, "procedure")}
+            options={technologies.map((option) => option.title)}
+            freeSolo
+            disableClearable
+            renderInput={createTextField("Procedures")}
+          />
+        </Grid>
+
 
       </Grid>
 
@@ -108,7 +132,8 @@ export default function ReferenceSearch({ setSearchQuery, searchQuery,
 
           <TextField
             id="date"
-            style={style}
+
+            className={classes.datePicker}
             label="Project Start"
             type="date"
             defaultValue="2017-01-01"
@@ -119,11 +144,10 @@ export default function ReferenceSearch({ setSearchQuery, searchQuery,
 
         </Grid>
 
-        {//className={classes.container}}
-        }
         <Grid item><TextField
           id="date"
-          style={style}
+
+          className={classes.datePicker}
           label="Project End"
           type="date"
           defaultValue="2018-01-01"

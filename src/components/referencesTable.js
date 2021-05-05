@@ -54,14 +54,15 @@ export default function RefTable({ isLoading, references, setSearchQueryTag, sea
         <TableHead>
           <TableRow>
             <TableCell>Name</TableCell>
-            <TableCell>Kunde</TableCell>
+            <TableCell>Client</TableCell>
             <TableCell>Industry</TableCell>
             <TableCell>Country</TableCell>
             <TableCell>Status</TableCell>
             <TableCell>Policy</TableCell>
-            <TableCell>Projekt Start</TableCell>
-            <TableCell>Projekt Ende</TableCell>
-            <TableCell >Technische Tags</TableCell>
+            <TableCell>Project Start</TableCell>
+            <TableCell>Project End</TableCell>
+            <TableCell >Technical Tags</TableCell>
+            <TableCell >Procedure Tags</TableCell>
             <TableCell align="right">Person Days Total</TableCell>
           </TableRow>
         </TableHead>
@@ -78,6 +79,12 @@ export default function RefTable({ isLoading, references, setSearchQueryTag, sea
               <TableCell>{row.projectEnd.substring(0, 10)}</TableCell>
               <TableCell >
                 {row.technologyTag.map((tag) => (
+                  <Chip label={tag} onClick={e => {
+                    setSearchQueryTag(tag)
+                  }}></Chip>))}
+              </TableCell>
+              <TableCell >
+                {row.processTag.map((tag) => (
                   <Chip label={tag} onClick={e => {
                     setSearchQueryTag(tag)
                   }}></Chip>))}

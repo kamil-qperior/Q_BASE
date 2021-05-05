@@ -13,6 +13,9 @@ import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
+import ImageUploadCard from "./imageUpload"
+import ContentForm from "./contentForm"
+import ReferenceBasicInfoTextFields from './referenceForm';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -26,6 +29,11 @@ const useStyles = makeStyles((theme) => ({
         marginTop: theme.spacing(1),
         marginBottom: theme.spacing(1),
     },
+    textField: {
+        marginTop: theme.spacing(1),
+        marginBottom: theme.spacing(1),
+    },
+    appBarSpacer: theme.mixins.toolbar,
 }));
 
 function getSteps() {
@@ -41,109 +49,37 @@ function getStepContent(step) {
         case 2:
             return 'Finish saving reference';
         case 3:
+            return 'Enter results of the project';
+        case 4:
             return 'Upload Images';
         default:
             return 'Unknown step';
     }
 }
 
-function getStepForms(step) {
+function getStepForms(step, useStyles) {
     switch (step) {
         case 0:
-            return getReferenceBasicInfoTextFields()
+            return (<ReferenceBasicInfoTextFields></ReferenceBasicInfoTextFields>)
         case 1:
-            return getGoalsFields()
+            return (<ContentForm title="Goals"></ContentForm>)
         case 2:
-            return (<TextField
-                autoFocus
-                margin="normal"
-                id="date"
-                label="date"
-                type="date"
-                fullWidth
-            />)
+            return (<ContentForm title="Procedures"></ContentForm>)
         case 3:
-            return (<TextField
-                autoFocus
-                margin="normal"
-                id="date"
-                label="date"
-                type="date"
-                fullWidth
-            />)
+            return (<ContentForm title="Results"></ContentForm>)
+            case 4:
+                return (
+                    <div>
+                    <ImageUploadCard></ImageUploadCard>
+                    </div>
+                )
+
         default:
             return 'Unknown step';
     }
 
-    function getGoalsFields() {
-        return (
-            <div>
-                <TextField
-                    autoFocus
-                    margin="normal"
-                    id="date"
-                    label="content"
-                    xs={6}
-                />
-                <FormControl component="legend">
-                    <FormLabel component="legend">Language</FormLabel>
-                    <RadioGroup aria-label="gender" name="gender1"  >
-                        <FormControlLabel value="EN" control={<Radio />} label="english" />
-                        <FormControlLabel value="DE" control={<Radio />} label="german" />
-                    </RadioGroup>
-                </FormControl>
-
-            </div>
-        );
-    }
-    function getReferenceBasicInfoTextFields() {
-
-        return [
-            "Name",
-            "Status",
-            "Client Id",
-            "Client Name",
-            "Industry",
-            "Country",
-            "City",
-            "Project Partner Id",
-            "Project Partner Name",
-            "Project Lead Id",
-            "Project Lead Name",
-            "Client Contact Id",
-            "Client Contact Name",
-            "Policy",
-            "Project Begin",
-            "Project End",
-            "Person Days Total",
-            "Person Days Q_PERIOR Total",
-            "Person Days Q_PERIOR Intern",
-            "Technology Tag",
-            "Process Tags",
-        ].map(param => {
-
-            return (
-                <div>
-
-                    <Grid direction="row" style={{ "flex-wrap": "wrap"} } container spacing={1} >
-                        <Grid item xs={5}>
-                            <TextField
-
-                                //margin="dense"
-                                id={param}
-                                key={param}
-                                label={param}
-                                fullWidth />
-
-                        </Grid>
-                        <Grid item> </Grid>
-                    </Grid>
-                </div>
-
-            )
-        })
-
-    }
+    
+    
 }
 
 
@@ -211,8 +147,6 @@ export default function HorizontalLinearStepper() {
                     }
                     return (
                         <Step key={label} {...stepProps}>
-
-
                             <StepLabel {...labelProps}>{label}</StepLabel>
                         </Step>
                     );

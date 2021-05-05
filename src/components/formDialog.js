@@ -1,5 +1,6 @@
 
 import React from 'react';
+
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
@@ -8,8 +9,22 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import HorizontalLinearStepper from './stepper';
+import ScopedCssBaseline from '@material-ui/core/ScopedCssBaseline';
+
+import { makeStyles } from '@material-ui/core/styles';
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    background:"grey"
+  },
+  input: {
+    display: 'none',
+  },
+}));
+
 
 export default function FormDialog() {
+  const classes  =useStyles()
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
@@ -20,12 +35,16 @@ export default function FormDialog() {
     setOpen(false);
   };
 
+ 
+
   return (
     <div>
-      <Button variant="outlined" color="primary" onClick={handleClickOpen}>
+       <ScopedCssBaseline>
+
+      <Button variant="contained"  onClick={handleClickOpen}>
         Create Reference
       </Button>
-      <Dialog maxWidth="xl" open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
+      <Dialog maxWidth="md" open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
         <DialogTitle id="form-dialog-title">Create Reference</DialogTitle>
         <DialogContent>
           <DialogContentText>
@@ -44,6 +63,8 @@ export default function FormDialog() {
           </Button>
         </DialogActions>
       </Dialog>
+       </ScopedCssBaseline>
     </div>
   );
 }
+
