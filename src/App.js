@@ -4,6 +4,16 @@ import { useEffect, useState } from 'react'
 
 import { fetchAllReferenceData, fetchReferenceDatabyParam, fetchReferenceDatabyParamArrays } from './services/referenceService.js'
 import Dashboard from './components/dashboard'
+import Header from './components/Header'
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link
+} from "react-router-dom";
+import {
+  RecoilRoot
+} from 'recoil';
 
 
 
@@ -11,8 +21,8 @@ function App() {
 
   const [references, setReferences] = useState([]);
   const [isLoading, setIsLoading] = useState([]);
-  const [searchQuery, setSearchQuery] = useState([]);   
-  
+  const [searchQuery, setSearchQuery] = useState([]);
+
 
 
   useEffect(() => {
@@ -34,7 +44,7 @@ function App() {
 
     }
     setIsLoading(false);
-  
+
   }, [searchQuery]);
 
   const [searchQueryTag, setSearchQueryTag] = useState([]);
@@ -42,10 +52,10 @@ function App() {
   useEffect(() => {
     setIsLoading(true);
 
-      console.log('query name before use', searchQuery);
-      console.log(' searchQueryTag', searchQueryTag);
+    console.log('query name before use', searchQuery);
+    console.log(' searchQueryTag', searchQueryTag);
 
-     if (searchQueryTag.length > 0) {
+    if (searchQueryTag.length > 0) {
 
       fetchReferenceDatabyParamArrays(searchQueryTag, "technologyTag").then((res) => {
         console.log('result by tag ', res);
@@ -60,8 +70,8 @@ function App() {
 
     }
     setIsLoading(false);
-  
-  }, [ searchQueryTag]);
+
+  }, [searchQueryTag]);
 
 
   if (isLoading) {
@@ -71,18 +81,34 @@ function App() {
   } else {
     console.log('references in ap', references);
     return (
-      <div className="App">
+      <RecoilRoot>
 
-        {//  <header className="App-header"></header> 
-        }
-        <Dashboard references={references} setReferences={setReferences}
-          setQuery={setSearchQuery} searchQuery={searchQuery}
-          setSearchQueryTag={setSearchQueryTag} searchQueryTag={searchQueryTag}
-        >
-        </Dashboard>
+        <Router>
+
+          <div className="App">
+            <Header />
+            <Switch>
+
+              <Route path="/cv">
 
 
-      </div>
+              </Route>
+              <Route path="/">
+                <Dashboard references={references} setReferences={setReferences}
+                  setQuery={setSearchQuery} searchQuery={searchQuery}
+                  setSearchQueryTag={setSearchQueryTag} searchQueryTag={searchQueryTag}
+                >
+                </Dashboard>
+
+              </Route>
+            </Switch>
+
+
+
+
+          </div>
+        </Router>
+      </RecoilRoot>
     );
   }
 

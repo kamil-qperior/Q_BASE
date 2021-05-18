@@ -29,6 +29,13 @@ import FormDialog from './formDialog';
 import { fetchAllReferenceData } from '../services/referenceService';
 import { getDeck, token } from '../services/slidedeck/slideDeckServ.js'
 import { TableHead } from '@material-ui/core';
+import {
+    RecoilRoot,
+    atom,
+    selector,
+    useRecoilState,
+    useRecoilValue,
+} from 'recoil';
 
 
 function Copyright(props) {
@@ -125,7 +132,7 @@ export default function Dashboard({ references, setReferences, setQuery, searchQ
     return (
         <Box sx={{ display: 'flex' }} >
             <CssBaseline />
-            <AppBar
+            {/* <AppBar
                 position="absolute"
                 className={clsx(classes.appBar, open && classes.appBarShift)}
             >
@@ -164,7 +171,7 @@ export default function Dashboard({ references, setReferences, setQuery, searchQ
                     <FormDialog  ></FormDialog>
                 </Toolbar>
 
-            </AppBar>
+            </AppBar> */}
             <Drawer
                 classes={{
                     paper: clsx(classes.drawerPaper, !open && classes.drawerPaperClose),
@@ -188,7 +195,7 @@ export default function Dashboard({ references, setReferences, setQuery, searchQ
             <Grid alignItems="center" justify="center" container spacing={2} >
 
                 {/* ReferenceSearch */}
-                <Grid xs={10}  className={classes.container} item  >
+                <Grid xs={10} className={classes.container} item  >
                     <Paper >
                         <Toolbar >
                             <Typography className={classes.title} variant="h6" id="tableTitle" component="div">
