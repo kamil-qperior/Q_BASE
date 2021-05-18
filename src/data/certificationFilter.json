@@ -1,0 +1,28 @@
+{
+  "certificates": [
+    "Professional Scrum Master I",
+    "Certified ScrumMaster 2",
+    "Certified ScrumMaster 3",
+    "Certified ScrumMaster 4",
+    "Certified ScrumMaster 5",
+    "Certified ScrumMaster 6",
+    "Certified ScrumMaster 7",
+    "Certified ScrumMaster 8",
+    "Certified ScrumMaster 9",
+    "Certified ScrumMaster 10",
+    "Certified ScrumMaster 11",
+    "Certified ScrumMaster 12",
+    "Certified ScrumMaster 13",
+    "Certified ScrumMaster 14",
+    "Certified ScrumMastert 15"
+  ],
+  "topic_chapter": ["INS INT", "CH PMX"],
+  "level": [
+    "Analyst",
+    "Consultant",
+    "Senior Consultant",
+    "Managing Consultant",
+    "Manager",
+    "Principal Consultant"
+  ]
+}

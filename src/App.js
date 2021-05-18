@@ -5,6 +5,8 @@ import { useEffect, useState } from 'react'
 import { fetchAllReferenceData, fetchReferenceDatabyParam, fetchReferenceDatabyParamArrays } from './services/referenceService.js'
 import Dashboard from './components/dashboard'
 import Header from './components/Header'
+import CertificationTable from './components/cv/CertificationTable';
+
 import {
   BrowserRouter as Router,
   Switch,
@@ -92,6 +94,7 @@ function App() {
               <Route path="/cv">
 
 
+                <CertificationTable />
               </Route>
               <Route path="/">
                 <Dashboard references={references} setReferences={setReferences}

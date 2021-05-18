@@ -1,0 +1,21 @@
+[
+	"Projektmanagement": [
+		"Agil": [
+				"Professional Scrum Master I",
+				"Certified ScrumMaster"
+				],
+		"Classic": [
+				"Professional Scrum Master I",
+				"Certified ScrumMaster"
+				]
+	],        
+	"SAP": [
+		"SAPUI": [
+				"Fiori",
+				"WebIDE"
+		],
+		"Hana":[
+				"Hana 2.0"
+		]
+	]
+}

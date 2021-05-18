@@ -1,0 +1,3 @@
+https://docs.mongodb.com/database-tools/installation/installation-windows/
+
+mongoimport --uri mongodb+srv://kamil:kamil@cluster0.ycjm7.gcp.mongodb.net/qperior-reference-db --collection OldCv --type json --file C:/Users/2382/Desktop/CAP/ZertiSuche/ZertiReactJS/zertiapp/src/data/employes.json --jsonArray
