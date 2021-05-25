@@ -23,14 +23,20 @@ export const fetchReferenceDatabyName = async (name) => {
 };
 
 export const fetchReferenceDatabyParam = async (searchQuery) => {
-
-  if (searchQuery.value === null) {
+  console.log('searchQuery inside fetch', searchQuery);
+  if (searchQuery?.value === null) {
 
     return fetchAllReferenceData()
   }
 
+  if (searchQuery?.param === "technologyTag") {
+
+    return fetchReferenceDatabyParamArrays(searchQuery.value, "technologyTag")
+  }
+
+
   const result = await fetch(
-    `${referenceUrl}?filter=${encodeURI(JSON.stringify({ "where": { [searchQuery.param]: { like: searchQuery.value   } } }))}`, {
+    `${referenceUrl}?filter=${encodeURI(JSON.stringify({ "where": { [searchQuery.param]: { like: searchQuery.value  } } }))}`, {
     headers: new Headers({ 'Authorization': token })
   })
 
