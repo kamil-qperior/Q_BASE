@@ -19,6 +19,8 @@ import {
 
 
 
+
+
 function App() {
 
   const [references, setReferences] = useState([]);
@@ -92,8 +94,6 @@ function App() {
             <Switch>
 
               <Route path="/cv">
-
-
                 <CertificationTable />
               </Route>
               <Route path="/">

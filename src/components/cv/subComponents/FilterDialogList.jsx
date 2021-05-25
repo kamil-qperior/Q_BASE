@@ -1,35 +1,34 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
 import ListItemText from "@material-ui/core/ListItemText";
 import Checkbox from "@material-ui/core/Checkbox";
-import IconButton from "@material-ui/core/IconButton";
-import Button from "@material-ui/core/Button";
-// import certificationFilter from "../../data/certificationFilter.json";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import SearchIcon from "@material-ui/icons/Search";
-import { filterLevelData } from "../../../store/states";
+import IconButton from "@material-ui/core/IconButton";
 import { useRecoilState } from "recoil";
+import DeleteIcon from "@material-ui/icons/Delete";
+import LazyLoad from "react-lazyload";
+import { VariableSizeList } from "react-window";
 
 import Input from "@material-ui/core/Input";
 
 const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
-    height: "20rem",
+    height: 400,
     maxWidth: 300,
     backgroundColor: theme.palette.background.paper,
   },
   rootDeep: {
     "min-width": "17rem;",
+    "max-width": "18rem;",
   },
   search: { "text-align": "center;", "margin-top": "1rem;" },
   list: {
-    "overflow-y": "overlay;",
-    margin: "0.5rem 1rem 0.5rem 1rem;",
+    // "overflow-y": "overlay;",
+    margin: "0.5rem 1rem 0.2rem 1rem;",
   },
   footerDialog: {
     "border-top": "outset;",
@@ -37,36 +36,21 @@ const useStyles = makeStyles((theme) => ({
   },
   okFont: {
     color: "#d61313;",
-    "font-weight": "bold;",
+    // "font-weight": "bold;",
     "font-size": "inherit;",
   },
 }));
 
-export default function CheckboxList() {
+let onOpen = true;
+export default function CheckboxList({ theState }) {
   const classes = useStyles();
-  // const [checked, setChecked] = React.useState([0]);
-  // const [filteredArray, setFilteredArray] = React.useState(
-  //   certificationFilter.certificates
-  // );
 
-  const [filteredArray, setFilteredArray] = useRecoilState(filterLevelData);
+  const [filteredArray, setFilteredArray] = useRecoilState(theState);
 
   const handleToggle = (value) => () => {
-    // const currentIndex = checked.indexOf(value);
-    // const newChecked = [...checked];
-
-    // if (currentIndex === -1) {
-    //   newChecked.push(value);
-    // } else {
-    //   newChecked.splice(currentIndex, 1);
-    // }
-
-    // setChecked(newChecked);
-
     let setSelection = filteredArray.map((el) => {
-      if (el.Position === value) {
-        // el.selected = !el.selected;
-        return { Position: el.Position, selected: !el.selected };
+      if (el.data === value) {
+        return { data: el.data, selected: !el.selected, visible: el.visible };
       }
       return el;
     });
@@ -74,63 +58,79 @@ export default function CheckboxList() {
   };
 
   const handleOnChanges = (event) => {
-    console.log(event.target.value);
-    // setFilteredArray(() => {
-    //   let filteredValues = certificationFilter.certificates.filter((word) =>
-    //     word.toLowerCase().includes(event.target.value.toLowerCase())
-    //   );
-    //   if (filteredValues.length > 0) {
-    //     return filteredValues;
-    //   } else {
-    //     return ["No Value Found"];
-    //   }
-    // });
+    let setSelection = filteredArray.map((el) => {
+      if (el.data.toLowerCase().includes(event.target.value.toLowerCase())) {
+        return { data: el.data, selected: el.selected, visible: true };
+      }
+      return { data: el.data, selected: el.selected, visible: false };
+    });
+    setFilteredArray(setSelection);
   };
 
+  const onHandleDeleteSelections = () => {
+    let setSelection = filteredArray.map((el) => {
+      return { data: el.data, selected: false, visible: el.visible };
+    });
+    setFilteredArray(setSelection);
+  };
+
+  const visibleFilteredArray = filteredArray.filter((el) => el.visible);
+
+  const Row = ({ index, style }) => (
+    <div style={style}>
+      <ListItem
+        key={index}
+        role={undefined}
+        dense
+        button
+        onClick={handleToggle(visibleFilteredArray[index].data)}
+      >
+        <Checkbox
+          edge="start"
+          checked={visibleFilteredArray[index].selected}
+          tabIndex={-1}
+          disableRipple
+        />
+        <ListItemText
+          id={visibleFilteredArray[index].data}
+          primary={visibleFilteredArray[index].data}
+        />
+      </ListItem>
+    </div>
+  );
+  const getItemSize = (index) => {
+    let size = Math.round(visibleFilteredArray[index].data.length / 18);
+    return size <= 1 ? 50 : size === 2 ? 56 : size === 3 ? 76 : 96;
+  };
   return (
     <div className={classes.rootDeep}>
       <div className={classes.search}>
         <Input
           placeholder="Suchen"
-          // value={values.weight}
           onChange={handleOnChanges}
           endAdornment={
             <InputAdornment position="end">
               <SearchIcon />
             </InputAdornment>
           }
-          aria-describedby="standard-weight-helper-text"
-          inputProps={{
-            "aria-label": "weight",
-          }}
         />
       </div>
-      <List className={[classes.root, classes.list]}>
-        {filteredArray.map((value) => {
-          const labelId = `checkbox-list-label-${value.Position}`;
-          return (
-            <ListItem
-              key={value.Position}
-              role={undefined}
-              dense
-              button
-              onClick={handleToggle(value.Position)}
-            >
-              <Checkbox
-                edge="start"
-                // checked={checked.indexOf(value.Position) !== -1}
-                checked={value.selected}
-                tabIndex={-1}
-                disableRipple
-                inputProps={{ "aria-labelledby": labelId }}
-              />
-              <ListItemText id={labelId} primary={value.Position} />
-            </ListItem>
-          );
-        })}
-      </List>
+      <div className={[classes.root, classes.list].join(" ")}>
+        <VariableSizeList
+          height={400}
+          width={257}
+          itemSize={getItemSize}
+          overscanCount={10}
+          itemCount={visibleFilteredArray.length}
+        >
+          {Row}
+        </VariableSizeList>
+      </div>
       <div className={classes.footerDialog}>
-        <Button className={classes.okFont}>OK</Button> <Button>Zurück</Button>
+        <IconButton color="primary" onClick={onHandleDeleteSelections}>
+          <DeleteIcon />
+        </IconButton>
+        {/* <Button className={classes.okFont}>Filter löschen</Button> */}
       </div>
     </div>
   );
