@@ -1,9 +1,20 @@
 import React from 'react';
+import {useState} from 'react';
 import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import Grid from '@material-ui/core/Grid';
 import { Container } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+import {
+  RecoilRoot,
+  atom,
+  selector,
+  useRecoilState,
+  useRecoilValue,
+} from 'recoil';
+
+import {searchQueryState, searchQueryTagState} from "../store/statesRef"
+
 
 
 const useStyles = makeStyles((theme) => ({
@@ -14,17 +25,19 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-export default function ReferenceSearch({ setSearchQuery, searchQuery,
-  setSearchQueryTag, searchQueryTag }) {
+export default function ReferenceSearch() {
 
-
+  
   const classes = useStyles()
   const style = { width: 140 }
+  
+  const [searchQuery, setSearchQuery] = useRecoilState(searchQueryState);
+  //search query to obj or array seachquery.name = 
 
-  //TODO connect options to meta data
-  //TODO empty input resets filter
-  //<div style={{ width: 300 }}>
+  
   return (
+    
+        
     <Container  >
 
       <Grid container direction="row" spacing={3} >
@@ -33,9 +46,9 @@ export default function ReferenceSearch({ setSearchQuery, searchQuery,
           <Autocomplete
             fullWidth={true}
             style={style}
-            id="referenceSearch"
-            onChange={handleChange(setSearchQuery, "name")}
-            value={searchQuery?.value}
+            id="name"
+            onChange={handleChange}
+            //value={searchQuery?.value}
             options={projectNames.map((option) => option.title)}
             freeSolo
             disableClearable
@@ -47,10 +60,10 @@ export default function ReferenceSearch({ setSearchQuery, searchQuery,
         <Grid item>
           <Autocomplete
 
-            id="referenceSearchStatus"
+            id="status"
             style={style}
-            onChange={handleChange(setSearchQuery, "status")}
-            value={searchQuery?.value}
+            onChange={handleChange}
+            //value={searchQuery?.value}
             options={status.map((option) => option)}
             freeSolo
             disableClearable
@@ -59,11 +72,11 @@ export default function ReferenceSearch({ setSearchQuery, searchQuery,
         </Grid>
         <Grid item>
           <Autocomplete
-            id="referenceSearchCountry"
+            id="country"
             style={style}
-            onChange={handleChange(setSearchQuery, "country")}
-            value={searchQuery?.value}
-            options={["DE", "CH"].map((option) => option)}
+            onChange={handleChange}
+            //value={searchQuery?.value}
+            options={["DE", "CH"].map((option) => option)} // map to metadata
             freeSolo
             disableClearable
             renderInput={createTextField("Country")}
@@ -72,10 +85,10 @@ export default function ReferenceSearch({ setSearchQuery, searchQuery,
 
         <Grid item>
           <Autocomplete
-            id="referenceSearchIndustry"
+            id="industry"
             style={style}
-            onChange={handleChange(setSearchQuery, "industry")}
-            value={searchQuery?.value}
+            onChange={handleChange}
+            //value={searchQuery?.value}
             options={projectNames.map((option) => option.title)}
             freeSolo
             disableClearable
@@ -84,11 +97,11 @@ export default function ReferenceSearch({ setSearchQuery, searchQuery,
         </Grid>
         <Grid item>
           <Autocomplete
-            id="referenceSearchPolicy"
+            id="policy"
             style={style}
-            value={setSearchQuery.value}
+            //value={setSearchQuery.value}
 
-            onChange={handleChange(setSearchQuery, "policy")}
+            onChange={handleChange}
             options={policies.map((option) => option.title)}
             freeSolo
             disableClearable
@@ -98,11 +111,11 @@ export default function ReferenceSearch({ setSearchQuery, searchQuery,
 
         <Grid item>
           <Autocomplete
-            id="referenceTechTags"
+            id="technologyTag"
             style={style}
-            value={setSearchQuery.value}
+            //value={setSearchQuery.value}
 
-            onChange={handleChangeTag(setSearchQueryTag, "technology")}
+            onChange={handleChange}
             options={technologies.map((option) => option.title)}
             freeSolo
             disableClearable
@@ -112,11 +125,11 @@ export default function ReferenceSearch({ setSearchQuery, searchQuery,
 
         <Grid item>
           <Autocomplete
-            id="referenceProcedureTags"
+            id="processTag"
             style={style}
-            value={setSearchQuery.value}
+            //value={setSearchQuery.value}
 
-            onChange={handleChangeTag(setSearchQueryTag, "procedure")}
+            onChange={handleChange}
             options={technologies.map((option) => option.title)}
             freeSolo
             disableClearable
@@ -162,22 +175,24 @@ export default function ReferenceSearch({ setSearchQuery, searchQuery,
 
     </Container>
   );
+  
+  function handleChange(event) {
+      setSearchQuery({
+        value: event.target.value,
+        param: event.target.id
+      });
 }
 
 
-function handleChange(setSearchQuery, param) {
+function handleChangeTag() {
   return (e, newValue) => {
     setSearchQuery({
       value: newValue,
-      param: param
+      param: "technologyTag"
     });
   };
 }
 
-function handleChangeTag(setSearchQueryTag, param) {
-  return (e, newValue) => {
-    setSearchQueryTag(newValue);
-  };
 }
 
 
@@ -193,16 +208,6 @@ export function createTextField(label) {
   );
 }
 
-const supportedSearchTerms = [
-  "name",
-  "status",
-  "country",
-  "client",
-  "policy",
-  "projectBegin",
-  "projectEnd",
-  "industry"
-]
 
 
 const projectNames = [
