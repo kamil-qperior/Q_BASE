@@ -17,7 +17,7 @@ import ListItemText from "@material-ui/core/ListItemText";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import FormControl from "@material-ui/core/FormControl";
 import FormLabel from "@material-ui/core/FormLabel";
-import ImageUploadCard from "./imageUpload";
+import ImageUploadCard from "../imageUpload";
 
 import {
   RecoilRoot,
@@ -27,10 +27,10 @@ import {
   useRecoilValue,
 } from "recoil";
 
-import { contentListsState } from "../store/statesRef";
+import { contentListsState } from "../../store/statesRef";
 
-import ContentItem from "./stepperUtil/contentItem";
-import ContentCreator from "./stepperUtil/contentCreator";
+import ContentItem from "../stepperUtil/contentItem";
+import ContentCreator from "../stepperUtil/contentCreator";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -54,18 +54,18 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function ContentForm(props) {
+export default function ContentTitleForm(props) {
   const classes = useStyles();
   const title = props.title
   
   const currentList  = useRecoilValue(contentListsState(title));
  
   const [language, setLanguage] = useState("DE");
-  const [category, setCategory] = useState("technical");
+
 
   return (
     <div className={classes.root}>
-      <ContentCreator title={title} language={language} category={category} ></ContentCreator>
+      <ContentCreator title={title} single={true} language={language} ></ContentCreator>
       <Grid container>
         <FormControl component="legend">
           <FormLabel component="legend">Language</FormLabel>
@@ -74,17 +74,7 @@ export default function ContentForm(props) {
             <FormControlLabel value="DE" control={<Radio />} label="german" />
           </RadioGroup>
         </FormControl>
-        <FormControl component="legend">
-          <FormLabel component="legend">Category</FormLabel>
-          <RadioGroup onChange={handleChangeRadioCategory} aria-label="category" name="category">
-            <FormControlLabel
-              value="technical"
-              control={<Radio />}
-              label="technical"
-            />
-            <FormControlLabel value="business" control={<Radio />} label="business" />
-          </RadioGroup>
-        </FormControl>
+
       </Grid>
 
       <div className={classes.demo}>
@@ -107,11 +97,7 @@ function handleChangeRadioLang(e) {
   setLanguage(e.target.value);
 }
 
-function handleChangeRadioCategory(e) {
-  console.log('setCategory in radio',e.target.value);
-  setCategory(e.target.value);
-  
-}
+
 
 }
 

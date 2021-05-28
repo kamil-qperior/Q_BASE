@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useState, useEffect, Suspense } from 'react'
+import { useState, Suspense } from 'react'
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -14,17 +14,18 @@ import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
 import Badge from '@material-ui/core/Badge';
 import Container from '@material-ui/core/Container';
+import HowToVoteIcon from '@material-ui/icons/HowToVote';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import Link from '@material-ui/core/Link';
 
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import HowToVoteIcon from '@material-ui/icons/HowToVote';
 import { mainListItems, secondaryListItems } from './listItems';
 //import Deposits from './Deposits';
 import RefTable from './referencesTable';
 import ReferenceSearch from './searchField';
 import FormDialog from './formDialog';
+import SlideDialog from './variant/slideDialog';
 import {
     RecoilRoot,
     atom,
@@ -33,7 +34,8 @@ import {
     useRecoilValue,
 } from 'recoil';
 
-import {searchQueryState} from "../store/statesRef"
+import {searchQueryState, chosenRefsState} from "../store/statesRef"
+
 
 
 function Copyright(props) {
@@ -125,6 +127,7 @@ export default function Dashboard() {
     };
     
     const [searchQuery, setSearchQuery] = useRecoilState(searchQueryState);
+    const [chosenRefs] = useRecoilState(chosenRefsState);
 
  
   
@@ -187,19 +190,27 @@ export default function Dashboard() {
                     {/*                 <Divider />
                     <List>{secondaryListItems}</List> */}
                 </Drawer>
-                    <div className={classes.root} >
-    
-                          {       <Button onClick={e => {
-                            setSearchQuery(null)
-                        }}
-                            variant="contained" color="primary" download>
-                            Reset Filter</Button> }
-    
-                        <FormDialog  ></FormDialog>
-                    </div>
+                        <Grid container  alignItems="center" justify="center" spacing={2}  style={{margin: 10   }}>
+                            <Grid item>
+                                <Button onClick={e => {setSearchQuery(null)}}
+                                    variant="contained" color="primary" download>
+                                    Reset Filter
+                                </Button> 
+                            </Grid>
+                            <Grid item>
+                                <FormDialog  ></FormDialog>
+                            </Grid>
+                            <Grid item>
+                    {/*             <Button  variant="contained" color="secondary">
+                                    
+                                </Button> */}
+                                    <SlideDialog></SlideDialog>
+                        
+                            </Grid>
+                        </Grid>
+                 
                     
-                <div className={classes.appBarSpacer} />
-               
+                            
     
                 <Grid alignItems="center" justify="center" container spacing={2} >
     

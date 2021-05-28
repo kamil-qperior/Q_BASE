@@ -1,9 +1,10 @@
 {
-  "name": "azure-react-app",
+  "name": "q-base",
   "version": "0.1.0",
   "private": true,
   "type": "module",
   "dependencies": {
+    "@antlerengineering/multiselect": "^0.9.6",
     "@material-ui/core": "^4.11.3",
     "@material-ui/icons": "^4.11.2",
     "@material-ui/lab": "^4.0.0-alpha.58",
@@ -21,7 +22,6 @@
     "react-scripts": "4.0.3",
     "react-window": "^1.8.6",
     "recoil": "^0.3.0",
-    "tedious": "^11.0.6",
     "web-vitals": "^1.1.1"
   },
   "scripts": {

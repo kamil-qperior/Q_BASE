@@ -6,9 +6,6 @@ import StepLabel from '@material-ui/core/StepLabel';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 
-import ImageUploadCard from "./imageUpload"
-import ContentForm from "./contentForm"
-import ReferenceBasicInfoTextFields from './referenceForm';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -29,60 +26,15 @@ const useStyles = makeStyles((theme) => ({
     appBarSpacer: theme.mixins.toolbar,
 }));
 
-function getSteps() {
-    return ['Basic Project Info', 'Goals', 'Procedures', 'Results', "Images"];
-}
-
-function getStepContent(step) {
-    switch (step) {
-        case 0:
-            return 'Enter Information';
-        case 1:
-            return 'Enter Information';
-        case 2:
-            return 'Finish saving reference';
-        case 3:
-            return 'Enter results of the project';
-        case 4:
-            return 'Upload Images';
-        default:
-            return 'Unknown step';
-    }
-}
-
-function getStepForms(step, useStyles) {
-    switch (step) {
-        case 0:
-            return (<ReferenceBasicInfoTextFields></ReferenceBasicInfoTextFields>)
-        case 1:
-            return (<ContentForm title="Goals"></ContentForm>)
-        case 2:
-            return (<ContentForm title="Procedures"></ContentForm>)
-        case 3:
-            return (<ContentForm title="Results"></ContentForm>)
-            case 4:
-                return (
-                    <div>
-                    <ImageUploadCard></ImageUploadCard>
-                    </div>
-                )
-
-        default:
-            return 'Unknown step';
-    }
- 
-    
-}
 
 
 
 
-export default function HorizontalLinearStepper() {
+export default function HorizontalLinearStepper( props) {
     const classes = useStyles();
     const [activeStep, setActiveStep] = React.useState(0);
-    const steps = getSteps();
+    const steps = props.getSteps();
 
- 
 
     const handleNext = () => {
         
@@ -93,7 +45,6 @@ export default function HorizontalLinearStepper() {
     const handleBack = () => {
         setActiveStep((prevActiveStep) => prevActiveStep - 1);
     };
-
    
 
     const handleReset = () => {
@@ -127,14 +78,14 @@ export default function HorizontalLinearStepper() {
                     </div>
                 ) : (
                     <div>
-                        <Typography className={classes.instructions}>{getStepContent(activeStep)}</Typography>
+                        <Typography className={classes.instructions}>{props.getStepContent(activeStep)}</Typography>
                         <div>
                             <Button disabled={activeStep === 0} onClick={handleBack} className={classes.button}>
                                 Back
-              </Button>
+                            </Button>
 
                             <div>
-                                {getStepForms(activeStep)}
+                                {props.getStepForms(activeStep)}
                             </div>
 
                             <Button

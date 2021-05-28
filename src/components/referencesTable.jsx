@@ -1,5 +1,6 @@
 import React from 'react';
 import Link from '@material-ui/core/Link';
+import {  useState } from 'react'
 import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -7,26 +8,17 @@ import Chip from '@material-ui/core/Chip';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
+import IconButton from '@material-ui/core/IconButton';
+import AddBoxIcon from '@material-ui/icons/AddBox';
 
 import {
   useRecoilState,
 } from 'recoil';
 
-import {searchQueryState, filteredReferences} from "../store/statesRef"
+import {searchQueryState, filteredReferences,chosenRefsState} from "../store/statesRef"
 import { TableContainer } from '@material-ui/core';
 
-//import Title from './Title';
 
-// Generate Order Data
-function createData(id, date, name, shipTo, paymentMethod, amount) {
-  return { id, date, name, shipTo, paymentMethod, amount };
-}
-
-
-
-function preventDefault(event) {
-  event.preventDefault();
-}
 
 const useStyles = makeStyles((theme) => ({
   seeMore: {
@@ -39,18 +31,15 @@ const useStyles = makeStyles((theme) => ({
 export default function RefTable() {
   const classes = useStyles();
 
-  //const [ references, setReferences] = useRecoilState(referencesState);
 
   const [ searchQuery, setSearchQuery] = useRecoilState(searchQueryState);
   const [ filteredRefs] = useRecoilState(filteredReferences);
-
-  console.log('references in orders', filteredRefs);
-    //fix chips
+  const [ chosenRefs, setChosenRefs] = useRecoilState(chosenRefsState);
+  const [value, setValue] = useState([]);
 
   return (
   
      <TableContainer>
-
       <Table >
         <TableHead>
           <TableRow>
@@ -65,11 +54,12 @@ export default function RefTable() {
             <TableCell >Technical Tags</TableCell>
             <TableCell >Procedure Tags</TableCell>
             <TableCell align="right">Person Days Total</TableCell>
+            <TableCell align="right">Add</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           { filteredRefs.map((row) => (
-            <TableRow key={row.referenceID}>
+            <TableRow key={row.referenceID} selected={chosenRefs.find(cr => cr.referenceID === row.referenceID)}>
               <TableCell>{row.name}</TableCell>
               <TableCell>{row.client.name}</TableCell>
               <TableCell>{row.industry}</TableCell>
@@ -97,6 +87,9 @@ export default function RefTable() {
                   }}></Chip>))}
               </TableCell>
               <TableCell align="right">{row.personDaysTotal}</TableCell>
+              <TableCell align="right"><IconButton 
+                onClick={(e) => setChosenRefs(changeRef(chosenRefs, row))}
+                color="primary" aria-label="add"> <AddBoxIcon/> </IconButton></TableCell>
             </TableRow>
           ))}
         </TableBody>
@@ -107,4 +100,12 @@ export default function RefTable() {
 }
 
 
+
+function changeRef(chosenRefs, row) {
+  const referenceID = row.referenceID
+  console.log('chosenRefs', chosenRefs);
+  const refAlreadyInArray = chosenRefs.find(cr => cr?.referenceID === referenceID);
+  return refAlreadyInArray ? chosenRefs.filter( cr => cr?.referenceID !== referenceID) : chosenRefs.concat(row) ;
+  
+}
 

@@ -2,16 +2,22 @@
 import React from 'react';
 
 import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
+import Typography from '@material-ui/core/Typography';
 import Dialog from '@material-ui/core/Dialog';
+import Grid from '@material-ui/core/Grid';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import HorizontalLinearStepper from './stepper/stepper';
+import HorizontalLinearStepper from '../stepper/stepper';
 import ScopedCssBaseline from '@material-ui/core/ScopedCssBaseline';
-import {createNewReference} from '../services/referenceService'
-import { refTextFieldsState,contentListsState } from "../store/statesRef";
+import {createNewReference} from '../../services/referenceService'
+import Badge from '@material-ui/core/Badge';
+import Container from '@material-ui/core/Container';
+import HowToVoteIcon from '@material-ui/icons/HowToVote';
+import  CheckboxesGroup from './checkboxgroup';
+
+import { refTextFieldsState,contentListsState, chosenRefsState } from "../../store/statesRef";
 import {
   RecoilRoot,
   atom,
@@ -20,14 +26,6 @@ import {
   useRecoilValue,
 } from 'recoil';
 import { makeStyles } from '@material-ui/core/styles';
-import ImageUploadCard from "./imageUpload"
-import ContentForm from "./contentForm"
-import ContentTitleForm from "./refcontent/contentTitle"
-import ReferenceBasicInfoTextFields from './referenceForm';
-
-
-
-
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -41,7 +39,7 @@ const useStyles = makeStyles((theme) => ({
 
 
 function getSteps() {
-  return ['Basic Project Info','Title', 'Goals', 'Procedures', 'Results', "Images"];
+  return ["reference name", "test"];
 }
 
 function getStepContent(step) {
@@ -50,14 +48,7 @@ function getStepContent(step) {
           return 'Enter Information';
       case 1:
           return 'Enter single title of the project';
-      case 2:
-          return 'Enter goals of the project';
-      case 3:
-          return 'Enter procedures of the project';
-      case 4:
-          return 'Enter results of the project';
-      case 5:
-          return 'Upload Images';
+
       default:
           return 'Unknown step';
   }
@@ -66,20 +57,27 @@ function getStepContent(step) {
 function getStepForms(step, useStyles) {
   switch (step) {
       case 0:
-          return (<ReferenceBasicInfoTextFields></ReferenceBasicInfoTextFields>)
+          return (
+          <Grid container spacing={2}>
+            <Grid item>
+            </Grid>
+            <Grid item>
+              <CheckboxesGroup title ="Goals"/>
+            </Grid>
+            <Grid item>
+              <CheckboxesGroup title ="Procedures"/>
+            </Grid>
+            <Grid item>
+              <CheckboxesGroup title ="Results"/>
+            </Grid>
+            </Grid>)
           //bevore adding new forms adjust state atom
+
+
       case 1:
-          return (<ContentTitleForm title="title"></ContentTitleForm>)
-      case 2:
-          return (<ContentForm title="goals"></ContentForm>)
-      case 3:
-           return (<ContentForm title="procedures"></ContentForm>)
-      case 4:
-          return (<ContentForm title="results"></ContentForm>)
-      case 5:
           return (
               <div>
-              <ImageUploadCard></ImageUploadCard>
+             
               </div>
           )
 
@@ -93,12 +91,15 @@ function getStepForms(step, useStyles) {
 
 
 
-export default function FormDialog() {
+
+export default function SlideDialog() {
   const classes  =useStyles()
   const [open, setOpen] = React.useState(false);
 
 
-  const refs = useRecoilValue(refTextFieldsState);
+  const chosenRefs = useRecoilValue(chosenRefsState);
+
+  //use one feteched from backend
   const goals  = useRecoilValue(contentListsState("goals"));
   const results  = useRecoilValue(contentListsState("results"));
   const procedures  = useRecoilValue(contentListsState("procedures"));
@@ -115,45 +116,50 @@ export default function FormDialog() {
  
 
   return (
-    <div>
+    
        <ScopedCssBaseline>
 
-      <Button variant="contained"  onClick={handleClickOpen}>
-        Create Reference
+      <Button variant="contained"  color="primary" onClick={handleClickOpen}>
+        Create Slides
       </Button>
-      <Dialog maxWidth="md" open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
-        <DialogTitle id="form-dialog-title">Create Reference</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            Enter new Reference Basic Information
-          </DialogContentText>
-          <HorizontalLinearStepper 
+      <Badge badgeContent={chosenRefs.length} color="secondary">
+        <HowToVoteIcon />
+      </Badge>
+      <Dialog maxWidth="md" open={open} onClose={handleClose} aria-labelledby="slide-dialog-title">
+        <DialogTitle id="slide-dialog-title">Choose Slide Content</DialogTitle>
+        <DialogContent >
+          
+        <HorizontalLinearStepper 
           getStepForms= {getStepForms}
           getStepContent= {getStepContent}
           getSteps= {getSteps}
           
           >
+            <Typography variant="h5" >{chosenRefs[0]?.name}</Typography>
 
-          </HorizontalLinearStepper>
+          </HorizontalLinearStepper> 
+          
+       
+
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color="primary">
             Cancel
           </Button>
           <Button onClick={e => {
-                            createNewReference(refs,goals, procedures, results)
+                            
                             
                             console.log('on click goals in form dialog', goals);
                             console.log('on click results in form dialog', results);
                             console.log('on click procedures in form dialog', procedures);
                         }}
             color="primary">
-            Save Reference
+            generate slides
           </Button>
         </DialogActions>
       </Dialog>
        </ScopedCssBaseline>
-    </div>
+  
   );
 }
 
