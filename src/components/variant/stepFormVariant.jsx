@@ -28,6 +28,7 @@ export default function StepFormVariant(props) {
 
     //TODO make language dependent
     const rcTitle = refContents.find((rc) => rc.type === "title");
+    const referenceId = refContents[0]?.referenceId
     const goals = refContents.filter((rc) => rc.type === "goal");
     const results = refContents.filter((rc) => rc.type === "result");
     const procedures = refContents.filter((rc) => rc.type === "procedure");
@@ -38,13 +39,13 @@ export default function StepFormVariant(props) {
           <Typography wrap ="true">{rcTitle?.content ?? "No title found in reference contents."}</Typography>
         </Grid>
         <Grid item>
-          <CheckboxesGroup title="Goals" content={goals} variantName={placeHolderVariantName}/>
+          <CheckboxesGroup title="Goals" content={goals} variantName={placeHolderVariantName} refId={referenceId}/>
         </Grid>
         <Grid item>
-          <CheckboxesGroup title="Procedures" content={procedures} variantName={placeHolderVariantName}/>
+          <CheckboxesGroup title="Procedures" content={procedures} variantName={placeHolderVariantName} refId={referenceId}/>
         </Grid>
         <Grid item>
-          <CheckboxesGroup title="Results" content={results} variantName={placeHolderVariantName}/>
+          <CheckboxesGroup title="Results" content={results} variantName={placeHolderVariantName} refId={referenceId}/>
         </Grid>
   
        

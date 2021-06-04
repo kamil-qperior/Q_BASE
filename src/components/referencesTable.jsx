@@ -6,6 +6,7 @@ import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import Chip from '@material-ui/core/Chip';
 import TableCell from '@material-ui/core/TableCell';
+import TablePagination from '@material-ui/core/TablePagination';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import IconButton from '@material-ui/core/IconButton';
@@ -31,14 +32,25 @@ const useStyles = makeStyles((theme) => ({
 export default function RefTable() {
   const classes = useStyles();
 
-
+  const [ page, setPage]  = useState(0)
+  const [ rowsPerPage, setRowsPerPage]  = useState(10)
   const [ searchQuery, setSearchQuery] = useRecoilState(searchQueryState);
   const [ filteredRefs] = useRecoilState(filteredReferences);
   const [ chosenRefs, setChosenRefs] = useRecoilState(chosenRefsState);
 
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
 
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  //TODO only page filtering works , not changing page 
   return (
-  
+    <div>
+
      <TableContainer>
       <Table >
         <TableHead>
@@ -58,7 +70,7 @@ export default function RefTable() {
           </TableRow>
         </TableHead>
         <TableBody>
-          { filteredRefs.map((row) => (
+          { filteredRefs.slice(page*rowsPerPage,rowsPerPage + page*rowsPerPage).map((row) => (
             <TableRow key={row.referenceID} selected={chosenRefs.find(cr => cr.referenceID === row.referenceID)}>
               <TableCell>{row.name}</TableCell>
               <TableCell>{row.client.name}</TableCell>
@@ -95,6 +107,16 @@ export default function RefTable() {
         </TableBody>
       </Table>
           </TableContainer>
+          <TablePagination
+          rowsPerPageOptions={[10, 25, 100]}
+          component="div"
+          count={filteredRefs.length}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          onChangePage={handleChangePage}
+          onChangeRowsPerPage={handleChangeRowsPerPage}
+          />
+          </div>
     
   );
 }
@@ -107,4 +129,5 @@ function changeRef(chosenRefs, row) {
   return refAlreadyInArray ? chosenRefs.filter( cr => cr?.referenceID !== referenceID) : chosenRefs.concat(row) ;
   
 }
+
 

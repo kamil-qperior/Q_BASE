@@ -37,6 +37,7 @@ export default function CheckboxesGroup(props) {
   const classes = useStyles();
   const contentList = props.content;
   const title = props.title;
+  const refId = props.refId;
   const variantName = props.variantName;
   const boxId = `${variantName + title}`
   
@@ -54,7 +55,7 @@ export default function CheckboxesGroup(props) {
     const initialState = contentList.reduce((o, key) => Object.assign(o, { [key.id]: true }), {});
     console.log('we initialState xxx', initialState, chosenVariantLanguage );
     setBoxState(initialState, boxId)
-    updateVariantSelection(title, initialState, chosenVariantLanguage)
+    updateVariantSelection(title, initialState, chosenVariantLanguage, refId)
     setLoadedBefore(loadedBefore.concat(boxId))
   }
 
@@ -65,7 +66,7 @@ export default function CheckboxesGroup(props) {
 
     console.log('boxId', boxId);
     setBoxState(newState, boxId);  //since setState call back does not work properly here and does not wait for change to state, i pass newState to recoil update method
-    updateVariantSelection(title, newState, chosenVariantLanguage)
+    updateVariantSelection(title, newState, chosenVariantLanguage, refId)
    
   };
 
@@ -102,7 +103,7 @@ export default function CheckboxesGroup(props) {
     </div>
   );
 
-  function updateVariantSelection(title, newState, chosenVariantLanguage) {
+  function updateVariantSelection(title, newState, chosenVariantLanguage, refId) {
 
    
     setReferenceVariantSelection((prev) => {
@@ -119,8 +120,13 @@ export default function CheckboxesGroup(props) {
               [title.toLowerCase()]: getSelectedCheckboxes(newState),
             },
             "language": chosenVariantLanguage,
-            "creator": "placeHolder",
-            "referenceId": "refId", //TODO
+            "creator": {
+              "name":"Kamil",
+              "id":"1337"
+            },
+            "referenceId": refId, 
+            "creationDate": new Date(), 
+            "updateDate": new Date(), 
           },
         ];
       }
@@ -133,6 +139,7 @@ export default function CheckboxesGroup(props) {
         ...prev,
         {
           ...variantForUpdate,
+          "updateDate": new Date(), 
           "referenceContents": updateRefContentsObject(
             newState,
             title,
