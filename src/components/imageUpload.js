@@ -10,21 +10,11 @@ import Fab from "@material-ui/core/Fab";
 import Grid from "@material-ui/core/Grid";
 
 import red from "@material-ui/core/colors/red";
-import pink from "@material-ui/core/colors/pink";
 import blue from "@material-ui/core/colors/blue";
 
-import Icon from "@material-ui/core/Icon";
-import PageviewIcon from "@material-ui/icons/Pageview";
-import SearchIcon from "@material-ui/icons/Search";
 import AddPhotoAlternateIcon from "@material-ui/icons/AddPhotoAlternate";
 
 
-// Search
-import Paper from "@material-ui/core/Paper";
-import InputBase from "@material-ui/core/InputBase";
-import Divider from "@material-ui/core/Divider";
-import IconButton from "@material-ui/core/IconButton";
-import CloseIcon from "@material-ui/icons/Close";
 
 //Tabs
 import { withStyles } from "@material-ui/core/styles";

@@ -1,19 +1,14 @@
 import React from "react";
 import { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import Stepper from "@material-ui/core/Stepper";
-import Step from "@material-ui/core/Step";
-import StepLabel from "@material-ui/core/StepLabel";
-import Button from "@material-ui/core/Button";
+
 import Typography from "@material-ui/core/Typography";
-import TextField from "@material-ui/core/TextField";
 import Grid from "@material-ui/core/Grid";
 
 import Radio from "@material-ui/core/Radio";
 import RadioGroup from "@material-ui/core/RadioGroup";
 import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemText from "@material-ui/core/ListItemText";
+
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import FormControl from "@material-ui/core/FormControl";
 import FormLabel from "@material-ui/core/FormLabel";
@@ -103,14 +98,11 @@ export default function ContentForm(props) {
 
   
 function handleChangeRadioLang(e) {
-  console.log('setLanguage in radio',e.target.value);
   setLanguage(e.target.value);
 }
 
 function handleChangeRadioCategory(e) {
-  console.log('setCategory in radio',e.target.value);
   setCategory(e.target.value);
-  
 }
 
 }

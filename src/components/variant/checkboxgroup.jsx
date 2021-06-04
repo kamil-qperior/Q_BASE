@@ -1,24 +1,32 @@
-import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import FormLabel from '@material-ui/core/FormLabel';
-import FormControl from '@material-ui/core/FormControl';
-import FormGroup from '@material-ui/core/FormGroup';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import FormHelperText from '@material-ui/core/FormHelperText';
-import Checkbox from '@material-ui/core/Checkbox';
-import Paper from '@material-ui/core/Paper';
-import { refTextFieldsState, contentListsState, chosenRefsState } from "../../store/statesRef";
+import React from "react";
+
+import { makeStyles } from "@material-ui/core/styles";
+import FormLabel from "@material-ui/core/FormLabel";
+import FormControl from "@material-ui/core/FormControl";
+import FormGroup from "@material-ui/core/FormGroup";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import FormHelperText from "@material-ui/core/FormHelperText";
+import Checkbox from "@material-ui/core/Checkbox";
+import Paper from "@material-ui/core/Paper";
+import Button from "@material-ui/core/Button";
+import {
+  refTextFieldsState,
+  contentListsState,
+  referenceVariantSelectionState,
+  variantContentListsState,
+  chosenVariantLanguageState
+} from "../../store/statesRef";
 import {
   RecoilRoot,
   atom,
   selector,
   useRecoilState,
   useRecoilValue,
-} from 'recoil';
+} from "recoil";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    display: 'flex',
+    display: "flex",
   },
   formControl: {
     margin: theme.spacing(3),
@@ -27,48 +35,129 @@ const useStyles = makeStyles((theme) => ({
 
 export default function CheckboxesGroup(props) {
   const classes = useStyles();
-  const [state, setState] = React.useState({
-    gilad: true,
-    jason: false,
-    antoine: false,
-  });
+  const contentList = props.content;
+  const title = props.title;
+  const variantName = props.variantName;
+  const boxId = `${variantName + title}`
+  
+  const [loadedBefore, setLoadedBefore] = React.useState([]);
 
-  const chosenRefs = useRecoilValue(chosenRefsState);
-  const goals  = useRecoilValue(contentListsState("goals"));
-  const results  = useRecoilValue(contentListsState("results"));
-  const procedures  = useRecoilValue(contentListsState("procedures"));
+  const chosenVariantLanguage = useRecoilValue(chosenVariantLanguageState);
+  const [boxState, setBoxState] = useRecoilState(variantContentListsState(boxId));
 
-  const handleChange = (event) => {
-    setState({ ...state, [event.target.name]: event.target.checked });
+  const [referenceVariantSelection, setReferenceVariantSelection] =
+    useRecoilState(referenceVariantSelectionState);
+  
+
+       //makes sure we initiate the state properly and once with full state
+  if( loadedBefore.findIndex(alreadyLoadedBox => alreadyLoadedBox === boxId) < 0)  {
+    const initialState = contentList.reduce((o, key) => Object.assign(o, { [key.id]: true }), {});
+    console.log('we initialState xxx', initialState, chosenVariantLanguage );
+    setBoxState(initialState, boxId)
+    updateVariantSelection(title, initialState, chosenVariantLanguage)
+    setLoadedBefore(loadedBefore.concat(boxId))
+  }
+
+       
+      
+  const handleChange = (event, title) => {
+    const newState = { ...boxState, [event.target.name]: event.target.checked };
+
+    console.log('boxId', boxId);
+    setBoxState(newState, boxId);  //since setState call back does not work properly here and does not wait for change to state, i pass newState to recoil update method
+    updateVariantSelection(title, newState, chosenVariantLanguage)
+   
   };
-
-  const { gilad, jason, antoine } = state;
- 
 
   return (
     <div className={classes.root}>
-        <Paper maxW>
-
-      <FormControl  component="fieldset" className={classes.formControl}>
-        <FormLabel component="legend">{`Pick ${props.title}`}</FormLabel>
-        <FormGroup>
-          <FormControlLabel
-            control={<Checkbox checked={gilad} onChange={handleChange} name="gilad" />}
-            label="Gilad Gray"
-            />
-          <FormControlLabel
-            control={<Checkbox checked={jason} onChange={handleChange} name="jason" />}
-            label="Jason Killian"
-            />
-          <FormControlLabel
-            control={<Checkbox checked={antoine} onChange={handleChange} name="antoine" />}
-            label="Antoine Llorca"
-            />
-        </FormGroup>
-        <FormHelperText>Pick content to be displayed</FormHelperText>
-      </FormControl>
-        </Paper>
-    
+      <Paper maxW>
+        <FormControl component="fieldset" className={classes.formControl}>
+          <FormLabel component="legend">{`Pick ${props.title}`}</FormLabel>
+          <FormGroup>
+            {contentList.map((contentItem) => (
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={boxState[contentItem.id] ?? true}
+                    onChange={(e) =>{
+                      handleChange(e, title)
+                    } }
+                    name={contentItem.id}
+                  />
+                }
+                label={contentItem.content}
+              />
+            ))}
+          </FormGroup>
+          <FormHelperText>Pick content to be displayed</FormHelperText>
+        </FormControl>
+        <Button onClick={e => {
+                       console.log('LOG CURRENT SELECTION', referenceVariantSelection);
+                      }}
+          color="primary">
+          LOG SELECTION
+        </Button>
+      </Paper>
     </div>
   );
+
+  function updateVariantSelection(title, newState, chosenVariantLanguage) {
+
+   
+    setReferenceVariantSelection((prev) => {
+      const variantForUpdate = prev.find(
+        (variant) => variant.name === variantName
+      );
+  
+      if (!variantForUpdate) {
+        return [
+          ...prev,
+          {
+            "name": variantName,
+            "referenceContents": {
+              [title.toLowerCase()]: getSelectedCheckboxes(newState),
+            },
+            "language": chosenVariantLanguage,
+            "creator": "placeHolder",
+            "referenceId": "refId", //TODO
+          },
+        ];
+      }
+  
+      //remove the one set previously
+      prev = prev.filter((variant) => variant.name !== variantName);
+  
+      //add to existing one
+      return [
+        ...prev,
+        {
+          ...variantForUpdate,
+          "referenceContents": updateRefContentsObject(
+            newState,
+            title,
+            variantForUpdate.referenceContents
+          ),
+        },
+      ];
+    });
+
+  }
 }
+
+function updateRefContentsObject(newState, title, oldVariantRefContent) {
+  const selectedContent = getSelectedCheckboxes(newState);
+
+  const newRefContent = {
+    ...oldVariantRefContent,
+    //remove content with false flag since those are not selected
+    [title.toLowerCase()]: selectedContent,
+  };
+
+  return newRefContent;
+}
+
+function getSelectedCheckboxes(state) {
+  return Object.entries(state).filter(contentEntry => contentEntry[1] === true).map(contentEntry => contentEntry[0]);
+}
+

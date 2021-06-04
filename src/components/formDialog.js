@@ -2,13 +2,12 @@
 import React from 'react';
 
 import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import HorizontalLinearStepper from './stepper/stepper';
+import HorizontalLinearReferenceStepper from './stepper/referenceStepper';
 import ScopedCssBaseline from '@material-ui/core/ScopedCssBaseline';
 import {createNewReference} from '../services/referenceService'
 import { refTextFieldsState,contentListsState } from "../store/statesRef";
@@ -99,6 +98,7 @@ export default function FormDialog() {
 
 
   const refs = useRecoilValue(refTextFieldsState);
+  const title  = useRecoilValue(contentListsState("title"));
   const goals  = useRecoilValue(contentListsState("goals"));
   const results  = useRecoilValue(contentListsState("results"));
   const procedures  = useRecoilValue(contentListsState("procedures"));
@@ -127,21 +127,21 @@ export default function FormDialog() {
           <DialogContentText>
             Enter new Reference Basic Information
           </DialogContentText>
-          <HorizontalLinearStepper 
+          <HorizontalLinearReferenceStepper 
           getStepForms= {getStepForms}
           getStepContent= {getStepContent}
           getSteps= {getSteps}
           
           >
 
-          </HorizontalLinearStepper>
+          </HorizontalLinearReferenceStepper>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color="primary">
             Cancel
           </Button>
           <Button onClick={e => {
-                            createNewReference(refs,goals, procedures, results)
+                            createNewReference(refs,goals, procedures, results, title)
                             
                             console.log('on click goals in form dialog', goals);
                             console.log('on click results in form dialog', results);

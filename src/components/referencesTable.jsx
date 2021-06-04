@@ -35,14 +35,14 @@ export default function RefTable() {
   const [ searchQuery, setSearchQuery] = useRecoilState(searchQueryState);
   const [ filteredRefs] = useRecoilState(filteredReferences);
   const [ chosenRefs, setChosenRefs] = useRecoilState(chosenRefsState);
-  const [value, setValue] = useState([]);
+
 
   return (
   
      <TableContainer>
       <Table >
         <TableHead>
-          <TableRow>
+          <TableRow key={"labels"}>
             <TableCell>Name</TableCell>
             <TableCell>Client</TableCell>
             <TableCell>Industry</TableCell>
@@ -103,7 +103,6 @@ export default function RefTable() {
 
 function changeRef(chosenRefs, row) {
   const referenceID = row.referenceID
-  console.log('chosenRefs', chosenRefs);
   const refAlreadyInArray = chosenRefs.find(cr => cr?.referenceID === referenceID);
   return refAlreadyInArray ? chosenRefs.filter( cr => cr?.referenceID !== referenceID) : chosenRefs.concat(row) ;
   

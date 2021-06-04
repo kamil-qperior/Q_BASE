@@ -22,6 +22,21 @@ export const fetchReferenceDatabyName = async (name) => {
   return dataFromDB
 };
 
+export const fetchReferenceContent = async (refId, language) => {
+    
+  console.log('fetching reference cont', refId, language);
+  const result = await fetch(
+    `${referenceUrl}/${refId}/reference-contents?filter=${encodeURI(JSON.stringify({ "where": { "language": language } }))}`, {
+    headers: new Headers({ 'Authorization': token })
+  })
+
+  const jsResult = await result.json();
+
+  return jsResult
+ }
+
+
+
 export const fetchReferenceDatabyParam = async (searchQuery) => {
   console.log('searchQuery inside fetch', searchQuery);
   if (searchQuery?.value === null) {
@@ -69,12 +84,10 @@ export const fetchReferenceDatabyParamArrays = async (value, param) => {
 //https://qperior-reference-mgmt-api.azurewebsites.net/references?filter=%7B%22where%22%3A%7B%22name%22%3A%22test%22%7D%7D
 
 
-export const createNewReference = async (referenceObj, goals, procedures, results) => {
+export const createNewReference = async (referenceObj, goals, procedures, results, title) => {
 
   const message = mapToApi(referenceObj) //TODO FINISH TAGS AND DATES
 
-  console.log('message in create has : ', message);
-  console.log('message in create has : ', goals);
 
   const result = await fetch(`${referenceUrl}`, {
     headers: new Headers({
@@ -91,20 +104,21 @@ export const createNewReference = async (referenceObj, goals, procedures, result
   console.log('res', refID);
 
   if (refID) {
+     await createReferenceContent(title,"title", refID);
 
     for await (const goal of goals) {
-      // const resultRefContent = await createReferenceContent(goal, refID);
+        await createReferenceContent(goal,"goal", refID);
       console.log('temmp goal', goal);
     }
 
     for await (const procedure of procedures) {
-      // const resultRefContent = await createReferenceContent(procedure, refID);
+        await createReferenceContent(procedure,"procedure", refID);
       console.log('temmp procedure', procedure);
     }
 
 
     for await (const result of results) {
-      // const resultRefContent = await createReferenceContent(result, refID);
+       await createReferenceContent(result, "result",refID);
       console.log('temmp result', result);
     }
 
@@ -117,15 +131,16 @@ export const createNewReference = async (referenceObj, goals, procedures, result
 
 
 const referenceUrl = "https://qperior-reference-mgmt-api.azurewebsites.net/references"
+const referenceVaraintUrl = "https://qperior-reference-mgmt-api.azurewebsites.net/reference-variants"
 
 
-async function createReferenceContent(goal, refID) {
-  const goalsMessage = {
-    "type": "goal",
-    "language": goal.language || "DE",
-    "content": goal.text,
+async function createReferenceContent(content,type, refID) {
+  const message = {
+    "type": type,
+    "language": content.language || "DE",
+    "content": content.text,
     "categoryTag": [
-      goal.category || "test"
+      content.category || "test"
     ],
     "referenceId": refID
   };
@@ -138,7 +153,7 @@ async function createReferenceContent(goal, refID) {
       'Content-Type': 'application/json'
     }),
     method: 'POST',
-    body: JSON.stringify(goalsMessage)
+    body: JSON.stringify(message)
   });
   return resultRefContent;
 }
@@ -198,7 +213,7 @@ function createFilter(param, searchQuery) {
   return { [param]: { like: searchQuery.value, options: "i" } };
 }
 
-export const createNewReferenceContent = async (goals, procedures, results) => {
+/* export const createNewReferenceContent = async (goals, procedures, results) => {
 
   //const message = mapToApi(referenceObj) //FINISH TAGS AND DATES
 
@@ -217,3 +232,32 @@ export const createNewReferenceContent = async (goals, procedures, results) => {
   console.log('res', res);
   return res
 };
+ */
+
+
+export const saveReferenceVariant = async (referenceVarant) => {
+    
+  console.log('referenceVarant', referenceVarant);
+
+   const result = await fetch(
+    `${referenceVaraintUrl}`, {
+    headers: new Headers({ 'Authorization': token }),
+    accept: 'application/json',
+    'Content-Type': 'application/json',
+    method: 'POST',
+    body: JSON.stringify({
+      "name": "variantName",
+      "referenceContents": {
+        "title": "getSelectedCheckboxes(newState)",
+      },
+      "language": "chosenVariantLanguage",
+      "creator": "placeHolder",
+      "referenceId": "refId", //TODO
+    },)
+  }) 
+
+  const jsResult = await result.json();
+
+  return jsResult 
+  
+ }

@@ -6,7 +6,7 @@ import {
 } from "recoil";
 
 
-import {  fetchReferenceDatabyParam, fetchAllReferenceData, fetchReferenceDatabyParamArrays } from '../services/referenceService'
+import {  fetchReferenceDatabyParam, fetchAllReferenceData, fetchReferenceContent,saveReferenceVariant } from '../services/referenceService'
 import {referenceTextFields} from "../components/referenceForm"
 
 
@@ -15,6 +15,11 @@ import {referenceTextFields} from "../components/referenceForm"
   //used for 3 different atoms lists of different contents
   const contentListsState = atomFamily({
       key: 'contentListsState',
+      default:[]
+    });
+
+    const variantContentListsState = atomFamily({
+      key: 'variantContentListsState',
       default:[]
     });
 
@@ -30,6 +35,7 @@ import {referenceTextFields} from "../components/referenceForm"
   });
 
 
+/* 
 
   const contentListsAccess = selectorFamily({
     key: "content-access",
@@ -43,13 +49,62 @@ import {referenceTextFields} from "../components/referenceForm"
         set(contentListsState(title), contentList);
      
     }
-  });
+  }); */
 
 
 const searchQueryState = atom({
     key: 'searchQueryState',
     default: {value: null, param: "name"},
   });
+
+  
+  const activeStepState = atom({
+    key: 'activeStepState',
+    default: 0
+  });
+
+  const refIdForVariantState = selector({
+    key: 'refIdForVariantState',
+    default: "",
+    get: async ({get}) => {
+      const step = get(activeStepState) 
+      const chosenRefs= get(chosenRefsState) 
+      const refs = chosenRefs.map(r => r.referenceID )
+      return refs[step-1]  //-1 since we also have a language section with no reference
+    }
+  });
+
+  const referenceVariantState = atom({
+    key: 'referenceVariantState',
+    default: {
+      name: "name",
+      language: "DE",
+      referenceContents : {
+        title: "title",
+        goals: [],
+        procedures: [],
+        results: [],
+        
+      },
+      creator:"",
+      referenceId: ""
+    },
+  });
+
+
+
+
+  const referenceVariantSelectionState = atom({
+    key: 'referenceVariantSelectionState',
+    default: []
+  });
+
+  const chosenVariantLanguageState = atom({
+    key: 'chosenVariantLanguageState',
+    default: 'DE',
+  });
+
+
 
 
 
@@ -75,7 +130,70 @@ const searchQueryState = atom({
       });
 
 
+ /*  let saveVariantState = selector({
+    key: 'saveVariantState',  
+    default: false,
+    get: async ({get}) => {
+
+
+    },
+    set: async ({set}, newValue) => {
+      const referenceVariantSelection = get(referenceVariantSelectionState) 
+      console.log('referenceVariantSelection before saving', referenceVariantSelection);
+
+      if (referenceVariantSelection ) {
+
+        for await (const referenceVariant of referenceVariantSelection) {
+          const res =  await saveReferenceVariant(referenceVariant)
+
+        }
+          return "res"
+         
+        }
+        return {};
+
+
+
+    }
+  })
+  */
+
+  let filteredReferenceContents = selector({
+    key: 'filteredReferenceContents',  //dont use queryState otherwise circular
+    default: [],
+    get: async ({get}) => {
+       
+       const refId = get(refIdForVariantState) 
+       const language = get(chosenVariantLanguageState) 
+      
+
+        if (refId ) {
+
+            const res =  await fetchReferenceContent(refId, language)
+            return res
+           
+          }
+          else {
+            console.log('No ref Id found while searching for content ', refId);
+            return []
+          }
+        },
+      });
+
+
+
+
+
         
 
-export {  searchQueryState,  filteredReferences, contentListsState, refTextFieldsState, chosenRefsState };
+export {  searchQueryState,  filteredReferences, contentListsState, refTextFieldsState,
+   chosenRefsState, refIdForVariantState,
+    filteredReferenceContents,
+    referenceVariantSelectionState,
+    referenceVariantState,
+    variantContentListsState,
+    activeStepState,
+    chosenVariantLanguageState
+  
+  };
 

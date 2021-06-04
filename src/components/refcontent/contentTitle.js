@@ -93,7 +93,6 @@ export default function ContentTitleForm(props) {
 
   
 function handleChangeRadioLang(e) {
-  console.log('setLanguage in radio',e.target.value);
   setLanguage(e.target.value);
 }
 

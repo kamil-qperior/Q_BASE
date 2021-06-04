@@ -229,7 +229,7 @@ export default function Dashboard() {
     
                     <div className={classes.appBarSpacer} />
                     {/* Separate Results Table */}
-                    <Grid item alignItems="center" justify="center">
+                    <Grid item>
                         <Paper >
                             <Toolbar >
                                 <Typography className={classes.title} variant="h6" id="tableTitle" component="div">
