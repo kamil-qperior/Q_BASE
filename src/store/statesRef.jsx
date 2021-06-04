@@ -17,6 +17,10 @@ import {referenceTextFields} from "../components/referenceForm"
       key: 'contentListsState',
       default:[]
     });
+    const variantNameState = atomFamily({
+      key: 'variantNameState',
+      default: null
+    });
 
     const variantContentListsState = atomFamily({
       key: 'variantContentListsState',
@@ -192,6 +196,7 @@ export {  searchQueryState,  filteredReferences, contentListsState, refTextField
     referenceVariantSelectionState,
     referenceVariantState,
     variantContentListsState,
+    variantNameState,
     activeStepState,
     chosenVariantLanguageState
   

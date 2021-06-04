@@ -8,15 +8,17 @@ import { useRecoilState } from "recoil";
 
 import {
   filteredReferenceContents,
-  refIdForVariantState,
+  variantNameState,
 } from "../../store/statesRef";
 
 export default function StepFormVariant(props) {
-  const placeHolderVariantName = `Reference variant ${props.step}`;
+  const step = props.step;
   //shows content for currently selected ref id
   const [refContents] = useRecoilState(filteredReferenceContents);
-  const [variantName, setVariantName] = useState(placeHolderVariantName);
-
+  //has to be unique with current implementation
+  const [variantName, setVariantName] = useRecoilState(variantNameState(step));
+  const placeHolderVariantName = `Reference variant ${step}`;
+  
   //get content for Ref id
   console.log(
     "refContents in stepform variant",
@@ -35,12 +37,10 @@ export default function StepFormVariant(props) {
   }
 
   const handleChange = (event) => {
-    setVariantName(event.target.value);
+    console.log('event.target.value', event.target.value);
+    setVariantName(event.target.value, step);
 
-    /* setRefState(obj => ({
-      ...obj,
-      [event.target.name]: event.target.value
-  })) */
+ 
   };
 
   //TODO make language dependent
@@ -52,36 +52,34 @@ export default function StepFormVariant(props) {
 
   return (
     <Grid container spacing={2} alignItems="center">
-      <Grid container spacing={3} justify="center">
+      <Grid container spacing={3} justify="center" alignItems="center">
           <Grid style={{ width: 250, margin: 20}}  item>
-          </Grid>
-        <Grid style={{ width: 250 }} item>
-            </Grid>
-        <FormControl component="legend">
-            <FormLabel component="legend">Title</FormLabel>
-            <Typography label="test" wrap="true">
+            <Typography  variant ="h8" wrap="true"> Title </Typography>
+            <Typography  wrap="true">
               {rcTitle?.content ?? "No title found in reference contents."}
             </Typography>
+          </Grid>
+        <Grid style={{ width: 250 , margin: 20 }} item>
           <TextField
-            //margin="dense"
-            //className={classes.textField}
+
             id={"variantName"}
             name={"variantName"}
+            
             //     value={refState[param]} this lock the whole field with onBlur
-            defaultValue={variantName} //this may not work properly
+            defaultValue={placeHolderVariantName} //this may not work properly
             key={variantName}
             //on focusing away from field
             onBlur={handleChange}
             label={"Variant Name"}
-          />
+            />
+            </Grid>
           
-        </FormControl>
       </Grid>
       <Grid item>
         <CheckboxesGroup
           title="Goals"
           content={goals}
-          variantName={variantName}
+          variantName={chooseName() }
           refId={referenceId}
         />
       </Grid>
@@ -89,7 +87,7 @@ export default function StepFormVariant(props) {
         <CheckboxesGroup
           title="Procedures"
           content={procedures}
-          variantName={variantName}
+          variantName={chooseName()}
           refId={referenceId}
         />
       </Grid>
@@ -97,10 +95,14 @@ export default function StepFormVariant(props) {
         <CheckboxesGroup
           title="Results"
           content={results}
-          variantName={variantName}
+          variantName={chooseName()}
           refId={referenceId}
         />
       </Grid>
     </Grid>
   );
+
+  function chooseName() {
+    return variantName === null ? placeHolderVariantName : variantName;
+  }
 }

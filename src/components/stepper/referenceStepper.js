@@ -44,13 +44,7 @@ const useStyles = makeStyles((theme) => ({
 export default function HorizontalLinearReferenceStepper( props) {
     const classes = useStyles();
     const [activeStep, setActiveStep] = useRecoilState(activeStepState);
-    //const [activeStep, setActiveStep] = React.useState(0);
-    let counter = 0
-    //refId selected for Variant
-    //const [refIdForVariant, setRefIdForVariantState] = useRecoilState(refIdForVariantState);
-    const refIds = props.refIds;
-    
-    
+     
     
     const steps = props.getSteps();
     

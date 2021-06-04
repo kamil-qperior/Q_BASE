@@ -122,9 +122,6 @@ export default function HorizontalLinearVariantStepper( props) {
                         <Typography className={classes.instructions}>
                             All steps completed - you&apos;re finished
                         </Typography>
-                        <Button onClick={ handleSaveVariant} className={classes.button}>
-                            Save Reference Variant
-                        </Button>
                         <Button onClick={handleReset} className={classes.button}>
                             Reset
                         </Button>
@@ -145,7 +142,7 @@ export default function HorizontalLinearVariantStepper( props) {
                             <Button
                                 variant="contained"
                                 color="primary"
-                                onClick={handleNext}
+                                onClick={ activeStep === steps.length - 1 ? handleSaveVariant : handleNext} //last step is saving variant
                                 className={classes.button}
                                 >
                                 {activeStep === steps.length - 1 ? 'Finish' : 'Next'}

@@ -107,7 +107,7 @@ export default function CheckboxesGroup(props) {
   );
 
   function updateVariantSelection(title, newState, chosenVariantLanguage, refId) {
-
+    console.log('variantNamevvariantNamevariantNamevariantName', variantName);
    
     setReferenceVariantSelection((prev) => {
       const variantForUpdate = prev.find(
