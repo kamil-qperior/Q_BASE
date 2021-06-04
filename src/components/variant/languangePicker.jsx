@@ -9,10 +9,10 @@ import RadioGroup from "@material-ui/core/RadioGroup";
 import Radio from "@material-ui/core/Radio";
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
-import {languageObjects} from "../consts"
+import { languageObjects } from "../consts";
 import {
   chosenVariantLanguageState,
-  variantContentListsState
+  variantContentListsState,
 } from "../../store/statesRef";
 import {
   RecoilRoot,
@@ -33,31 +33,42 @@ const useStyles = makeStyles((theme) => ({
 
 export default function LanguagePicker(props) {
   const classes = useStyles();
-  
-  const [chosenVariantLanguage, setChosenVariantLanguageState] = useRecoilState(chosenVariantLanguageState);
+
+  const [chosenVariantLanguage, setChosenVariantLanguageState] = useRecoilState(
+    chosenVariantLanguageState
+  );
 
   const handleChange = (event) => {
-    setChosenVariantLanguageState(event.target.value)
-  }
+    setChosenVariantLanguageState(event.target.value);
+  };
 
   //default state needs to match the one from store
   return (
-    <div className={classes.root}>
-          <Grid justify="center" container>
-          <Grid  item>
-        <FormControl component="legend">
-          <FormLabel component="legend">Language</FormLabel>
-          <RadioGroup  defaultValue="DE" onChange={handleChange}  aria-label="language" name="language"> 
-            <FormControlLabel value="DE" control={<Radio />} label="Deutsch" />
-            <FormControlLabel value="EN" control={<Radio />} label="English" />
-          </RadioGroup>
-        </FormControl>
-          </Grid  >
-
+    <div className={classes.formControl}>
+      <Grid justify="center" container>
+        <Grid item>
+          <FormControl component="legend">
+            <FormLabel component="legend">Language</FormLabel>
+            <RadioGroup
+              defaultValue="DE"
+              onChange={handleChange}
+              aria-label="language"
+              name="language"
+            >
+              <FormControlLabel
+                value="DE"
+                control={<Radio />}
+                label="Deutsch"
+              />
+              <FormControlLabel
+                value="EN"
+                control={<Radio />}
+                label="English"
+              />
+            </RadioGroup>
+          </FormControl>
+        </Grid>
       </Grid>
     </div>
   );
-
-              }
-
-  
+}

@@ -80,6 +80,9 @@ export default function CheckboxesGroup(props) {
               <FormControlLabel
                 control={
                   <Checkbox
+                    style={{
+                      width:350
+                    }}
                     checked={boxState[contentItem.id] ?? true}
                     onChange={(e) =>{
                       handleChange(e, title)
@@ -91,7 +94,7 @@ export default function CheckboxesGroup(props) {
               />
             ))}
           </FormGroup>
-          <FormHelperText>Pick content to be displayed</FormHelperText>
+          <FormHelperText>Pick content to be displayed on slides.</FormHelperText>
         </FormControl>
         <Button onClick={e => {
                        console.log('LOG CURRENT SELECTION', referenceVariantSelection);
