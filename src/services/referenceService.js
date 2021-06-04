@@ -242,18 +242,18 @@ export const saveReferenceVariant = async (referenceVarant) => {
    const result = await fetch(
     `${referenceVaraintUrl}`, {
     headers: new Headers({ 'Authorization': token }),
-    accept: 'application/json',
     'Content-Type': 'application/json',
+    accept: 'application/json',
     method: 'POST',
     body: JSON.stringify({
-      "name": "variantName",
-      "referenceContents": {
-        "title": "getSelectedCheckboxes(newState)",
-      },
-      "language": "chosenVariantLanguage",
-      "creator": "placeHolder",
-      "referenceId": "refId", //TODO
-    },)
+      "name": "string",
+      "language": "string",
+      "referenceContents": {},
+      "creator": {},
+      "creationDate": "2021-06-04T08:25:08.309Z",
+      "updateDate": "2021-06-04T08:25:08.309Z",
+      "referenceId": "string"
+    })
   }) 
 
   const jsResult = await result.json();
