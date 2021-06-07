@@ -98,6 +98,7 @@ export default function HorizontalLinearVariantStepper( props) {
 
           console.log('saving variant', await saveReferenceVariant(referenceVariant))
       }
+      setActiveStep((prevActiveStep) => prevActiveStep + 1);   
 
     };
 
