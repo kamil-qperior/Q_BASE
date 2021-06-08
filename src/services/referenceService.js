@@ -158,6 +158,36 @@ async function createReferenceContent(content, type, refID) {
   return resultRefContent;
 }
 
+export function mapFromApi(ref) {
+
+  return {
+    "name":ref.name,
+    "status":ref.status,
+    "clientId":ref.client.id,
+    "clientName":ref.client.name,
+    "industry": ref.industry,
+    "country": ref.country,
+    "city": ref.city,
+    "projectPartnerId":  ref.projectPartner.id,
+    "projectPartnerName": ref.projectPartner.name, 
+    "projectLeadId":  ref.projectLead.id,
+    "projectLeadName": ref.projectLead.name,
+    "clientContactId":  ref.clientContact.id,
+    "clientContactName": ref.clientContact.name,
+    "policy": ref.policy,
+    "projectBegin": "2021-05-26T07:21:11.160Z", //TODO
+    "projectEnd": "2021-05-26T07:21:11.160Z",   //TODO
+    "personDaysTotal": parseInt(ref.personDaysTotal) || 0,
+    "personDaysQTotal": parseInt(ref.personDaysQTotal) || 0,
+    "personDaysQIntern": parseInt(ref.personDaysQIntern) || 0,
+    "technologyTag": ref.technologyTag,
+    "processTag": ref.processTag,
+    "logo": "https://qperiordox42storage.blob.core.windows.net/logos/Adac.png",
+    "picture": "https://qperiordox42storage.blob.core.windows.net/bilder/Bild1- adac.png",
+    "source": "react"
+  }
+}
+
 export function mapToApi(referenceObj) {
   return {
     "name": referenceObj.name,

@@ -6,14 +6,11 @@ import Grid from '@material-ui/core/Grid';
 import { Container } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import {
-  RecoilRoot,
-  atom,
-  selector,
   useRecoilState,
   useRecoilValue,
 } from 'recoil';
 
-import {searchQueryState, searchQueryTagState} from "../store/statesRef"
+import {searchQueryState} from "../store/statesRef"
 import {technologies, projectNames, policies, status} from "./consts"
 
 

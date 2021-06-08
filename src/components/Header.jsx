@@ -17,7 +17,7 @@ import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 
 import MenuIcon from "@material-ui/icons/Menu";
 import {mainListItems} from "./listItems";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import { BrowserRouter as  Link } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   root: {

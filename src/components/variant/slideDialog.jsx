@@ -12,7 +12,6 @@ import HorizontalLinearVariantStepper from "../stepper/variantStepper";
 import ScopedCssBaseline from "@material-ui/core/ScopedCssBaseline";
 
 import Badge from "@material-ui/core/Badge";
-import Container from "@material-ui/core/Container";
 import HowToVoteIcon from "@material-ui/icons/HowToVote";
 import {getDeck, token} from '../../services/slidedeck/slideDeckServ'
 
@@ -22,10 +21,7 @@ import {
   chosenRefsState,
 } from "../../store/statesRef";
 import {
-  RecoilRoot,
-  atom,
-  selector,
-  useRecoilState,
+
   useRecoilValue,
 } from "recoil";
 import { makeStyles } from "@material-ui/core/styles";

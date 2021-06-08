@@ -14,7 +14,7 @@ export const policies = [
   "tbd",
 ];
 
-export const industires = ["consulting", "service company"];
+export const industires = ["consulting", "service company", "services"];
 
 export const technologies = ["SAP", "Java"];
 

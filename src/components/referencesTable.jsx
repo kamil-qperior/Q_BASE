@@ -11,7 +11,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import IconButton from '@material-ui/core/IconButton';
 import AddBoxIcon from '@material-ui/icons/AddBox';
-import {mapToApi} from '../services/referenceService';
+import {mapToApi, mapFromApi} from '../services/referenceService';
 
 import {
   useRecoilState,
@@ -87,7 +87,7 @@ export default function RefTable() {
                 setOpen(true)
                 console.log('row in cell ', row);
 
-                //setRefState(row)
+                setRefState(mapFromApi(row))
 
                 }}>
                  <Link>
@@ -106,7 +106,7 @@ export default function RefTable() {
               <TableCell>{row.projectEnd.substring(0, 10)}</TableCell>
               <TableCell >
                 {row.technologyTag.map((tag) => (
-                  <Chip label={tag} onClick={e => {
+                  <Chip key={tag} label={tag} onClick={e => {
                     setSearchQuery({
                       value:tag,
                       param: "technologyTag"
@@ -115,7 +115,7 @@ export default function RefTable() {
               </TableCell>
               <TableCell >
                 {row.processTag.map((tag) => (
-                  <Chip label={tag} onClick={e => {
+                  <Chip  key={tag} label={tag} onClick={e => {
                     setSearchQuery({
                       value:tag,
                       param: "processTag"

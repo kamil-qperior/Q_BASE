@@ -12,10 +12,8 @@ import List from "@material-ui/core/List";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import FormControl from "@material-ui/core/FormControl";
 import FormLabel from "@material-ui/core/FormLabel";
-import ImageUploadCard from "./imageUpload";
 
 import {
-  RecoilRoot,
   atom,
   selector,
   useRecoilState,

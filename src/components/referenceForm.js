@@ -1,13 +1,10 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import _ from 'lodash'
-import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import { Select, MenuItem, InputLabel, FormControl } from '@material-ui/core/';
 import Grid from '@material-ui/core/Grid';
-import { useState } from 'react';
 import { technologies, policies, status, industires, countries, cities, procedures } from "./consts"
-import MultiChipSelect from "./tags/multiChipSelect"
 import MultiSelect from "@antlerengineering/multiselect"
 import {
     RecoilRoot,
@@ -50,7 +47,7 @@ const useStyles = makeStyles((theme) => ({
 
 
 
-
+//TODO add language support
 export default function ReferenceBasicInfoTextFields() {
     const classes = useStyles()
 
@@ -77,7 +74,7 @@ export default function ReferenceBasicInfoTextFields() {
                                     onChange={handleChange}
                                     label={rtf.label}
                                     fullWidth >
-                                    {rtf.options?.map(option => <MenuItem value={option}>{option}</MenuItem>)}
+                                     {rtf?.options?.map(option => <MenuItem value={option}>{option}</MenuItem>)} 
                                 </Select>
                             </FormControl>
                         </Grid>)
@@ -159,25 +156,11 @@ export default function ReferenceBasicInfoTextFields() {
 
     function handleChange(event) {
 
-        /*         setRefState(obj => ({
+        setRefState(obj => ({
             ...obj,
             [event.target.name]: event.target.value
-        })) */
+        })) 
         
-
-        const newState = { ...refState };
-        console.log('refstate before change', newState);
-    
-        _.set(newState, "client.id2", "test")
-        _.set(newState, "client.name", "test")
-
-        console.log('changed refstate 22', newState);
-
-        setRefState(newState)
-
-       // _.set(refState, "test.test", "testestsetset");
-        
- 
 
     }
 
@@ -188,8 +171,8 @@ export default function ReferenceBasicInfoTextFields() {
 export const referenceTextFields = [
     { label: "Name", apiParam: "name" },
     { label: "Status", apiParam: "status", options: status },
-    { label: "Client Id", apiParam: "client.id" },
-    { label: "Client Name", apiParam: "client.name" },
+    { label: "Client Id", apiParam: "clientId" },
+    { label: "Client Name", apiParam: "clientName" },
     { label: "Industry", apiParam: "industry", options: industires },
     { label: "Country", apiParam: "country", options: Object.values(countries).map(country => country["DE"]) },
     { label: "City", apiParam: "city", options: Object.values(cities).map(city => city["DE"]) },  //dropdown?

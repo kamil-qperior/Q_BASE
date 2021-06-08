@@ -1,6 +1,5 @@
 import './App.css';
-import { useEffect, useState } from 'react'
-import { Suspense } from 'react';
+
 
 import Dashboard from './components/dashboard'
 import Header from './components/Header'
@@ -10,7 +9,7 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Link
+
 } from "react-router-dom";
 import {
   RecoilRoot
