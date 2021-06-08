@@ -12,7 +12,7 @@ import List from '@material-ui/core/List';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
-import Badge from '@material-ui/core/Badge';
+import MenuIcon from '@material-ui/icons/Menu';
 import Container from '@material-ui/core/Container';
 import HowToVoteIcon from '@material-ui/icons/HowToVote';
 import Grid from '@material-ui/core/Grid';
@@ -134,20 +134,12 @@ export default function Dashboard() {
         return (
             <Box sx={{ display: 'flex' }} >
                 <CssBaseline />
+
                 {/* <AppBar
                     position="absolute"
                     className={clsx(classes.appBar, open && classes.appBarShift)}
                 >
                     <Toolbar className={classes.toolbar}>
-                        <IconButton
-                            edge="start"
-                            color="inherit"
-                            aria-label="open drawer"
-                            onClick={toggleDrawer}
-                            className={clsx(classes.menuButton, open && classes.menuButtonHidden)}
-                        >
-                            <MenuIcon />
-                        </IconButton>
                         <Typography
                             component="h1"
                             variant="h6"
@@ -198,7 +190,7 @@ export default function Dashboard() {
                                 </Button> 
                             </Grid>
                             <Grid item>
-                                <FormDialog  ></FormDialog>
+                                <FormDialog / >
                             </Grid>
                             <Grid item>
                     {/*             <Button  variant="contained" color="secondary">

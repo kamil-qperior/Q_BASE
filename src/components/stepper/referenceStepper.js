@@ -50,14 +50,12 @@ export default function HorizontalLinearReferenceStepper( props) {
     
 
     const handleNext = () => {
-        //setRefIdForVariantState(refIds[activeStep+1])
         setActiveStep((prevActiveStep) => prevActiveStep + 1);
         
         
     };
     
     const handleBack = () => {
-        //setRefIdForVariantState(refIds[activeStep-1])
         setActiveStep((prevActiveStep) => prevActiveStep - 1, );
         
     };
@@ -65,7 +63,6 @@ export default function HorizontalLinearReferenceStepper( props) {
 
     const handleReset = () => {
         setActiveStep(0);
-        //setRefIdForVariantState(refIds[0])
     };
 
     return (
@@ -101,9 +98,6 @@ export default function HorizontalLinearReferenceStepper( props) {
                             
                                  {props.getStepForms(activeStep)} 
                         
-                
-
-
                             </div>
                             <Button disabled={activeStep === 0} onClick={handleBack} className={classes.button}>
                                 Back

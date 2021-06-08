@@ -19,13 +19,11 @@ import {
   useRecoilValue,
 } from 'recoil';
 import { makeStyles } from '@material-ui/core/styles';
+import { formOpenState } from '../store/statesRef';
 import ImageUploadCard from "./imageUpload"
 import ContentForm from "./contentForm"
 import ContentTitleForm from "./refcontent/contentTitle"
 import ReferenceBasicInfoTextFields from './referenceForm';
-
-
-
 
 
 const useStyles = makeStyles((theme) => ({
@@ -94,7 +92,8 @@ function getStepForms(step, useStyles) {
 
 export default function FormDialog() {
   const classes  =useStyles()
-  const [open, setOpen] = React.useState(false);
+
+  const [open, setOpen] = useRecoilState(formOpenState)
 
 
   const refs = useRecoilValue(refTextFieldsState);
@@ -131,7 +130,6 @@ export default function FormDialog() {
           getStepForms= {getStepForms}
           getStepContent= {getStepContent}
           getSteps= {getSteps}
-          
           >
 
           </HorizontalLinearReferenceStepper>
@@ -141,6 +139,7 @@ export default function FormDialog() {
             Cancel
           </Button>
           <Button onClick={e => {
+                            //TODO make sure is not possible before last page
                             createNewReference(refs,goals, procedures, results, title)
                             
                             console.log('on click goals in form dialog', goals);

@@ -101,12 +101,3 @@ function handleChangeRadioLang(e) {
 }
 
 
-
-function handleChange(setContent, content) {
-  return (e, newValue) => {
-    console.log("in handle", content);
-    console.log("in newValue", newValue);
-    console.log(" newValue", e);
-    setContent(content);
-  };
-}

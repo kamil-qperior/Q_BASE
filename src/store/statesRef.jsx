@@ -103,6 +103,11 @@ const searchQueryState = atom({
     default: []
   });
 
+  const referenceVariantIdsFromResult = atom({
+    key: 'referenceVariantIdsFromResult',
+    default: []
+  });
+
   const chosenVariantLanguageState = atom({
     key: 'chosenVariantLanguageState',
     default: 'DE',
@@ -187,7 +192,11 @@ const searchQueryState = atom({
 
 
 
-
+      const formOpenState = atom({
+        key: 'formOpenState',
+        default: false,
+      });
+      
         
 
 export {  searchQueryState,  filteredReferences, contentListsState, refTextFieldsState,
@@ -198,6 +207,8 @@ export {  searchQueryState,  filteredReferences, contentListsState, refTextField
     variantContentListsState,
     variantNameState,
     activeStepState,
+    referenceVariantIdsFromResult,
+    formOpenState,
     chosenVariantLanguageState
   
   };

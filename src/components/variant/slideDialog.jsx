@@ -14,11 +14,11 @@ import ScopedCssBaseline from "@material-ui/core/ScopedCssBaseline";
 import Badge from "@material-ui/core/Badge";
 import Container from "@material-ui/core/Container";
 import HowToVoteIcon from "@material-ui/icons/HowToVote";
-
+import {getDeck, token} from '../../services/slidedeck/slideDeckServ'
 
 
 import {
-
+  referenceVariantIdsFromResult,
   chosenRefsState,
 } from "../../store/statesRef";
 import {
@@ -64,18 +64,17 @@ export default function SlideDialog() {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
 
+  //selected via add in main dashboard
   const chosenRefs = useRecoilValue(chosenRefsState);
+  //id resulting from saving variant selections
+  const referenceVariantIds = useRecoilValue(referenceVariantIdsFromResult);
 
- 
-  //const [referenceVariantState, setReferenceVariantState] = useRecoilState(referenceVariantState);
   
   const getChosenRefsLabels = () => {
     let i = 1
     return ["Language"].concat(chosenRefs.map(r => `Reference ${i++}`));
   };
 
-
-  //console.log('currentList in form dialog', currentList);
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -117,11 +116,7 @@ export default function SlideDialog() {
             Cancel
           </Button>
           <Button
-            onClick={(e) => {
-              console.log("on click goals in form dialog", "goals");
-              console.log("on click results in form dialog", "results");
-              console.log("on click procedures in form dialog", "procedures");
-            }}
+            onClick={(e) => { getDeck(referenceVariantIds)}}
             color="primary"
           >
             generate slides

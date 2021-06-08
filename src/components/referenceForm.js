@@ -1,6 +1,6 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-
+import _ from 'lodash'
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import { Select, MenuItem, InputLabel, FormControl } from '@material-ui/core/';
@@ -159,10 +159,25 @@ export default function ReferenceBasicInfoTextFields() {
 
     function handleChange(event) {
 
-        setRefState(obj => ({
+        /*         setRefState(obj => ({
             ...obj,
             [event.target.name]: event.target.value
-        }))
+        })) */
+        
+
+        const newState = { ...refState };
+        console.log('refstate before change', newState);
+    
+        _.set(newState, "client.id2", "test")
+        _.set(newState, "client.name", "test")
+
+        console.log('changed refstate 22', newState);
+
+        setRefState(newState)
+
+       // _.set(refState, "test.test", "testestsetset");
+        
+ 
 
     }
 
@@ -173,8 +188,8 @@ export default function ReferenceBasicInfoTextFields() {
 export const referenceTextFields = [
     { label: "Name", apiParam: "name" },
     { label: "Status", apiParam: "status", options: status },
-    { label: "Client Id", apiParam: "clientId" },
-    { label: "Client Name", apiParam: "clientName" },
+    { label: "Client Id", apiParam: "client.id" },
+    { label: "Client Name", apiParam: "client.name" },
     { label: "Industry", apiParam: "industry", options: industires },
     { label: "Country", apiParam: "country", options: Object.values(countries).map(country => country["DE"]) },
     { label: "City", apiParam: "city", options: Object.values(cities).map(city => city["DE"]) },  //dropdown?

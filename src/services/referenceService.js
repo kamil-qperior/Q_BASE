@@ -23,7 +23,7 @@ export const fetchReferenceDatabyName = async (name) => {
 };
 
 export const fetchReferenceContent = async (refId, language) => {
-    
+
   console.log('fetching reference cont', refId, language);
   const result = await fetch(
     `${referenceUrl}/${refId}/reference-contents?filter=${encodeURI(JSON.stringify({ "where": { "language": language } }))}`, {
@@ -33,7 +33,7 @@ export const fetchReferenceContent = async (refId, language) => {
   const jsResult = await result.json();
 
   return jsResult
- }
+}
 
 
 
@@ -104,21 +104,21 @@ export const createNewReference = async (referenceObj, goals, procedures, result
   console.log('res', refID);
 
   if (refID) {
-     await createReferenceContent(title,"title", refID);
+    await createReferenceContent(title, "title", refID);
 
     for await (const goal of goals) {
-        await createReferenceContent(goal,"goal", refID);
+      await createReferenceContent(goal, "goal", refID);
       console.log('temmp goal', goal);
     }
 
     for await (const procedure of procedures) {
-        await createReferenceContent(procedure,"procedure", refID);
+      await createReferenceContent(procedure, "procedure", refID);
       console.log('temmp procedure', procedure);
     }
 
 
     for await (const result of results) {
-       await createReferenceContent(result, "result",refID);
+      await createReferenceContent(result, "result", refID);
       console.log('temmp result', result);
     }
 
@@ -134,7 +134,7 @@ const referenceUrl = "https://qperior-reference-mgmt-api.azurewebsites.net/refer
 const referenceVaraintUrl = "https://qperior-reference-mgmt-api.azurewebsites.net/reference-variants"
 
 
-async function createReferenceContent(content,type, refID) {
+async function createReferenceContent(content, type, refID) {
   const message = {
     "type": type,
     "language": content.language || "DE",
@@ -158,7 +158,7 @@ async function createReferenceContent(content,type, refID) {
   return resultRefContent;
 }
 
-function mapToApi(referenceObj) {
+export function mapToApi(referenceObj) {
   return {
     "name": referenceObj.name,
     "status": referenceObj.status,
@@ -182,8 +182,8 @@ function mapToApi(referenceObj) {
       name: referenceObj.clientContactName
     },
     "policy": referenceObj.policy,
-    "projectBegin": "2021-05-26T07:21:11.160Z",
-    "projectEnd": "2021-05-26T07:21:11.160Z",
+    "projectBegin": "2021-05-26T07:21:11.160Z", //TODO
+    "projectEnd": "2021-05-26T07:21:11.160Z",   //TODO
     "personDaysTotal": parseInt(referenceObj.personDaysTotal) || 0,
     "personDaysQTotal": parseInt(referenceObj.personDaysQTotal) || 0,
     "personDaysQIntern": parseInt(referenceObj.personDaysQIntern) || 0,
@@ -193,8 +193,8 @@ function mapToApi(referenceObj) {
     "processTag": [
       "string"
     ],
-    "logo": "string",
-    "picture": "string",
+    "logo": "https://qperiordox42storage.blob.core.windows.net/logos/Adac.png",
+    "picture": "https://qperiordox42storage.blob.core.windows.net/bilder/Bild1- adac.png",
     "source": "react"
   };
 }
@@ -236,22 +236,23 @@ function createFilter(param, searchQuery) {
 
 
 export const saveReferenceVariant = async (referenceVarant) => {
-    
+
   console.log('referenceVarant', referenceVarant);
 
-   const result = await fetch(
+  const result = await fetch(
     `${referenceVaraintUrl}`, {
-    headers: new Headers({ 'Authorization': token, 
-    'Content-Type': 'application/json',
-    accept: 'application/json',
-  
-  }),
+    headers: new Headers({
+      'Authorization': token,
+      'Content-Type': 'application/json',
+      accept: 'application/json',
+
+    }),
     method: 'POST',
     body: JSON.stringify(referenceVarant)
-  }) 
+  })
 
   const jsResult = await result.json();
 
-  return jsResult 
-  
- }
+  return jsResult
+
+}

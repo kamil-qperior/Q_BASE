@@ -11,12 +11,16 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import IconButton from '@material-ui/core/IconButton';
 import AddBoxIcon from '@material-ui/icons/AddBox';
+import {mapToApi} from '../services/referenceService';
 
 import {
   useRecoilState,
 } from 'recoil';
 
-import {searchQueryState, filteredReferences,chosenRefsState} from "../store/statesRef"
+import {searchQueryState,
+  formOpenState,
+  refTextFieldsState,
+  filteredReferences,chosenRefsState} from "../store/statesRef"
 import { TableContainer } from '@material-ui/core';
 
 
@@ -34,10 +38,16 @@ export default function RefTable() {
 
   const [ page, setPage]  = useState(0)
   const [ rowsPerPage, setRowsPerPage]  = useState(10)
+
+  //from store
   const [ searchQuery, setSearchQuery] = useRecoilState(searchQueryState);
   const [ filteredRefs] = useRecoilState(filteredReferences);
   const [ chosenRefs, setChosenRefs] = useRecoilState(chosenRefsState);
 
+
+  //for editing of existing refrences
+  const [open, setOpen] = useRecoilState(formOpenState)
+  const [refState, setRefState] = useRecoilState(refTextFieldsState);
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
@@ -72,7 +82,21 @@ export default function RefTable() {
         <TableBody>
           { filteredRefs.slice(page*rowsPerPage,rowsPerPage + page*rowsPerPage).map((row) => (
             <TableRow key={row.referenceID} selected={chosenRefs.find(cr => cr.referenceID === row.referenceID)}>
-              <TableCell>{row.name}</TableCell>
+              <TableCell onClick={(e) => {
+                
+                setOpen(true)
+                console.log('row in cell ', row);
+
+                //setRefState(row)
+
+                }}>
+                 <Link>
+                 {row.name}
+                 </Link>
+                 
+              
+
+              </TableCell>
               <TableCell>{row.client.name}</TableCell>
               <TableCell>{row.industry}</TableCell>
               <TableCell>{row.country}</TableCell>

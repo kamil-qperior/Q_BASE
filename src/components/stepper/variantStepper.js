@@ -16,6 +16,7 @@ import {saveReferenceVariant} from '../../services/referenceService'
 import {
     referenceVariantSelectionState,
     activeStepState,
+    referenceVariantIdsFromResult,
   } from "../../store/statesRef";
   import {
     selector,
@@ -64,6 +65,7 @@ export function getStepForms(step) {
 export default function HorizontalLinearVariantStepper( props) {
     const classes = useStyles();
     const [activeStep, setActiveStep] = useRecoilState(activeStepState);
+    const [referenceVariantIds, setReferenceVariantIds] = useRecoilState(referenceVariantIdsFromResult);
     //const [saveVariantState, setSaveVariantState] = useRecoilState(saveVariantState);
     const referenceVariantSelection  = useRecoilValue(referenceVariantSelectionState);
     let counter = 0
@@ -92,11 +94,18 @@ export default function HorizontalLinearVariantStepper( props) {
     };
 
     const  handleSaveVariant = async () => {
+        const resultingIds =  []
       
         for await (const referenceVariant of referenceVariantSelection) {
             
-            console.log('saving variant', await saveReferenceVariant(referenceVariant))
+            const res = await saveReferenceVariant(referenceVariant);
+
+            resultingIds.push(res?.id);
+
+            console.log('saving variant', res)
+            console.log('resultingIds', resultingIds)
         }
+        setReferenceVariantIds(resultingIds)
         setActiveStep((prevActiveStep) => prevActiveStep + 1);   
 
     };
@@ -120,8 +129,8 @@ export default function HorizontalLinearVariantStepper( props) {
                 {activeStep === steps.length ? (
                     <div>
                         <Typography className={classes.instructions}>
-                            All steps completed - you&apos;re finished
-                        </Typography>
+                            All steps completed - you can now generete slides from your references.
+                                                    </Typography>
                         <Button onClick={handleReset} className={classes.button}>
                             Reset
                         </Button>
