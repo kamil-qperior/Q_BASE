@@ -1,29 +1,25 @@
 
-import React from 'react';
-
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import HorizontalLinearReferenceStepper from './stepper/referenceStepper';
 import ScopedCssBaseline from '@material-ui/core/ScopedCssBaseline';
-import {createNewReference} from '../services/referenceService'
-import { refTextFieldsState,contentListsState } from "../store/statesRef";
-import {
-  RecoilRoot,
-  atom,
-  selector,
-  useRecoilState,
-  useRecoilValue,
-} from 'recoil';
 import { makeStyles } from '@material-ui/core/styles';
-import { formOpenState } from '../store/statesRef';
-import ImageUploadCard from "./imageUpload"
-import ContentForm from "./contentForm"
-import ContentTitleForm from "./refcontent/contentTitle"
+import React from 'react';
+import {
+  useRecoilState,
+  useRecoilValue
+} from 'recoil';
+import { createNewReference } from '../services/referenceService';
+import { contentListsState, formOpenState, refTextFieldsState } from "../store/statesRef";
+import ContentForm from "./contentForm";
+import ImageUploadCard from "./imageUpload";
+import ContentTitleForm from "./refcontent/contentTitle";
 import ReferenceBasicInfoTextFields from './referenceForm';
+import HorizontalLinearReferenceStepper from './stepper/referenceStepper';
+
 
 
 const useStyles = makeStyles((theme) => ({

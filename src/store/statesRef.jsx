@@ -1,13 +1,13 @@
 import {
-    atom,
-    atomFamily,
-    selectorFamily,
-    selector
+  atom,
+  atomFamily,
+
+  selector
 } from "recoil";
+import { referenceTextFields } from "../components/referenceForm";
+import { fetchAllReferenceData, fetchReferenceContent, fetchReferenceDatabyParam } from '../services/referenceService';
 
 
-import {  fetchReferenceDatabyParam, fetchAllReferenceData, fetchReferenceContent,saveReferenceVariant } from '../services/referenceService'
-import {referenceTextFields} from "../components/referenceForm"
 
 
 
@@ -199,17 +199,18 @@ const searchQueryState = atom({
       
         
 
-export {  searchQueryState,  filteredReferences, contentListsState, refTextFieldsState,
-   chosenRefsState, refIdForVariantState,
-    filteredReferenceContents,
-    referenceVariantSelectionState,
-    referenceVariantState,
-    variantContentListsState,
-    variantNameState,
-    activeStepState,
-    referenceVariantIdsFromResult,
-    formOpenState,
-    chosenVariantLanguageState
-  
-  };
+export {
+  searchQueryState, filteredReferences, contentListsState, refTextFieldsState,
+  chosenRefsState, refIdForVariantState,
+  filteredReferenceContents,
+  referenceVariantSelectionState,
+  referenceVariantState,
+  variantContentListsState,
+  variantNameState,
+  activeStepState,
+  referenceVariantIdsFromResult,
+  formOpenState,
+  chosenVariantLanguageState
+
+};
 

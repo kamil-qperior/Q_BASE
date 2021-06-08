@@ -1,28 +1,23 @@
-import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import Suspense from 'react'
-import Stepper from '@material-ui/core/Stepper';
+import Button from '@material-ui/core/Button';
 import Step from '@material-ui/core/Step';
 import StepLabel from '@material-ui/core/StepLabel';
-import Button from '@material-ui/core/Button';
-import {Paper, FormLabel, FormGroup, FormControlLabel, Checkbox}from '@material-ui/core/';
+import Stepper from '@material-ui/core/Stepper';
+import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
-import FormControl from '@material-ui/core/FormControl';
-//import FormControl from '@material-ui/core/FormControl';
-import StepFormVariant from '../variant/stepFormVariant'
-import LanguagePicker from '../variant/languangePicker'
-import {saveReferenceVariant} from '../../services/referenceService'
-
+import React from 'react';
 import {
-    referenceVariantSelectionState,
-    activeStepState,
-    referenceVariantIdsFromResult,
-  } from "../../store/statesRef";
-  import {
-    selector,
     useRecoilState,
-    useRecoilValue,
-  } from "recoil";
+    useRecoilValue
+} from "recoil";
+import { saveReferenceVariant } from '../../services/referenceService';
+import {
+    activeStepState,
+    referenceVariantIdsFromResult, referenceVariantSelectionState
+} from "../../store/statesRef";
+import LanguagePicker from '../variant/languangePicker';
+//import FormControl from '@material-ui/core/FormControl';
+import StepFormVariant from '../variant/stepFormVariant';
+
 
 
 const useStyles = makeStyles((theme) => ({

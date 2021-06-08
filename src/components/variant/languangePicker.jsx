@@ -1,26 +1,18 @@
-import React from "react";
-
-import { makeStyles } from "@material-ui/core/styles";
-import FormLabel from "@material-ui/core/FormLabel";
 import FormControl from "@material-ui/core/FormControl";
-import FormGroup from "@material-ui/core/FormGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
-import RadioGroup from "@material-ui/core/RadioGroup";
-import Radio from "@material-ui/core/Radio";
-import Paper from "@material-ui/core/Paper";
+import FormLabel from "@material-ui/core/FormLabel";
 import Grid from "@material-ui/core/Grid";
-import { languageObjects } from "../consts";
+import Radio from "@material-ui/core/Radio";
+import RadioGroup from "@material-ui/core/RadioGroup";
+import { makeStyles } from "@material-ui/core/styles";
+import React from "react";
 import {
-  chosenVariantLanguageState,
-  variantContentListsState,
-} from "../../store/statesRef";
-import {
-  RecoilRoot,
-  atom,
-  selector,
-  useRecoilState,
-  useRecoilValue,
+  useRecoilState
 } from "recoil";
+import {
+  chosenVariantLanguageState
+} from "../../store/statesRef";
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
