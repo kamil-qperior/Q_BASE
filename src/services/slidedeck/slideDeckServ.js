@@ -16,7 +16,7 @@ export const getDeck = (variantIds) => {
  
 
   return fetch(
-    local+searchParams, {
+    slideDeckUrl+searchParams, {
     headers: new Headers({ 'Authorization': token },
     
     )
