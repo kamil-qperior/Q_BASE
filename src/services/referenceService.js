@@ -158,6 +158,7 @@ async function createReferenceContent(content, type, refID) {
   return resultRefContent;
 }
 
+//to display formal for reference form
 export function mapFromApi(ref) {
 
   return {
@@ -175,8 +176,8 @@ export function mapFromApi(ref) {
     "clientContactId":  ref.clientContact.id,
     "clientContactName": ref.clientContact.name,
     "policy": ref.policy,
-    "projectBegin": "2021-05-26T07:21:11.160Z", //TODO
-    "projectEnd": "2021-05-26T07:21:11.160Z",   //TODO
+    "projectBegin": ref.projectBegin, //TODO
+    "projectEnd": ref.projectEnd,   //TODO
     "personDaysTotal": parseInt(ref.personDaysTotal) || 0,
     "personDaysQTotal": parseInt(ref.personDaysQTotal) || 0,
     "personDaysQIntern": parseInt(ref.personDaysQIntern) || 0,
@@ -188,6 +189,7 @@ export function mapFromApi(ref) {
   }
 }
 
+//to format of database
 export function mapToApi(referenceObj) {
   return {
     "name": referenceObj.name,
@@ -212,8 +214,8 @@ export function mapToApi(referenceObj) {
       name: referenceObj.clientContactName
     },
     "policy": referenceObj.policy,
-    "projectBegin": "2021-05-26T07:21:11.160Z", //TODO
-    "projectEnd": "2021-05-26T07:21:11.160Z",   //TODO
+    "projectBegin": new Date(referenceObj.projectBegin).toISOString(),
+    "projectEnd":new Date(referenceObj.projectEnd).toISOString() ,   
     "personDaysTotal": parseInt(referenceObj.personDaysTotal) || 0,
     "personDaysQTotal": parseInt(referenceObj.personDaysQTotal) || 0,
     "personDaysQIntern": parseInt(referenceObj.personDaysQIntern) || 0,

@@ -59,6 +59,27 @@ export default function ReferenceBasicInfoTextFields() {
 
                 {referenceTextFields.map(rtf => {
 
+                    if (rtf.apiParam === "country" ||rtf.apiParam === "city" ) {
+
+                        return (<Grid item xs={5} >
+                            <FormControl className={classes.formControl}>
+
+                                <InputLabel id={rtf.label}>{rtf.label}</InputLabel>
+                                <Select
+                                    value={refState[rtf.apiParam]}
+
+                                    key={rtf.apiParam}
+                                    name={rtf.apiParam}
+                                    //onChange={handleChange} was not performant enough
+                                    //on focusing away from field
+                                    onChange={handleChange}
+                                    label={rtf.label}
+                                    fullWidth >
+                                     {rtf?.options?.map(option => <MenuItem value={option[0]}> {option[1]["EN"]}</MenuItem>)} {/* make multilangual */}
+                                </Select>
+                            </FormControl>
+                        </Grid>)
+                    }
                     if (isSelect(rtf)) {
                         return (<Grid item xs={5} >
                             <FormControl className={classes.formControl}>
@@ -91,7 +112,7 @@ export default function ReferenceBasicInfoTextFields() {
                                     onChange={handleChange}
                                     label={rtf.label}
                                     type="date"
-                                    defaultValue="2017-01-01"
+                                    //defaultValue="2017-01-01"
                                     fullWidth
                                     InputLabelProps={{
                                         shrink: true,
@@ -155,7 +176,7 @@ export default function ReferenceBasicInfoTextFields() {
 
 
     function handleChange(event) {
-
+        console.log('event.target.value', event.target.value);
         setRefState(obj => ({
             ...obj,
             [event.target.name]: event.target.value
@@ -174,8 +195,8 @@ export const referenceTextFields = [
     { label: "Client Id", apiParam: "clientId" },
     { label: "Client Name", apiParam: "clientName" },
     { label: "Industry", apiParam: "industry", options: industires },
-    { label: "Country", apiParam: "country", options: Object.values(countries).map(country => country["DE"]) },
-    { label: "City", apiParam: "city", options: Object.values(cities).map(city => city["DE"]) },  //dropdown?
+    { label: "Country", apiParam: "country", options: Object.entries(countries) },
+    { label: "City", apiParam: "city", options: Object.entries(cities) },  
     { label: "Project Partner Id", apiParam: "projectPartnerId" },
     { label: "Project Partner Name", apiParam: "projectPartnerName" },
     { label: "Project Lead Id", apiParam: "projectLeadId" },
@@ -197,8 +218,6 @@ export const referenceTextFields = [
 function isSelect(rtf) {
     return rtf.apiParam === "status"
         || rtf.apiParam === "industry"
-        || rtf.apiParam === "country"
-        || rtf.apiParam === "city"
         || rtf.apiParam === "policy"
         ;
 }

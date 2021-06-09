@@ -10,10 +10,11 @@ import Typography from "@material-ui/core/Typography";
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import MenuIcon from "@material-ui/icons/Menu";
+import HomeIcon from '@material-ui/icons/Home';
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import clsx from 'clsx';
 import React, { useState } from "react";
-import { BrowserRouter as Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 
 
@@ -34,6 +35,7 @@ const Header = () => {
   const [open, setOpen] = useState(false);
 
   const toggleDrawer = () => {
+    console.log('closed drowers');
     setOpen(!open);
 };
   return (
@@ -73,19 +75,24 @@ const Header = () => {
                       <ListItemIcon>
                         <DashboardIcon />
                       </ListItemIcon>
-                      <Link to="/" onClick={toggleDrawer}> References </Link>
+                      <Link to="/refs" onClick={toggleDrawer}> References </Link>
                     </ListItem>
                     <ListItem button>
                       <ListItemIcon>
                         <ShoppingCartIcon > 
                           </ShoppingCartIcon > 
                       </ListItemIcon>
-                        <Link   to="/cv" onClick={toggleDrawer}>
-                        CVs
-                        </Link> 
+                        <Link   to="/cv"  onClick={toggleDrawer} >CVs</Link> 
+                    </ListItem>
+                    <ListItem button>
+                      <ListItemIcon>
+                        <HomeIcon > 
+                          </HomeIcon > 
+                      </ListItemIcon>
+                        <Link   to="/"  onClick={toggleDrawer} >Home</Link> 
+                    </ListItem>
                         
      
-                    </ListItem>
 
                     </Drawer> 
                 

@@ -12,9 +12,10 @@ export const policies = [
   "pm contact approved - on request",
   "pm contact not approved",
   "tbd",
+  "string",
 ];
 
-export const industires = ["consulting", "service company", "services"];
+export const industires = ["consulting", "service company", "services", "automative/public sector", "insurance"];
 
 export const technologies = ["SAP", "Java"];
 
