@@ -42,10 +42,12 @@ export default function ContentCreator(props) {
   const addItem = () => {
 
     if(props.single) {
+      console.log('we used single');
       setContentLists([{
         id:getId(),
-        text: inputValue,
+        text: inputValue ?? "",
         language: props.language,
+        category: props.category
 
       }], title)
       
@@ -88,8 +90,6 @@ export default function ContentCreator(props) {
             addItem(ev.target.value)
           }
         }}
-
-
         id="content"
         label="Content"
 

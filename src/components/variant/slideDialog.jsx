@@ -22,10 +22,6 @@ import HorizontalLinearVariantStepper from "../stepper/variantStepper";
 
 
 
-
-
-
-
 const useStyles = makeStyles((theme) => ({
   root: {
     background: "grey",

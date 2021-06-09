@@ -104,7 +104,7 @@ export const createNewReference = async (referenceObj, goals, procedures, result
   console.log('res', refID);
 
   if (refID) {
-    await createReferenceContent(title, "title", refID);
+    await createReferenceContent(title[0], "title", refID);  //first element of array since we allow only one 
 
     for await (const goal of goals) {
       await createReferenceContent(goal, "goal", refID);
@@ -219,12 +219,8 @@ export function mapToApi(referenceObj) {
     "personDaysTotal": parseInt(referenceObj.personDaysTotal) || 0,
     "personDaysQTotal": parseInt(referenceObj.personDaysQTotal) || 0,
     "personDaysQIntern": parseInt(referenceObj.personDaysQIntern) || 0,
-    "technologyTag": [
-      "string"
-    ],
-    "processTag": [
-      "string"
-    ],
+    "technologyTag": referenceObj.technologyTag,
+    "processTag": referenceObj.processTag,
     "logo": "https://qperiordox42storage.blob.core.windows.net/logos/Adac.png",
     "picture": "https://qperiordox42storage.blob.core.windows.net/bilder/Bild1- adac.png",
     "source": "react"

@@ -18,8 +18,6 @@ import ContentItem from "../stepperUtil/contentItem";
 
 
 
-
-
 const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
