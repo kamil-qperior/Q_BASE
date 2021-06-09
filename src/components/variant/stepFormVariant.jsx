@@ -17,6 +17,10 @@ export default function StepFormVariant(props) {
   const [refContents] = useRecoilState(filteredReferenceContents);
   //has to be unique with current implementation
   const [variantName, setVariantName] = useRecoilState(variantNameState(step));
+
+  //make editable later
+  //const [variantTitle, setVariantTitle] = useRecoilState(variantTitleState(step));
+  
   const placeHolderVariantName = `Reference variant ${step}`;
   
   //get content for Ref id
@@ -43,7 +47,7 @@ export default function StepFormVariant(props) {
   };
 
   //TODO make language dependent
-  const rcTitle = refContents.find((rc) => rc.type === "title");
+  const rcTitle = refContents.find((rc) => rc.type === "title"); // TODO is being passed to goals als temp solution
   const referenceId = refContents[0]?.referenceId;
   const goals = refContents.filter((rc) => rc.type === "goal");
   const results = refContents.filter((rc) => rc.type === "result");
@@ -77,6 +81,7 @@ export default function StepFormVariant(props) {
       <Grid item>
         <CheckboxesGroup
           title="Goals"
+          rcTitle= {rcTitle}
           content={goals}
           variantName={chooseName() }
           refId={referenceId}

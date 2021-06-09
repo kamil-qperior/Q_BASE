@@ -32,6 +32,7 @@ export default function CheckboxesGroup(props) {
   const contentList = props.content;
   const title = props.title;
   const refId = props.refId;
+  const rcTitle = props.rcTitle; //TEMP SOLUTION
   const variantName = props.variantName;
   const boxId = `${variantName + title}`
   
@@ -49,7 +50,7 @@ export default function CheckboxesGroup(props) {
     const initialState = contentList.reduce((o, key) => Object.assign(o, { [key.id]: true }), {});
     console.log('we initialState xxx', initialState, chosenVariantLanguage );
     setBoxState(initialState, boxId)
-    updateVariantSelection(title, initialState, chosenVariantLanguage, refId)
+    updateVariantSelection(title, initialState, chosenVariantLanguage, refId, rcTitle)
     setLoadedBefore(loadedBefore.concat(boxId))
   }
 
@@ -98,19 +99,23 @@ export default function CheckboxesGroup(props) {
     </div>
   );
 
-  function updateVariantSelection(title, newState, chosenVariantLanguage, refId) {
+  function updateVariantSelection(title, newState, chosenVariantLanguage, refId, rcTitle) {
    
     setReferenceVariantSelection((prev) => {
       const variantForUpdate = prev.find(
         (variant) => variant.name === variantName
       );
-  
+        
+      console.log('newStatenewState', newState);
+      
+      //done once
       if (!variantForUpdate) {
         return [
           ...prev,
           {
             "name": variantName,
             "referenceContents": {
+              "title": rcTitle?.id ?? "",  //set once since we can only have one title
               [title.toLowerCase()]: getSelectedCheckboxes(newState),
             },
             "language": chosenVariantLanguage,

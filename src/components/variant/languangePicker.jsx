@@ -31,6 +31,7 @@ export default function LanguagePicker(props) {
   );
 
   const handleChange = (event) => {
+      console.log('saving variant language ', event.target.value);
     setChosenVariantLanguageState(event.target.value);
   };
 

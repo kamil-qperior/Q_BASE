@@ -55,9 +55,9 @@ export default function ContentTitleForm(props) {
       <Grid container>
         <FormControl component="legend">
           <FormLabel component="legend">Language</FormLabel>
-          <RadioGroup onChange={handleChangeRadioLang}  aria-label="language" name="language">
-            <FormControlLabel value="EN" control={<Radio />} label="english" />
+          <RadioGroup onChange={handleChangeRadioLang}   value={language} aria-label="language" name="language">
             <FormControlLabel value="DE" control={<Radio />} label="german" />
+            <FormControlLabel value="EN" control={<Radio />} label="english" />
           </RadioGroup>
         </FormControl>
 
@@ -72,12 +72,12 @@ export default function ContentTitleForm(props) {
             return <ContentItem title={title} key={item.id} item={item} />;
           })}
         </List>
-        <Button onClick={e => {
+{/*         <Button onClick={e => {
                        console.log('LOG currentList SELECTION', currentList);
                       }}
           color="primary">
           LOG SELECTION
-        </Button> 
+        </Button>  */}
       </div>
     </div>
   );

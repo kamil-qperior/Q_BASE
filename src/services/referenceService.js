@@ -135,7 +135,7 @@ async function createReferenceContent(content, type, refID) {
     "language": content?.language || "DE",
     "content": content?.content || "",
     "categoryTag": [
-      content.category || "test"
+      content?.category || "test"
     ],
     "referenceId": refID
   };
@@ -241,7 +241,6 @@ function createFilter(param, searchQuery) {
 
 export const saveReferenceVariant = async (referenceVarant) => {
 
-  console.log('referenceVarant', referenceVarant);
 
   const result = await fetch(
     `${referenceVaraintUrl}`, {

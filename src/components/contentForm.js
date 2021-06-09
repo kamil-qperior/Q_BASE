@@ -64,14 +64,14 @@ export default function ContentForm(props) {
       <Grid container>
         <FormControl component="legend">
           <FormLabel component="legend">Language</FormLabel>
-          <RadioGroup onChange={handleChangeRadioLang}  aria-label="language" name="language">
+          <RadioGroup onChange={handleChangeRadioLang} value={language} aria-label="language" name="language">
+            <FormControlLabel value="DE" control={<Radio />} label="deutsch" />
             <FormControlLabel value="EN" control={<Radio />} label="english" />
-            <FormControlLabel value="DE" control={<Radio />} label="german" />
           </RadioGroup>
         </FormControl>
         <FormControl component="legend">
           <FormLabel component="legend">Category</FormLabel>
-          <RadioGroup onChange={handleChangeRadioCategory} aria-label="category" name="category">
+          <RadioGroup onChange={handleChangeRadioCategory} value={category} aria-label="category" name="category">
             <FormControlLabel
               value="technical"
               control={<Radio />}

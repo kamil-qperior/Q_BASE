@@ -1,10 +1,7 @@
 //TODO get from DB
 
 export const projectNames = [
-  { title: "Project Name 1", year: 1994 },
-  { title: "Project Name 2", year: 1972 },
-  { title: "The Dark Knight", year: 2008 },
-  { title: "12 Angry Men", year: 1957 },
+  { title: "Project Name", year: 1994 },
 ];
 
 export const policies = [
