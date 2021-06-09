@@ -10,12 +10,14 @@ import Typography from "@material-ui/core/Typography";
 import HowToVoteIcon from "@material-ui/icons/HowToVote";
 import React, { Suspense } from 'react';
 import {
-
+  useRecoilState,
   useRecoilValue
 } from "recoil";
 import { getDeck } from '../../services/slidedeck/slideDeckServ';
 import {
-  chosenRefsState, referenceVariantIdsFromResult
+  chosenRefsState, 
+  activeStepState, 
+  referenceVariantIdsFromResult
 } from "../../store/statesRef";
 import HorizontalLinearVariantStepper from "../stepper/variantStepper";
 
@@ -53,6 +55,7 @@ function getStepContent(step) {
 export default function SlideDialog() {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
+  const [activeStep, setActiveStep] = useRecoilState(activeStepState);
 
   //selected via add in main dashboard
   const chosenRefs = useRecoilValue(chosenRefsState);
@@ -70,8 +73,23 @@ export default function SlideDialog() {
   };
 
   const handleClose = () => {
+    //TODO add more clean  up
     setOpen(false);
+    setActiveStep(0)
   };
+
+  if(chosenRefs.length===0) {
+    return(
+      <ScopedCssBaseline>
+        <Button variant="contained" color="primary" onClick={handleClickOpen}>
+        Create Slides
+      </Button>
+      <Dialog onClose={handleClose} aria-labelledby="simple-dialog-title" open={open}>
+        <DialogTitle id="simple-dialog-title">Add references from the list first!</DialogTitle>
+      </Dialog>
+      </ScopedCssBaseline>
+    )
+  }
 
   return (
     <ScopedCssBaseline>

@@ -11,7 +11,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import IconButton from '@material-ui/core/IconButton';
 import AddBoxIcon from '@material-ui/icons/AddBox';
-import {mapToApi, mapFromApi} from '../services/referenceService';
+import {fetchReferenceContent, mapFromApi} from '../services/referenceService';
 
 import {
   useRecoilState,
@@ -20,7 +20,9 @@ import {
 import {searchQueryState,
   formOpenState,
   refTextFieldsState,
-  filteredReferences,chosenRefsState} from "../store/statesRef"
+  filteredReferenceContentsForEdit,
+  filteredReferences,chosenRefsState,
+} from "../store/statesRef"
 import { TableContainer } from '@material-ui/core';
 
 
@@ -43,6 +45,10 @@ export default function RefTable() {
   const [ searchQuery, setSearchQuery] = useRecoilState(searchQueryState);
   const [ filteredRefs] = useRecoilState(filteredReferences);
   const [ chosenRefs, setChosenRefs] = useRecoilState(chosenRefsState);
+
+  //content of refs
+  const [filteredReferenceContents, setFilteredReferenceContentsForEdit] = useRecoilState(filteredReferenceContentsForEdit);
+
 
 
   //for editing of existing refrences
@@ -81,20 +87,23 @@ export default function RefTable() {
         </TableHead>
         <TableBody>
           { filteredRefs.slice(page*rowsPerPage,rowsPerPage + page*rowsPerPage).map((row) => (
-            <TableRow key={row.referenceID} selected={chosenRefs.find(cr => cr.referenceID === row.referenceID)}>
-              <TableCell onClick={(e) => {
+            <TableRow key={row.referenceID} selected={chosenRefs.find(cr => cr.referenceID === row.referenceID) ? true: false}>
+              <TableCell onClick={async () => {
                 
                 setOpen(true)
-                console.log('row in cell ', row);
-
+                
                 setRefState(mapFromApi(row))
+                
+                const contentsDE = await fetchReferenceContent(row.referenceID, "DE")
+                const contentsEN = await fetchReferenceContent(row.referenceID, "EN")
+                //sending both langauges 
+                setFilteredReferenceContentsForEdit(contentsDE.concat(contentsEN))
 
+  
                 }}>
                  <Link>
                  {row.name}
                  </Link>
-                 
-              
 
               </TableCell>
               <TableCell>{row.client.name}</TableCell>

@@ -24,7 +24,6 @@ export const fetchReferenceDatabyName = async (name) => {
 
 export const fetchReferenceContent = async (refId, language) => {
 
-  console.log('fetching reference cont', refId, language);
   const result = await fetch(
     `${referenceUrl}/${refId}/reference-contents?filter=${encodeURI(JSON.stringify({ "where": { "language": language } }))}`, {
     headers: new Headers({ 'Authorization': token })
@@ -101,25 +100,21 @@ export const createNewReference = async (referenceObj, goals, procedures, result
   const res = await result.json();
 
   const refID = res?.referenceID;
-  console.log('res', refID);
 
   if (refID) {
     await createReferenceContent(title[0], "title", refID);  //first element of array since we allow only one 
 
     for await (const goal of goals) {
       await createReferenceContent(goal, "goal", refID);
-      console.log('temmp goal', goal);
     }
 
     for await (const procedure of procedures) {
       await createReferenceContent(procedure, "procedure", refID);
-      console.log('temmp procedure', procedure);
     }
 
 
     for await (const result of results) {
       await createReferenceContent(result, "result", refID);
-      console.log('temmp result', result);
     }
 
   }
@@ -137,8 +132,8 @@ const referenceVaraintUrl = "https://qperior-reference-mgmt-api.azurewebsites.ne
 async function createReferenceContent(content, type, refID) {
   const message = {
     "type": type,
-    "language": content.language || "DE",
-    "content": content.text,
+    "language": content?.language || "DE",
+    "content": content?.content || "",
     "categoryTag": [
       content.category || "test"
     ],
@@ -176,15 +171,15 @@ export function mapFromApi(ref) {
     "clientContactId":  ref.clientContact.id,
     "clientContactName": ref.clientContact.name,
     "policy": ref.policy,
-    "projectBegin": ref.projectBegin, //TODO
-    "projectEnd": ref.projectEnd,   //TODO
+    "projectBegin": ref.projectBegin?.slice(0,10), //to conform to datepicker format
+    "projectEnd": ref.projectEnd?.slice(0,10),   //to conform to datepicker format
     "personDaysTotal": parseInt(ref.personDaysTotal) || 0,
     "personDaysQTotal": parseInt(ref.personDaysQTotal) || 0,
     "personDaysQIntern": parseInt(ref.personDaysQIntern) || 0,
     "technologyTag": ref.technologyTag,
     "processTag": ref.processTag,
-    "logo": "https://qperiordox42storage.blob.core.windows.net/logos/Adac.png",
-    "picture": "https://qperiordox42storage.blob.core.windows.net/bilder/Bild1- adac.png",
+    "logo": ref.logo,
+    "picture": ref.picture,
     "source": "react"
   }
 }
@@ -221,8 +216,8 @@ export function mapToApi(referenceObj) {
     "personDaysQIntern": parseInt(referenceObj.personDaysQIntern) || 0,
     "technologyTag": referenceObj.technologyTag,
     "processTag": referenceObj.processTag,
-    "logo": "https://qperiordox42storage.blob.core.windows.net/logos/Adac.png",
-    "picture": "https://qperiordox42storage.blob.core.windows.net/bilder/Bild1- adac.png",
+    "logo": "logo", //TODO
+    "picture": "picture", //TODO
     "source": "react"
   };
 }
@@ -241,26 +236,7 @@ function createFilter(param, searchQuery) {
   return { [param]: { like: searchQuery.value, options: "i" } };
 }
 
-/* export const createNewReferenceContent = async (goals, procedures, results) => {
 
-  //const message = mapToApi(referenceObj) //FINISH TAGS AND DATES
-
-  console.log('message in create has : ', "message");
-
-  const result = await fetch(`${referenceUrl}`, {
-    headers: new Headers({
-      'Authorization': token,
-      accept: 'application/json',
-      'Content-Type': 'application/json'
-    }),
-    method: 'POST',
-    body: JSON.stringify("message")
-  })
-  const res = await result.json();
-  console.log('res', res);
-  return res
-};
- */
 
 
 export const saveReferenceVariant = async (referenceVarant) => {

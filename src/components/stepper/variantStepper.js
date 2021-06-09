@@ -44,7 +44,7 @@ export function getStepForms(step) {
     switch (step) {
         case 0:
             return (
-            <LanguagePicker/>
+                <LanguagePicker/>
             )
     
         default:

@@ -7,6 +7,7 @@ import Radio from "@material-ui/core/Radio";
 import RadioGroup from "@material-ui/core/RadioGroup";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
+import Button from "@material-ui/core/Button";
 import React, { useState } from "react";
 import {
   useRecoilValue
@@ -71,6 +72,12 @@ export default function ContentTitleForm(props) {
             return <ContentItem title={title} key={item.id} item={item} />;
           })}
         </List>
+        <Button onClick={e => {
+                       console.log('LOG currentList SELECTION', currentList);
+                      }}
+          color="primary">
+          LOG SELECTION
+        </Button> 
       </div>
     </div>
   );

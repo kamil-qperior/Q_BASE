@@ -191,10 +191,9 @@ export default function ReferenceBasicInfoTextFields() {
 
 export const referenceTextFields = [
     { label: "Name", apiParam: "name" },
-    { label: "Status", apiParam: "status", options: status },
+    { label: "Industry", apiParam: "industry", options: industires },
     { label: "Client Id", apiParam: "clientId" },
     { label: "Client Name", apiParam: "clientName" },
-    { label: "Industry", apiParam: "industry", options: industires },
     { label: "Country", apiParam: "country", options: Object.entries(countries) },
     { label: "City", apiParam: "city", options: Object.entries(cities) },  
     { label: "Project Partner Id", apiParam: "projectPartnerId" },
@@ -203,6 +202,7 @@ export const referenceTextFields = [
     { label: "Project Lead Name", apiParam: "projectLeadName" },
     { label: "Client Contact Id", apiParam: "clientContactId" },
     { label: "Client Contact Name", apiParam: "clientContactName" },
+    { label: "Status", apiParam: "status", options: status },
     { label: "Policy", apiParam: "policy", options: policies },
     { label: "Project Begin", apiParam: "projectBegin" },
     { label: "Project End", apiParam: "projectEnd" },

@@ -39,21 +39,7 @@ import { fetchAllReferenceData, fetchReferenceContent, fetchReferenceDatabyParam
   });
 
 
-/* 
 
-  const contentListsAccess = selectorFamily({
-    key: "content-access",
-    get:  (title) => ({ get }) => {
-
-      const atom = get(contentListsState(title));
-      console.log('for no reaason');
-      return atom;
-    },
-    set: (title) => ({set}, contentList) => {
-        set(contentListsState(title), contentList);
-     
-    }
-  }); */
 
 
 const searchQueryState = atom({
@@ -126,7 +112,7 @@ const searchQueryState = atom({
         if (query ) {
             console.log('query ', query);
             const res =  await fetchReferenceDatabyParam(query)
-            console.log('result by query ', res);
+            //console.log('result by query ', res);
             return res
            
           }
@@ -167,8 +153,9 @@ const searchQueryState = atom({
   })
   */
 
+  //dependent on variant
   let filteredReferenceContents = selector({
-    key: 'filteredReferenceContents',  //dont use queryState otherwise circular
+    key: 'filteredReferenceContents',  
     default: [],
     get: async ({get}) => {
        
@@ -192,8 +179,57 @@ const searchQueryState = atom({
 
 
 
+   //dependent on edit reference
+  let filteredReferenceContentsForEdit = selector({
+    key: 'filteredReferenceContentsForEdit',  
+    default: [],
+    get: async ({get}) => {
+       
+       const refId = get(refIdForEditState) 
+       //const language = get(chosenVariantLanguageState) 
+      
+
+        if (refId ) {
+
+            const res =  await fetchReferenceContent(refId, "EN")
+
+            console.log('filtered content based on ref id to edit', res);
+            //set(contentListsState(title), contentList);
+
+            return res
+           
+          }
+          else {
+            console.log('No ref Id found while searching for content ', refId);
+            return []
+          }
+        },
+        set:  ({set}, contents) => {
+            
+            const title = contents.filter(content => content.type==="title")
+            const goals= contents.filter(content => content.type==="goal")
+            const procedures = contents.filter(content => content.type==="procedure")
+            const results = contents.filter(content => content.type==="result")
+                
+            
+            set(contentListsState("title"), title);  
+            set(contentListsState("goal"), goals);  
+            set(contentListsState("procedure"), procedures);  
+            set(contentListsState("result"), results);  
+
+    
+
+
+      }});
+ 
+
       const formOpenState = atom({
         key: 'formOpenState',
+        default: false,
+      });
+      
+      const refIdForEditState = atom({
+        key: 'refIdForEditState',
         default: false,
       });
       
@@ -210,7 +246,9 @@ export {
   activeStepState,
   referenceVariantIdsFromResult,
   formOpenState,
-  chosenVariantLanguageState
+  chosenVariantLanguageState,
+  refIdForEditState,
+  filteredReferenceContentsForEdit
 
 };
 

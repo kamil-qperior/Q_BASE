@@ -58,7 +58,6 @@ export default function CheckboxesGroup(props) {
   const handleChange = (event, title) => {
     const newState = { ...boxState, [event.target.name]: event.target.checked };
 
-    console.log('boxId', boxId);
     setBoxState(newState, boxId);  //since setState call back does not work properly here and does not wait for change to state, i pass newState to recoil update method
     updateVariantSelection(title, newState, chosenVariantLanguage, refId)
    
@@ -71,12 +70,10 @@ export default function CheckboxesGroup(props) {
           <FormLabel component="legend">{`Pick ${props.title}`}</FormLabel>
           <FormGroup>
             {contentList.map((contentItem) => (
-              <FormControlLabel
+              <FormControlLabel 
                 control={
                   <Checkbox
-                    style={{
-                      width:350
-                    }}
+                    
                     checked={boxState[contentItem.id] ?? true}
                     onChange={(e) =>{
                       handleChange(e, title)
@@ -84,24 +81,24 @@ export default function CheckboxesGroup(props) {
                     name={contentItem.id}
                   />
                 }
+                style={{ width:700}}
                 label={contentItem.content}
               />
             ))}
           </FormGroup>
           <FormHelperText>Pick content to be displayed on slides.</FormHelperText>
         </FormControl>
-        <Button onClick={e => {
+ {/*        <Button onClick={e => {
                        console.log('LOG CURRENT SELECTION', referenceVariantSelection);
                       }}
           color="primary">
           LOG SELECTION
-        </Button>
+        </Button> */}
       </Paper>
     </div>
   );
 
   function updateVariantSelection(title, newState, chosenVariantLanguage, refId) {
-    console.log('variantNamevvariantNamevariantNamevariantName', variantName);
    
     setReferenceVariantSelection((prev) => {
       const variantForUpdate = prev.find(

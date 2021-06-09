@@ -1,11 +1,7 @@
 import {
-  RecoilRoot,
-  atom,
-  selector,
-  useRecoilState,
-  useRecoilValue,
+  useRecoilState
 } from 'recoil';
-import {  contentListsState } from "../../store/statesRef" 
+import { contentListsState } from "../../store/statesRef";
 
 export default function ContentItem({title, item}) {
 
@@ -15,7 +11,7 @@ export default function ContentItem({title, item}) {
   const editItemText = ({target: {value}}) => {
     const newList = replaceItemAtIndex(contentList, index, {
       ...item,
-      text: value,
+      content: value,
     });
 
 
@@ -32,7 +28,7 @@ export default function ContentItem({title, item}) {
 
   return (
     <div>
-      <input type="text" value={item.text} onChange={editItemText} />
+      <input type="text" style={{width:550}} value={item.content} onChange={editItemText} />
 
       <button onClick={deleteItem}>X</button>
     </div>

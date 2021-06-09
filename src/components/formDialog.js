@@ -13,7 +13,9 @@ import {
   useRecoilValue
 } from 'recoil';
 import { createNewReference } from '../services/referenceService';
-import { contentListsState, formOpenState, refTextFieldsState } from "../store/statesRef";
+import { contentListsState, formOpenState, refTextFieldsState,
+  activeStepState
+} from "../store/statesRef";
 import ContentForm from "./contentForm";
 import ImageUploadCard from "./imageUpload";
 import ContentTitleForm from "./refcontent/contentTitle";
@@ -64,11 +66,11 @@ function getStepForms(step, useStyles) {
       case 1:
           return (<ContentTitleForm title="title"></ContentTitleForm>)
       case 2:
-          return (<ContentForm title="goals"></ContentForm>)
+          return (<ContentForm title="goal"></ContentForm>)
       case 3:
-           return (<ContentForm title="procedures"></ContentForm>)
+           return (<ContentForm title="procedure"></ContentForm>)
       case 4:
-          return (<ContentForm title="results"></ContentForm>)
+          return (<ContentForm title="result"></ContentForm>)
       case 5:
           return (
               <div>
@@ -90,13 +92,13 @@ export default function FormDialog() {
   const classes  =useStyles()
 
   const [open, setOpen] = useRecoilState(formOpenState)
-
+  const [activeStep, setActiveStep] = useRecoilState(activeStepState);
 
   const refs = useRecoilValue(refTextFieldsState);
   const title  = useRecoilValue(contentListsState("title"));
-  const goals  = useRecoilValue(contentListsState("goals"));
-  const results  = useRecoilValue(contentListsState("results"));
-  const procedures  = useRecoilValue(contentListsState("procedures"));
+  const goals  = useRecoilValue(contentListsState("goal"));
+  const results  = useRecoilValue(contentListsState("result"));
+  const procedures  = useRecoilValue(contentListsState("procedure"));
   
   //console.log('currentList in form dialog', currentList);
   const handleClickOpen = () => {
@@ -104,7 +106,10 @@ export default function FormDialog() {
   };
 
   const handleClose = () => {
+    console.log("we handling close");
+    //TODO add more clean up
     setOpen(false);
+    setActiveStep(0)
   };
 
  
@@ -116,16 +121,16 @@ export default function FormDialog() {
       <Button variant="contained"  onClick={handleClickOpen}>
         Create Reference
       </Button>
-      <Dialog maxWidth="md" open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
+      <Dialog maxWidth="md" open={open} onClose={handleClose}  aria-labelledby="form-dialog-title">
         <DialogTitle id="form-dialog-title">Create Reference</DialogTitle>
         <DialogContent>
           <DialogContentText>
             Enter new Reference Basic Information
           </DialogContentText>
           <HorizontalLinearReferenceStepper 
-          getStepForms= {getStepForms}
-          getStepContent= {getStepContent}
-          getSteps= {getSteps}
+            getStepForms= {getStepForms}
+            getStepContent= {getStepContent}
+            getSteps= {getSteps}
           >
 
           </HorizontalLinearReferenceStepper>
@@ -137,13 +142,11 @@ export default function FormDialog() {
           <Button onClick={e => {
                             //TODO make sure is not possible before last page
                             createNewReference(refs,goals, procedures, results, title)
-                            
-                            console.log('on click goals in form dialog', goals);
-                            console.log('on click results in form dialog', results);
-                            console.log('on click procedures in form dialog', procedures);
+                            setOpen(false);
+                           
                         }}
             color="primary">
-            Save Reference
+              Save Reference
           </Button>
         </DialogActions>
       </Dialog>

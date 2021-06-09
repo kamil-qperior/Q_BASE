@@ -42,10 +42,10 @@ export default function ContentCreator(props) {
   const addItem = () => {
 
     if(props.single) {
-      console.log('we used single');
+      
       setContentLists([{
         id:getId(),
-        text: inputValue ?? "",
+        content: inputValue ?? "",
         language: props.language,
         category: props.category
 
@@ -57,7 +57,7 @@ export default function ContentCreator(props) {
         ...prev,
         {
           id:getId(),
-          text: inputValue,
+          content: inputValue,
           language: props.language,
           category: props.category
         }
@@ -92,7 +92,7 @@ export default function ContentCreator(props) {
         }}
         id="content"
         label="Content"
-
+        
         fullWidth
         xs={6}
       />  

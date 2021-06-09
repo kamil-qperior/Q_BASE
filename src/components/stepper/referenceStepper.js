@@ -1,20 +1,17 @@
-import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import Stepper from '@material-ui/core/Stepper';
+import Button from '@material-ui/core/Button';
 import Step from '@material-ui/core/Step';
 import StepLabel from '@material-ui/core/StepLabel';
-import Button from '@material-ui/core/Button';
+import Stepper from '@material-ui/core/Stepper';
+import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
-
+import React from 'react';
 import {
-    refIdForVariantState,
-    activeStepState,
-  } from "../../store/statesRef";
-  import {
-    selector,
-    useRecoilState,
-    useRecoilValue,
-  } from "recoil";
+    useRecoilState
+} from "recoil";
+import {
+    activeStepState
+} from "../../store/statesRef";
+
 
 
 const useStyles = makeStyles((theme) => ({

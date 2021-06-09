@@ -8,6 +8,7 @@ import Grid from "@material-ui/core/Grid";
 import Radio from "@material-ui/core/Radio";
 import RadioGroup from "@material-ui/core/RadioGroup";
 import List from "@material-ui/core/List";
+import Button from "@material-ui/core/Button";
 
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import FormControl from "@material-ui/core/FormControl";
@@ -31,6 +32,7 @@ const useStyles = makeStyles((theme) => ({
     width: "100%",
     margin: 10,
   },
+
   button: {
     marginRight: theme.spacing(1),
     color: "blue",
@@ -82,13 +84,14 @@ export default function ContentForm(props) {
 
       <div className={classes.demo}>
         <Typography variant="h6" className={classes.title}>
-          {title}
+          {title+"s"}
         </Typography>
         <List>
           {currentList.map((item) => {
             return <ContentItem title={title} key={item.id} item={item} />;
           })}
         </List>
+
       </div>
     </div>
   );
@@ -107,11 +110,3 @@ function handleChangeRadioCategory(e) {
 
 
 
-function handleChange(setContent, content) {
-  return (e, newValue) => {
-    console.log("in handle", content);
-    console.log("in newValue", newValue);
-    console.log(" newValue", e);
-    setContent(content);
-  };
-}
