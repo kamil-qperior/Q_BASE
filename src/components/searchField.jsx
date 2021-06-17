@@ -11,7 +11,7 @@ import {
 } from 'recoil';
 
 import {searchQueryState} from "../store/statesRef"
-import {technologies, projectNames, policies, status} from "./consts"
+import {technologies,industires,procedures, projectNames, policies, status} from "./consts"
 
 
 
@@ -87,7 +87,7 @@ export default function ReferenceSearch() {
             style={style}
             onChange={handleChange}
             //value={searchQuery?.value}
-            options={projectNames.map((option) => option.title)}
+            options={industires.map((option) => option)} //TODO picking values from dropdown does not WORK wrong taget object?
             freeSolo
             disableClearable
             renderInput={createTextField("Industry")}
@@ -128,7 +128,7 @@ export default function ReferenceSearch() {
             //value={setSearchQuery.value}
 
             onChange={handleChange}
-            options={technologies.map((option) => option)}
+            options={procedures.map((option) => option)}
             freeSolo
             disableClearable
             renderInput={createTextField("Procedures")}
