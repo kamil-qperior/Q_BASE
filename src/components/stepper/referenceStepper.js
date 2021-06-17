@@ -1,14 +1,17 @@
-import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import Stepper from '@material-ui/core/Stepper';
+import Button from '@material-ui/core/Button';
 import Step from '@material-ui/core/Step';
 import StepLabel from '@material-ui/core/StepLabel';
-import Button from '@material-ui/core/Button';
+import Stepper from '@material-ui/core/Stepper';
+import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
+import React from 'react';
+import {
+    useRecoilState
+} from "recoil";
+import {
+    activeStepState
+} from "../../store/statesRef";
 
-import ImageUploadCard from "./imageUpload"
-import ContentForm from "./contentForm"
-import ReferenceBasicInfoTextFields from './referenceForm';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -29,71 +32,28 @@ const useStyles = makeStyles((theme) => ({
     appBarSpacer: theme.mixins.toolbar,
 }));
 
-function getSteps() {
-    return ['Basic Project Info', 'Goals', 'Procedures', 'Results', "Images"];
-}
-
-function getStepContent(step) {
-    switch (step) {
-        case 0:
-            return 'Enter Information';
-        case 1:
-            return 'Enter Information';
-        case 2:
-            return 'Finish saving reference';
-        case 3:
-            return 'Enter results of the project';
-        case 4:
-            return 'Upload Images';
-        default:
-            return 'Unknown step';
-    }
-}
-
-function getStepForms(step, useStyles) {
-    switch (step) {
-        case 0:
-            return (<ReferenceBasicInfoTextFields></ReferenceBasicInfoTextFields>)
-        case 1:
-            return (<ContentForm title="Goals"></ContentForm>)
-        case 2:
-            return (<ContentForm title="Procedures"></ContentForm>)
-        case 3:
-            return (<ContentForm title="Results"></ContentForm>)
-            case 4:
-                return (
-                    <div>
-                    <ImageUploadCard></ImageUploadCard>
-                    </div>
-                )
-
-        default:
-            return 'Unknown step';
-    }
- 
-    
-}
 
 
 
 
-export default function HorizontalLinearStepper() {
+export default function HorizontalLinearReferenceStepper( props) {
     const classes = useStyles();
-    const [activeStep, setActiveStep] = React.useState(0);
-    const steps = getSteps();
-
- 
+    const [activeStep, setActiveStep] = useRecoilState(activeStepState);
+     
+    
+    const steps = props.getSteps();
+    
 
     const handleNext = () => {
-        
         setActiveStep((prevActiveStep) => prevActiveStep + 1);
-       
+        
+        
     };
-
+    
     const handleBack = () => {
-        setActiveStep((prevActiveStep) => prevActiveStep - 1);
+        setActiveStep((prevActiveStep) => prevActiveStep - 1, );
+        
     };
-
    
 
     const handleReset = () => {
@@ -102,12 +62,12 @@ export default function HorizontalLinearStepper() {
 
     return (
         <div className={classes.root}>
+            
             <Stepper activeStep={activeStep}>
-                {steps.map((label, index) => {
+                {steps?.map((label, index) => {
                     const stepProps = {};
-                    const labelProps = {};
-                   
-                   
+                    const labelProps = {};    
+                    
                     return (
                         <Step key={label} {...stepProps}>
                             <StepLabel {...labelProps}>{label}</StepLabel>
@@ -127,28 +87,29 @@ export default function HorizontalLinearStepper() {
                     </div>
                 ) : (
                     <div>
-                        <Typography className={classes.instructions}>{getStepContent(activeStep)}</Typography>
+                        <Typography className={classes.instructions}>{props.getStepContent(activeStep)}</Typography>
                         <div>
+                            <div>
+                            
+                                 {props.getStepForms(activeStep)} 
+                        
+                            </div>
                             <Button disabled={activeStep === 0} onClick={handleBack} className={classes.button}>
                                 Back
-              </Button>
-
-                            <div>
-                                {getStepForms(activeStep)}
-                            </div>
-
+                            </Button>
                             <Button
                                 variant="contained"
                                 color="primary"
                                 onClick={handleNext}
                                 className={classes.button}
-                            >
+                                >
                                 {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
                             </Button>
                         </div>
                     </div>
                 )}
             </div>
+               
         </div>
     );
 }

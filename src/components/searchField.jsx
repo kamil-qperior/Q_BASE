@@ -6,14 +6,12 @@ import Grid from '@material-ui/core/Grid';
 import { Container } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import {
-  RecoilRoot,
-  atom,
-  selector,
   useRecoilState,
   useRecoilValue,
 } from 'recoil';
 
-import {searchQueryState, searchQueryTagState} from "../store/statesRef"
+import {searchQueryState} from "../store/statesRef"
+import {technologies, projectNames, policies, status} from "./consts"
 
 
 
@@ -102,7 +100,7 @@ export default function ReferenceSearch() {
             //value={setSearchQuery.value}
 
             onChange={handleChange}
-            options={policies.map((option) => option.title)}
+            options={policies.map((option) => option)}
             freeSolo
             disableClearable
             renderInput={createTextField("Policy")}
@@ -116,7 +114,7 @@ export default function ReferenceSearch() {
             //value={setSearchQuery.value}
 
             onChange={handleChange}
-            options={technologies.map((option) => option.title)}
+            options={technologies.map((option) => option)}
             freeSolo
             disableClearable
             renderInput={createTextField("Technology")}
@@ -130,7 +128,7 @@ export default function ReferenceSearch() {
             //value={setSearchQuery.value}
 
             onChange={handleChange}
-            options={technologies.map((option) => option.title)}
+            options={technologies.map((option) => option)}
             freeSolo
             disableClearable
             renderInput={createTextField("Procedures")}
@@ -144,28 +142,26 @@ export default function ReferenceSearch() {
         <Grid item>
 
           <TextField
-            id="date"
-
+            id="projectBegin"
             className={classes.datePicker}
             label="Project Start"
             type="date"
-            defaultValue="2017-01-01"
+            onChange={handleChange}
+            defaultValue="2020-01-01"
             InputLabelProps={{
               shrink: true,
             }}
-          />
+            />
 
         </Grid>
 
         <Grid item><TextField
-          id="date"
-
+          id="projectEnd"
           className={classes.datePicker}
           label="Project End"
           type="date"
+          onChange={handleChange}
           defaultValue="2018-01-01"
-          //    className={classes.textField}
-
           InputLabelProps={{
             shrink: true,
           }}
@@ -210,26 +206,6 @@ export function createTextField(label) {
 
 
 
-const projectNames = [
-  { title: 'Project Name 1', year: 1994 },
-  { title: 'Project Name 2', year: 1972 },
-  { title: 'The Dark Knight', year: 2008 },
-  { title: '12 Angry Men', year: 1957 },
-]
-
-const policies = [
-  { title: "pm contact approved - on request" },
-]
-
-const technologies = [
-  { title: "SAP" },
-  { title: "Java" },
-]
-
-const status = [
-  "approved",
-  "declined",
-]
 
 
 

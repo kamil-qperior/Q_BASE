@@ -1,48 +1,35 @@
 import {
-  RecoilRoot,
-  atom,
-  selector,
-  useRecoilState,
-  useRecoilValue,
+  useRecoilState
 } from 'recoil';
-import { todoListState } from "../../store/statesRef" //was failing before as without jsx
+import { contentListsState } from "../../store/statesRef";
 
-export default function TodoItem({item}) {
-  const [todoList, setTodoList] = useRecoilState(todoListState);
-  const index = todoList.findIndex((listItem) => listItem === item);
+export default function ContentItem({title, item}) {
+
+  const [contentList, setContentList] = useRecoilState(contentListsState(title));
+  const index = contentList.findIndex((listItem) => listItem === item);
 
   const editItemText = ({target: {value}}) => {
-    const newList = replaceItemAtIndex(todoList, index, {
+    const newList = replaceItemAtIndex(contentList, index, {
       ...item,
-      text: value,
+      content: value,
     });
 
-    setTodoList(newList);
+
+    setContentList(newList, title);
   };
 
-  const toggleItemCompletion = () => {
-    const newList = replaceItemAtIndex(todoList, index, {
-      ...item,
-      isComplete: !item.isComplete,
-    });
-
-    setTodoList(newList);
-  };
 
   const deleteItem = () => {
-    const newList = removeItemAtIndex(todoList, index);
-
-    setTodoList(newList);
+    const newList = removeItemAtIndex(contentList, index);
+    
+    
+    setContentList(newList, title);
   };
 
   return (
     <div>
-      <input type="text" value={item.text} onChange={editItemText} />
-      <input
-        type="checkbox"
-        checked={item.isComplete}
-        onChange={toggleItemCompletion}
-      />
+      <input type="text" style={{width:550}} value={item.content} onChange={editItemText} />
+
       <button onClick={deleteItem}>X</button>
     </div>
   );

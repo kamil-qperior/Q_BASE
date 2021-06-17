@@ -1,6 +1,5 @@
 import './App.css';
-import { useEffect, useState } from 'react'
-import { Suspense } from 'react';
+
 
 import Dashboard from './components/dashboard'
 import Header from './components/Header'
@@ -10,12 +9,13 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Link
+
 } from "react-router-dom";
 import {
   RecoilRoot
 } from 'recoil';
-
+import { Typography,Paper } from '@material-ui/core';
+import { Card, CardContent, CardMedia } from "@material-ui/core";
 
 
 
@@ -34,8 +34,33 @@ function App() {
             <Route path="/cv">
               <CertificationTable />
             </Route>
-            <Route path="/">
+            <Route path="/refs">
               <Dashboard />
+            </Route>
+            <Route path="/">
+              <Paper >
+                <Typography variant="h5">
+                  Welcome to Q_BASE, please choose an app from the menu.
+                </Typography>
+              </Paper>
+
+{/*               <Card  >
+                    <CardContent  >
+                      <div style={{position: 'relative'}} >
+                        <CardMedia
+                            component="img"
+                            image="https://www.w3schools.com/css/img_lights.jpg"
+                        />
+                        <div style={{
+                          position: 'absolute', 
+                          color: 'white', 
+                          top: 8, 
+                          left: '50%', 
+                          transform: 'translateX(-50%)'
+                        }} >Your text</div>
+                      </div>
+                    </CardContent>
+            </Card>   */}      
             </Route>
           </Switch>
         </div>

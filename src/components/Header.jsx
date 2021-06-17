@@ -1,12 +1,22 @@
-import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
+import { Divider, ListItem } from "@material-ui/core";
 import AppBar from "@material-ui/core/AppBar";
+import Button from "@material-ui/core/Button";
+import Drawer from '@material-ui/core/Drawer';
+import IconButton from "@material-ui/core/IconButton";
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import { makeStyles } from "@material-ui/core/styles";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
-import Button from "@material-ui/core/Button";
-import IconButton from "@material-ui/core/IconButton";
+import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+import DashboardIcon from '@material-ui/icons/Dashboard';
 import MenuIcon from "@material-ui/icons/Menu";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import HomeIcon from '@material-ui/icons/Home';
+import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
+import clsx from 'clsx';
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -22,7 +32,12 @@ const useStyles = makeStyles((theme) => ({
 
 const Header = () => {
   const classes = useStyles();
+  const [open, setOpen] = useState(false);
 
+  const toggleDrawer = () => {
+    console.log('closed drowers');
+    setOpen(!open);
+};
   return (
     <div className={classes.root}>
       <AppBar position="static">
@@ -32,17 +47,55 @@ const Header = () => {
             className={classes.menuButton}
             color="inherit"
             aria-label="menu"
+            onClick={toggleDrawer}
           >
             <MenuIcon />
           </IconButton>
-          <Link to="/">Home</Link>
-          <Link to="/cv">Users</Link>
+
           <Typography variant="h6" className={classes.title}>
             Q_BASE
           </Typography>
           <Button color="inherit">Login</Button>
         </Toolbar>
       </AppBar>
+       <Drawer
+                    classes={{
+                        paper: clsx(classes.drawerPaper, !open && classes.drawerPaperClose),
+                    }}
+                    open={open}
+                >
+                    <div className={classes.toolbarIcon}>
+                        <IconButton onClick={toggleDrawer}>
+                            <ChevronLeftIcon />
+                        </IconButton>
+                    </div>
+                    <Divider />
+                
+                    <ListItem button>
+                      <ListItemIcon>
+                        <DashboardIcon />
+                      </ListItemIcon>
+                      <Link to="/refs" onClick={toggleDrawer}> References </Link>
+                    </ListItem>
+                    <ListItem button>
+                      <ListItemIcon>
+                        <ShoppingCartIcon > 
+                          </ShoppingCartIcon > 
+                      </ListItemIcon>
+                        <Link   to="/cv"  onClick={toggleDrawer} >CVs</Link> 
+                    </ListItem>
+                    <ListItem button>
+                      <ListItemIcon>
+                        <HomeIcon > 
+                          </HomeIcon > 
+                      </ListItemIcon>
+                        <Link   to="/"  onClick={toggleDrawer} >Home</Link> 
+                    </ListItem>
+                        
+     
+
+                    </Drawer> 
+                
     </div>
   );
 };

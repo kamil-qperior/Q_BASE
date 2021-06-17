@@ -8,24 +8,69 @@ import {
   useSetRecoilState,
 } from 'recoil';
 
-import { todoListState } from "../../store/statesRef"
+import { useState } from 'react';
+import { makeStyles } from '@material-ui/core/styles';
+import { contentListsState, goalsListsState } from "../../store/statesRef"
+import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
 
-import { useEffect, useState } from 'react'
 
-export default function TodoItemCreator() {
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+      width: '70%',
+      margin: 10
+  },
+  button: {
+      marginRight: theme.spacing(1),
+      color: "blue",
+      margin: 15
+  },}))
+
+
+export default function ContentCreator(props) {
+
+
+  const classes = useStyles()
   const [inputValue, setInputValue] = useState('');
-  const setTodoList = useSetRecoilState(todoListState);
+  const title = props.title
+
+  const [contentLists, setContentLists] = useRecoilState(contentListsState(title));
+
+  
 
   const addItem = () => {
-    setTodoList((oldTodoList) => [
-      ...oldTodoList,
-      {
-        id: getId(),
-        text: inputValue,
-        isComplete: false,
-      },
-    ]);
-    setInputValue('');
+
+    if(props.single) {
+      
+      setContentLists([{
+        id:getId(),
+        content: inputValue ?? "",
+        language: props.language,
+        category: props.category
+
+      }], title)
+      
+    } else {
+
+      setContentLists( prev => [
+        ...prev,
+        {
+          id:getId(),
+          content: inputValue,
+          language: props.language,
+          category: props.category
+        }
+      ], title)
+    }
+
+
+    
+    console.log('contentListsAccess after adding item', contentLists);
+      
+    setInputValue('');   
+
+
   };
 
   const onChange = ({target: {value}}) => {
@@ -34,8 +79,26 @@ export default function TodoItemCreator() {
 
   return (
     <div>
-      <input type="text" value={inputValue} onChange={onChange} />
-      <button onClick={addItem}>Add</button>
+
+      <TextField
+        autoFocus
+        className={classes.root}
+        value={inputValue}
+        onChange={onChange}
+        onKeyPress={(ev) => {
+          if (ev.key === 'Enter') {
+            addItem(ev.target.value)
+          }
+        }}
+        id="content"
+        label="Content"
+        
+        fullWidth
+        xs={6}
+      />  
+      <Button onClick={addItem} className={classes.button}>Add</Button>
+    
+      
     </div>
   );
 }

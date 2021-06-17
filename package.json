@@ -1,9 +1,10 @@
 {
-  "name": "azure-react-app",
+  "name": "q-base",
   "version": "0.1.0",
   "private": true,
   "type": "module",
   "dependencies": {
+    "@antlerengineering/multiselect": "^0.9.6",
     "@material-ui/core": "^4.11.3",
     "@material-ui/icons": "^4.11.2",
     "@material-ui/lab": "^4.0.0-alpha.58",
@@ -11,6 +12,8 @@
     "@testing-library/react": "^11.2.5",
     "@testing-library/user-event": "^12.8.3",
     "dotenv": "^8.2.0",
+    "downshift": "^6.1.3",
+    "lodash": "^4.17.21",
     "material-ui-icons": "^1.0.0-beta.36",
     "material-ui-popup-state": "^1.8.3",
     "react": "^17.0.1",
@@ -21,7 +24,6 @@
     "react-scripts": "4.0.3",
     "react-window": "^1.8.6",
     "recoil": "^0.3.0",
-    "tedious": "^11.0.6",
     "web-vitals": "^1.1.1"
   },
   "scripts": {
