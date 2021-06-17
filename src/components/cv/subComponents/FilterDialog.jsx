@@ -27,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function PopoverPopupState({ dialogKey }) {
+export default function PopoverPopupState({ dialogKey, customSwitchOn }) {
   let theRightState = undefined;
   switch (dialogKey) {
     case "level":
@@ -88,7 +88,10 @@ export default function PopoverPopupState({ dialogKey }) {
               horizontal: "left",
             }}
           >
-            <FilterDialogList theState={theRightState} />
+            <FilterDialogList
+              theState={theRightState}
+              customSwitchOn={customSwitchOn}
+            />
           </Popover>
         </div>
       )}

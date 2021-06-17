@@ -4,6 +4,8 @@ import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import Checkbox from "@material-ui/core/Checkbox";
+import Switch from "@material-ui/core/Switch";
+
 import InputAdornment from "@material-ui/core/InputAdornment";
 import SearchIcon from "@material-ui/icons/Search";
 import IconButton from "@material-ui/core/IconButton";
@@ -11,7 +13,7 @@ import { useRecoilState } from "recoil";
 import DeleteIcon from "@material-ui/icons/Delete";
 import LazyLoad from "react-lazyload";
 import { VariableSizeList } from "react-window";
-
+import { switchFilterLogic } from "../../../store/states";
 import Input from "@material-ui/core/Input";
 
 const useStyles = makeStyles((theme) => ({
@@ -30,9 +32,29 @@ const useStyles = makeStyles((theme) => ({
     // "overflow-y": "overlay;",
     margin: "0.5rem 1rem 0.2rem 1rem;",
   },
+  xxx: {
+    scrollbarWidth: "none" /* Firefox */,
+
+    // "&::-webkit-scrollbar": {
+    //   width: 12,
+    // } /* Chrome */,
+    "&::-webkit-scrollbar": {
+      width: 5,
+      height: 8,
+      // "background-color": "#aaa",
+      /* or add it to the track */
+    },
+    "&::-webkit-scrollbar-thumb": { background: "#3f51b5" },
+  },
+  algiment: {
+    "align-self": "center;",
+    width: "100%;",
+    "text-align": "center;",
+  },
   footerDialog: {
     "border-top": "outset;",
     "text-align": "end;",
+    display: "flex;",
   },
   okFont: {
     color: "#d61313;",
@@ -41,11 +63,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-let onOpen = true;
-export default function CheckboxList({ theState }) {
+export default function CheckboxList({ theState, customSwitchOn }) {
   const classes = useStyles();
 
   const [filteredArray, setFilteredArray] = useRecoilState(theState);
+  const [theSwitchFilterLogic, setSwitchFilterLogic] =
+    useRecoilState(switchFilterLogic);
 
   const handleToggle = (value) => () => {
     let setSelection = filteredArray.map((el) => {
@@ -73,9 +96,47 @@ export default function CheckboxList({ theState }) {
     });
     setFilteredArray(setSelection);
   };
+  const toggleSwitchFilter = (event) => {
+    setSwitchFilterLogic(event.target.checked);
+  };
+  let visibleFilteredArray;
+  if (theState.key === "filterLevelData") {
+    visibleFilteredArray = filteredArray.filter((el) => el.visible);
+  } else {
+    visibleFilteredArray = filteredArray
+      .filter((el) => el.visible)
+      .sort((a, b) => {
+        return a.data.toUpperCase().trim() > b.data.toUpperCase().trim()
+          ? 1
+          : -1;
+      });
+    // .sort(function (a, b) {
+    //   var nameA = a.data.toUpperCase();
+    //   var nameB = b.data.toUpperCase();
+    //   if (nameA < nameB) {
+    //     return -1;
+    //   }
+    //   if (nameA > nameB) {
+    //     return 1;
+    //   }
+    //   return 0;
+    // });
+  }
 
-  const visibleFilteredArray = filteredArray.filter((el) => el.visible);
-
+  const Switchi = (customSwitchOn) => {
+    if (customSwitchOn) {
+      return (
+        <div>
+          Oder
+          <Switch
+            checked={theSwitchFilterLogic}
+            onChange={toggleSwitchFilter}
+          ></Switch>
+          Und
+        </div>
+      );
+    }
+  };
   const Row = ({ index, style }) => (
     <div style={style}>
       <ListItem
@@ -117,6 +178,7 @@ export default function CheckboxList({ theState }) {
       </div>
       <div className={[classes.root, classes.list].join(" ")}>
         <VariableSizeList
+          className={classes.xxx}
           height={400}
           width={257}
           itemSize={getItemSize}
@@ -127,6 +189,7 @@ export default function CheckboxList({ theState }) {
         </VariableSizeList>
       </div>
       <div className={classes.footerDialog}>
+        <div className={classes.algiment}>{Switchi(customSwitchOn)}</div>
         <IconButton color="primary" onClick={onHandleDeleteSelections}>
           <DeleteIcon />
         </IconButton>

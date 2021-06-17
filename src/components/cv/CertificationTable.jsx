@@ -16,9 +16,14 @@ import { useRecoilState } from "recoil";
 import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
 import DoneIcon from "@material-ui/icons/Done";
-import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
 import Collapse from "@material-ui/core/Collapse";
+import Hierachie from "./Hierachie";
+import Badge from "@material-ui/core/Badge";
+import SearchIcon from "@material-ui/icons/Search";
+import ImportContactsIcon from "@material-ui/icons/ImportContacts";
+import Tooltip from "@material-ui/core/Tooltip";
+import ShortChip from "./subComponents/ShortChip";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -29,8 +34,22 @@ const useStyles = makeStyles((theme) => ({
   table: {
     minWidth: 700,
   },
+  smallMargin: {
+    margin: "0px 4px 2px 0px",
+  },
   algiment: {
     display: "flex;",
+  },
+  footer: {
+    left: 0,
+    bottom: 0, // <-- KEY
+    zIndex: 2,
+    position: "sticky",
+    "background-color": "aliceblue",
+  },
+  hierachieTransition: {
+    transition: "height 1s",
+    overflow: "hidden",
   },
   tableHeader: {
     "align-self": "center;",
@@ -40,6 +59,7 @@ const useStyles = makeStyles((theme) => ({
   customTableContainer: {
     // overflowX: "initial",
     // padding: 5,
+    "overflow-x": "initial",
   },
 }));
 
@@ -49,7 +69,7 @@ export default function SpanningTable() {
   const [page, setPage] = React.useState(0);
   const [employes] = useRecoilState(CVsDataWithFilter);
   const [filteredCertificates] = useRecoilState(filterCertificationData);
-  const [open, setOpen] = React.useState(false);
+  const [hierachieHight, setHierachieHight] = React.useState("0px");
   const [theHeight, setHeight] = useState(window.innerHeight);
   const [theWidth, setWidth] = React.useState(window.innerWidth);
   const updateWidthAndHeight = () => {
@@ -68,11 +88,20 @@ export default function SpanningTable() {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
-
+  const handleClick = () => {
+    setHierachieHight(hierachieHight === "0px" ? "472px" : "0px");
+  };
   const Row = (props) => {
     const { row } = props;
+    let consultingEmphasis = [...row.consultingEmphasis].filter(Boolean);
+    let industryKnowHow = [...row.industryKnowHow].filter(Boolean);
+    let technicalAndMethodologicalCompetence = [
+      ...row.technicalAndMethodologicalCompetence,
+    ].filter(Boolean);
+    let languages = [...row.languages].filter(Boolean);
+    let itCompetence = [...row.itCompetence].filter(Boolean);
+    let certificates = [...row.certificates].filter(Boolean);
     const [open, setOpen] = React.useState(false);
-    // console.log(filteredCertificates);
     const checkValeInArray = (val) => {
       return filteredCertificates
         .filter((el) => {
@@ -96,31 +125,29 @@ export default function SpanningTable() {
           <TableCell>{row.name}</TableCell>
           <TableCell>{row.topicChapter}</TableCell>
           <TableCell>
-            {/* {row.certificates.map((zerti, index) => (
-        <>
-          {zerti.name},<br />
-        </>
-      ))} */}
-            {row.certificates.map((zerti) => (
-              <Chip
-                color={checkValeInArray(zerti.name) ? "primary" : ""}
-                deleteIcon={<DoneIcon />}
-                label={zerti.name}
-                onDelete={checkValeInArray(zerti.name) ? () => {} : ""}
-              ></Chip>
-            ))}
+            {certificates
+              .sort((a, b) => {
+                return a.name.toUpperCase().trim() > b.name.toUpperCase().trim()
+                  ? 1
+                  : -1;
+              })
+              .map((zerti) => (
+                <Chip
+                  className={classes.smallMargin}
+                  color={checkValeInArray(zerti.name) ? "primary" : ""}
+                  deleteIcon={<DoneIcon />}
+                  label={zerti.name}
+                  onDelete={
+                    checkValeInArray(zerti.name)
+                      ? (val) => {
+                          console.log(val);
+                        }
+                      : ""
+                  }
+                ></Chip>
+              ))}
           </TableCell>
           <TableCell>{row.level}</TableCell>
-          {/* <TableCell>
-          {row.consultingEmphasis.map((el) => (
-            <Chip label={el}></Chip>
-          ))}
-        </TableCell>
-        <TableCell>
-          {row.industryKnowHow.map((el) => (
-            <Chip label={el}></Chip>
-          ))}
-        </TableCell> */}
         </TableRow>
 
         <TableRow>
@@ -129,25 +156,48 @@ export default function SpanningTable() {
               <Box margin={1}>
                 <Table>
                   <colgroup>
-                    <col width="30%" />
-                    <col width="50%" />
+                    <col width="20%" />
+                    <col width="20%" />
+                    <col width="20%" />
+                    <col width="20%" />
+                    <col width="20%" />
                   </colgroup>
                   <TableHead>
                     <TableRow>
-                      <TableCell>Basis</TableCell>
-                      <TableCell>KnowHow</TableCell>
+                      <TableCell>Beratungsschwerpunkte</TableCell>
+                      <TableCell>Branchenkompetenz</TableCell>
+                      <TableCell>Fach- und Methodenkompetenz</TableCell>
+                      <TableCell>Sprachen</TableCell>
+                      <TableCell>IT-Kompetenz</TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
                     <TableRow>
                       <TableCell>
-                        {row.consultingEmphasis.map((el) => (
-                          <Chip label={el}></Chip>
+                        {[...new Set(consultingEmphasis)].sort().map((el) => (
+                          <ShortChip input={el} classes={classes} />
                         ))}
                       </TableCell>
                       <TableCell>
-                        {row.industryKnowHow.map((el) => (
-                          <Chip label={el}></Chip>
+                        {[...new Set(industryKnowHow)].sort().map((el) => (
+                          <ShortChip input={el} classes={classes} />
+                        ))}
+                      </TableCell>
+                      <TableCell>
+                        {[...new Set(technicalAndMethodologicalCompetence)]
+                          .sort()
+                          .map((el) => (
+                            <ShortChip input={el} classes={classes} />
+                          ))}
+                      </TableCell>
+                      <TableCell>
+                        {[...new Set(languages)].sort().map((el) => (
+                          <ShortChip input={el} classes={classes} />
+                        ))}
+                      </TableCell>
+                      <TableCell>
+                        {[...new Set(itCompetence)].sort().map((el) => (
+                          <ShortChip input={el} classes={classes} />
                         ))}
                       </TableCell>
                     </TableRow>
@@ -163,10 +213,14 @@ export default function SpanningTable() {
 
   return (
     <Paper
-      className={classes.customTableContainer}
-      style={{ height: theHeight - 120 }}
+    // className={classes.customTableContainer}
+    // style={{ height: theHeight - 120 }}
     >
-      <TableContainer style={{ height: theHeight - 120 }}>
+      <Box height={hierachieHight} className={classes.hierachieTransition}>
+        <Hierachie />
+      </Box>
+      <TableContainer className={classes.customTableContainer}>
+        {/* <TableContainer style={{ height: theHeight - 120 }}> */}
         <Table stickyHeader className={classes.table}>
           <colgroup>
             <col width="5rem" />
@@ -193,7 +247,15 @@ export default function SpanningTable() {
               <TableCell>
                 <div className={classes.algiment}>
                   <div className={classes.tableHeader}> Zertifikate </div>
-                  <FilterDialog dialogKey="certification" />
+                  <FilterDialog
+                    dialogKey="certification"
+                    customSwitchOn="switchFilterLogic"
+                  />
+                  <IconButton color="primary" onClick={handleClick}>
+                    <Badge color="primary">
+                      <ImportContactsIcon />
+                    </Badge>
+                  </IconButton>
                 </div>
               </TableCell>
               <TableCell>
@@ -202,16 +264,6 @@ export default function SpanningTable() {
                   <FilterDialog dialogKey="level" />
                 </div>
               </TableCell>
-              {/* <TableCell>
-                <div className={classes.algiment}>
-                  <div className={classes.tableHeader}> Basis </div>
-                </div>
-              </TableCell>
-              <TableCell>
-                <div className={classes.algiment}>
-                  <div className={classes.tableHeader}> KnowHow </div>
-                </div>
-              </TableCell> */}
             </TableRow>
           </TableHead>
           <TableBody>
@@ -224,6 +276,7 @@ export default function SpanningTable() {
         </Table>
       </TableContainer>
       <TablePagination
+        className={classes.footer}
         rowsPerPageOptions={[5, 10, 25]}
         component="div"
         labelRowsPerPage="Zeilen pro Seite:"

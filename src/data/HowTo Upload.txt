@@ -8,3 +8,15 @@ mongoimport --uri mongodb+srv://kamil:kamil@cluster0.ycjm7.gcp.mongodb.net/qperi
 Datenmanipulation
 
 
+Unique Certifications:
+
+var certificates = {};
+item.certificates = item.certificates.filter(function(val) {
+    if (certificates[val.name]) {
+        return false;
+    }
+    certificates[val.name] = true;
+    return true;
+});
+
+

@@ -1,21 +1,75 @@
 [
-	"Projektmanagement": [
-		"Agil": [
-				"Professional Scrum Master I",
-				"Certified ScrumMaster"
-				],
-		"Classic": [
-				"Professional Scrum Master I",
-				"Certified ScrumMaster"
-				]
-	],        
-	"SAP": [
-		"SAPUI": [
-				"Fiori",
-				"WebIDE"
-		],
-		"Hana":[
-				"Hana 2.0"
-		]
-	]
-}
+  {
+    "Agile Project Management": [
+      {
+        "SAFe": [
+          "SAFe Agilist",
+          "Leading SAFe Course 4.5",
+          "Certified SAFe 4 Agilist",
+          "Certified SAFe 4 Practitioner",
+          "Certified SAFe 5 Agilist",
+          "Certified SAFe 5 Product Owner Product Manager",
+          "Certified Project Management Associate IPMA Level D - pma",
+          "Certified Project Manager IPMA Level C - vzpm"
+        ]
+      },
+      {
+        "Scrum": ["Certified ScrumMaster", "Professional Scrum Master I"]
+      }
+    ]
+  },
+  {
+    "Traditional Project Management": [
+      {
+        "PMI": [
+          "Project Management Professional",
+          "Certified Senior Project Manager IPMA Level B",
+          "Certified Senior Project Manager IPMA Level B - vzpm"
+        ]
+      },
+      {
+        "IPMA": [
+          "Certified Project Management Associate IPMA Level D",
+          "Grundkurs Datenschutz",
+          "Grundkurs Informationssicherheit"
+        ]
+      },
+      {
+        "PRINCE2": ["PRINCE2 Foundation certificate in Project Management"]
+      },
+      {
+        "HERMES": ["Q_PERIOR Insurance Programm"]
+      }
+    ]
+  },
+  {
+    "Extended Project Management": [
+      {
+        "ITIL": ["ITIL Foundation Certificate in IT Service Management"]
+      },
+      {
+        "Test Management": [
+          "ISTQB Certified Tester Foundation Level",
+          "Foundation Certificate in IT Service Management"
+        ]
+      },
+      {
+        "Requirements Engineering": [
+          "Geprüfter Prozessmanager in Versicherungsunternehmen"
+        ]
+      },
+      {
+        "Lean Six Sigma": [
+          "Lean Six Sigma White Belt Certification Program",
+          "Lean Six Sigma Yellow Belt Certification Program",
+          "Lean Six Sigma Master Black Belt Certification Program"
+        ]
+      },
+      {
+        "Training": [
+          "Foundation in Information Management Systems ISO IEC 27001"
+        ]
+      }
+    ]
+  }
+]
