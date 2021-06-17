@@ -45,7 +45,7 @@ export default function ReferenceSearch() {
             fullWidth={true}
             style={style}
             id="name"
-            onChange={handleChange}
+            onChange={(e,v) => handleChange(e,v, "name")}
             //value={searchQuery?.value}
             options={projectNames.map((option) => option.title)}
             freeSolo
@@ -57,10 +57,9 @@ export default function ReferenceSearch() {
 
         <Grid item>
           <Autocomplete
-
             id="status"
             style={style}
-            onChange={handleChange}
+            onChange={(e,v) => handleChange(e,v, "status")}
             //value={searchQuery?.value}
             options={status.map((option) => option)}
             freeSolo
@@ -72,7 +71,7 @@ export default function ReferenceSearch() {
           <Autocomplete
             id="country"
             style={style}
-            onChange={handleChange}
+            onChange={(e,v) => handleChange(e,v, "country")}
             //value={searchQuery?.value}
             options={["DE", "CH"].map((option) => option)} // map to metadata
             freeSolo
@@ -85,7 +84,7 @@ export default function ReferenceSearch() {
           <Autocomplete
             id="industry"
             style={style}
-            onChange={handleChange}
+            onChange={(e,v) => handleChange(e,v, "industry")}
             //value={searchQuery?.value}
             options={industires.map((option) => option)} //TODO picking values from dropdown does not WORK wrong taget object?
             freeSolo
@@ -99,7 +98,7 @@ export default function ReferenceSearch() {
             style={style}
             //value={setSearchQuery.value}
 
-            onChange={handleChange}
+            onChange={(e,v) => handleChange(e,v, "policy")}
             options={policies.map((option) => option)}
             freeSolo
             disableClearable
@@ -112,8 +111,7 @@ export default function ReferenceSearch() {
             id="technologyTag"
             style={style}
             //value={setSearchQuery.value}
-
-            onChange={handleChange}
+            onChange={(e,v) => handleChange(e,v, "technologyTag")}
             options={technologies.map((option) => option)}
             freeSolo
             disableClearable
@@ -126,16 +124,13 @@ export default function ReferenceSearch() {
             id="processTag"
             style={style}
             //value={setSearchQuery.value}
-
-            onChange={handleChange}
+            onChange={(e,v) => handleChange(e,v, "processTag")}
             options={procedures.map((option) => option)}
             freeSolo
             disableClearable
             renderInput={createTextField("Procedures")}
           />
         </Grid>
-
-
       </Grid>
 
       <Grid container direction="row" spacing={3} >
@@ -172,10 +167,11 @@ export default function ReferenceSearch() {
     </Container>
   );
   
-  function handleChange(event) {
+  function handleChange(event, value, param) {
+    
       setSearchQuery({
-        value: event.target.value,
-        param: event.target.id
+        value: value,
+        param: param ?? event.target.id
       });
 }
 
