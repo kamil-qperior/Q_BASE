@@ -7,6 +7,11 @@ import certificationFilter from '../data/certificationFilter.json'
 import certificationClusters from '../data/certificationCluster.json'
 import employees from '../data/employeesNew.json'
 
+const languageCode = atom({
+    key: "languageCode",
+    default: "de"
+});
+
 const certificationCluster = atom({
     key: "certificationCluster", // unique ID (with respect to other atoms/selectors)
     default: certificationClusters.map((el) => {
@@ -289,5 +294,5 @@ const CVsDataWithFilter = selector({
     },
 });
 
-export { filterLevelData, switchFilterLogic, filterTopicChapterData, CVsData, CVsDataWithFilter, filterCertificationData, certificationCluster, filterTopicChapterDataLevel3, filterTopicChapterDataLevel2, filterTopicChapterDataLevel1 };
+export { languageCode, filterLevelData, switchFilterLogic, filterTopicChapterData, CVsData, CVsDataWithFilter, filterCertificationData, certificationCluster, filterTopicChapterDataLevel3, filterTopicChapterDataLevel2, filterTopicChapterDataLevel1 };
 
