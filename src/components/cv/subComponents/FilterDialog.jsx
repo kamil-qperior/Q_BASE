@@ -11,6 +11,11 @@ import {
   filterTopicChapterData,
   filterCertificationData,
 } from "../../../store/states";
+
+import {
+  filterStatusData,
+} from "../../../store/filter";
+
 import { useRecoilState } from "recoil";
 
 const useStyles = makeStyles((theme) => ({
@@ -38,6 +43,9 @@ export default function PopoverPopupState({ dialogKey, customSwitchOn }) {
       break;
     case "certification":
       theRightState = filterCertificationData;
+      break;
+    case "status":
+      theRightState = filterStatusData;
       break;
     default:
       theRightState = filterTopicChapterData;

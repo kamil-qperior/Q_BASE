@@ -5,6 +5,7 @@ import {
   selector
 } from "recoil";
 import { referenceTextFields } from "../components/referenceForm";
+import { filterStatusData} from "./filter";
 import { fetchAllReferenceData, fetchReferenceContent, fetchReferenceDatabyParam } from '../services/referenceService';
 
 
@@ -100,58 +101,67 @@ const searchQueryState = atom({
   });
 
 
+  const allReferences = atom({
+    key: 'allReferencesState',
+    default: fetchAllReferenceData(),
+  });
+
+
 
 
 
   let filteredReferences = selector({
     key: 'filteredReferences',  //dont use queryState otherwise circular
+    default:  fetchAllReferenceData(),
     get: async ({get}) => {
        
-       const query = get(searchQueryState) 
+       //const query = get(searchQueryState) 
+       let filteredRefs = get(allReferences)  //currently an array of all selected status
+       const status = get(filterStatusData)  //currently an array of all selected status
+       const country = get(filterStatusData)  //currently an array of all selected status
 
-        if (query ) {
-            console.log('query ', query);
-            const res =  await fetchReferenceDatabyParam(query)
-            //console.log('result by query ', res);
-            return res
+
+   
+            console.log('status ', status);
+            
+            if (!!status.find(el => el.selected === true)) {
+              filteredRefs = filteredRefs.filter((ref) => {
+                  return status.find((el) => {
+                      if (el.selected && el.data === ref.status) {
+                          return true
+                      }
+                      return false
+                  })
+              })
+           }
+    
+            if (!!country.find(el => el.selected === true)) {
+              filteredRefs = filteredRefs.filter((ref) => {
+                  return country.find((el) => {
+                      if (el.selected && el.data === ref.country) {
+                          return true
+                      }
+                      return false
+                  })
+              })
+           }
+
+            /* console.log('result by query ', res); */
+            return filteredRefs
            
-          }
-          else {
+          
+      /*     else {
             const res = await fetchAllReferenceData()
             console.log('result by default ', res);
             return res
           }
+ */
+
+
         },
       });
 
 
- /*  let saveVariantState = selector({
-    key: 'saveVariantState',  
-    default: false,
-    get: async ({get}) => {
-
-
-    },
-    set: async ({set}, newValue) => {
-      const referenceVariantSelection = get(referenceVariantSelectionState) 
-      console.log('referenceVariantSelection before saving', referenceVariantSelection);
-
-      if (referenceVariantSelection ) {
-
-        for await (const referenceVariant of referenceVariantSelection) {
-          const res =  await saveReferenceVariant(referenceVariant)
-
-        }
-          return "res"
-         
-        }
-        return {};
-
-
-
-    }
-  })
-  */
 
   //dependent on variant
   let filteredReferenceContents = selector({

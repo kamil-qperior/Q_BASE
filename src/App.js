@@ -1,6 +1,7 @@
 import './App.css';
 
 
+import ReferenceDashboard from './components/referencemanager/referenceDashboard'
 import Dashboard from './components/dashboard'
 import Header from './components/Header'
 import CertificationTable from './components/cv/CertificationTable';
@@ -37,30 +38,15 @@ function App() {
             <Route path="/refs">
               <Dashboard />
             </Route>
+            <Route path="/referencemanager">
+              <ReferenceDashboard/>
+            </Route>
             <Route path="/">
               <Paper >
                 <Typography variant="h5">
                   Welcome to Q_BASE, please choose an app from the menu.
                 </Typography>
-              </Paper>
-
-{/*               <Card  >
-                    <CardContent  >
-                      <div style={{position: 'relative'}} >
-                        <CardMedia
-                            component="img"
-                            image="https://www.w3schools.com/css/img_lights.jpg"
-                        />
-                        <div style={{
-                          position: 'absolute', 
-                          color: 'white', 
-                          top: 8, 
-                          left: '50%', 
-                          transform: 'translateX(-50%)'
-                        }} >Your text</div>
-                      </div>
-                    </CardContent>
-            </Card>   */}      
+              </Paper>   
             </Route>
           </Switch>
         </div>

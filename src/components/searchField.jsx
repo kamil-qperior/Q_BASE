@@ -1,4 +1,4 @@
-import React from 'react';
+/* import React from 'react';
 import {useState} from 'react';
 import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
@@ -176,14 +176,6 @@ export default function ReferenceSearch() {
 }
 
 
-function handleChangeTag() {
-  return (e, newValue) => {
-    setSearchQuery({
-      value: newValue,
-      param: "technologyTag"
-    });
-  };
-}
 
 }
 
@@ -200,9 +192,4 @@ export function createTextField(label) {
   );
 }
 
-
-
-
-
-
-//from https://material-ui.com/components/autocomplete/#search-input
+ */

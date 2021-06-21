@@ -38,7 +38,7 @@ export const fetchReferenceContent = async (refId, language) => {
 
 export const fetchReferenceDatabyParam = async (searchQuery) => {
   console.log('searchQuery inside fetch', searchQuery);
-  if (searchQuery?.value === null) {
+  if (searchQuery?.value === undefined) {
 
     return fetchAllReferenceData()
   }
@@ -233,7 +233,16 @@ function createFilter(param, searchQuery) {
   if (param === "projectEnd") {
     return { [param]: { lte: searchQuery.value } };
   }
+  
   return { [param]: { like: searchQuery.value, options: "i" } };
+  
+  
+  /* consider when creating where filter fpr backend if (param === "projectEnd") {
+
+      
+      where.and?.push({ or: state.status.map((x) => ({ status: { eq: x } })) });
+    } */
+
 }
 
 

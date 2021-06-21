@@ -73,9 +73,22 @@ const Header = () => {
                 
                     <ListItem button>
                       <ListItemIcon>
+                        <HomeIcon > 
+                          </HomeIcon > 
+                      </ListItemIcon>
+                        <Link   to="/"  onClick={toggleDrawer} >Home</Link> 
+                    </ListItem>
+                    <ListItem button>
+                      <ListItemIcon>
                         <DashboardIcon />
                       </ListItemIcon>
                       <Link to="/refs" onClick={toggleDrawer}> References </Link>
+                    </ListItem>
+                    <ListItem button>
+                      <ListItemIcon>
+                        <DashboardIcon />
+                      </ListItemIcon>
+                      <Link to="/referencemanager" onClick={toggleDrawer}> New References </Link>
                     </ListItem>
                     <ListItem button>
                       <ListItemIcon>
@@ -83,13 +96,6 @@ const Header = () => {
                           </ShoppingCartIcon > 
                       </ListItemIcon>
                         <Link   to="/cv"  onClick={toggleDrawer} >CVs</Link> 
-                    </ListItem>
-                    <ListItem button>
-                      <ListItemIcon>
-                        <HomeIcon > 
-                          </HomeIcon > 
-                      </ListItemIcon>
-                        <Link   to="/"  onClick={toggleDrawer} >Home</Link> 
                     </ListItem>
                         
      
