@@ -1,0 +1,23 @@
+{
+  "Base": {
+    "header": {
+      "login": "Login"
+    }
+  },
+  "CV": {
+    "tableHeader": {
+      "employee": "Employee",
+      "topicChapter": "Topic Chapter",
+      "certificate": "Certificate",
+      "level": "Position",
+      "consultingEmphasis": "Consulting Emphasis",
+      "industryKnowHow": "Industry Know-how ",
+      "functionalAndMethodCompetencies": "Functional and Method Competencies",
+      "languages": "Languages",
+      "ITCompetencies": "IT Competencies"
+    },
+    "tableFooter": {
+      "rowsPerPage": "Rows per Page:"
+    }
+  }
+}

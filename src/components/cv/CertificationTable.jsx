@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -9,7 +9,11 @@ import Paper from "@material-ui/core/Paper";
 import TableContainer from "@material-ui/core/TableContainer";
 import TablePagination from "@material-ui/core/TablePagination";
 import FilterDialog from "./subComponents/FilterDialog";
-import { CVsDataWithFilter, filterCertificationData } from "../../store/states";
+import {
+  languageCode,
+  CVsDataWithFilter,
+  filterCertificationData,
+} from "../../store/states";
 import IconButton from "@material-ui/core/IconButton";
 import Chip from "@material-ui/core/Chip";
 import { useRecoilState } from "recoil";
@@ -22,7 +26,7 @@ import Hierachie from "./Hierachie";
 import Badge from "@material-ui/core/Badge";
 import SearchIcon from "@material-ui/icons/Search";
 import ImportContactsIcon from "@material-ui/icons/ImportContacts";
-import Tooltip from "@material-ui/core/Tooltip";
+import { i18n } from "../../utils/i18n/i18n";
 import ShortChip from "./subComponents/ShortChip";
 
 const useStyles = makeStyles((theme) => ({
@@ -69,17 +73,9 @@ export default function SpanningTable() {
   const [page, setPage] = React.useState(0);
   const [employes] = useRecoilState(CVsDataWithFilter);
   const [filteredCertificates] = useRecoilState(filterCertificationData);
+  const [lng] = useRecoilState(languageCode);
   const [hierachieHight, setHierachieHight] = React.useState("0px");
-  const [theHeight, setHeight] = useState(window.innerHeight);
   const [theWidth, setWidth] = React.useState(window.innerWidth);
-  const updateWidthAndHeight = () => {
-    setWidth(window.innerWidth);
-    setHeight(window.innerHeight);
-  };
-  useEffect(() => {
-    window.addEventListener("resize", updateWidthAndHeight);
-    return () => window.removeEventListener("resize", updateWidthAndHeight);
-  });
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -164,11 +160,24 @@ export default function SpanningTable() {
                   </colgroup>
                   <TableHead>
                     <TableRow>
-                      <TableCell>Beratungsschwerpunkte</TableCell>
-                      <TableCell>Branchenkompetenz</TableCell>
-                      <TableCell>Fach- und Methodenkompetenz</TableCell>
-                      <TableCell>Sprachen</TableCell>
-                      <TableCell>IT-Kompetenz</TableCell>
+                      <TableCell>
+                        {i18n(lng, "CV.tableHeader.consultingEmphasis")}
+                      </TableCell>
+                      <TableCell>
+                        {i18n(lng, "CV.tableHeader.industryKnowHow")}
+                      </TableCell>
+                      <TableCell>
+                        {i18n(
+                          lng,
+                          "CV.tableHeader.functionalAndMethodCompetencies"
+                        )}
+                      </TableCell>
+                      <TableCell>
+                        {i18n(lng, "CV.tableHeader.languages")}
+                      </TableCell>
+                      <TableCell>
+                        {i18n(lng, "CV.tableHeader.ITCompetencies")}
+                      </TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
@@ -235,18 +244,24 @@ export default function SpanningTable() {
               <TableCell></TableCell>
               <TableCell>
                 <div className={classes.algiment}>
-                  <div className={classes.tableHeader}> Mitarbeiter </div>
+                  <div className={classes.tableHeader}>
+                    {i18n(lng, "CV.tableHeader.employee")}
+                  </div>
                 </div>
               </TableCell>
               <TableCell>
                 <div className={classes.algiment}>
-                  <div className={classes.tableHeader}> Topic Chapter </div>
+                  <div className={classes.tableHeader}>
+                    {i18n(lng, "CV.tableHeader.topicChapter")}
+                  </div>
                   <FilterDialog dialogKey="topicChapter" />
                 </div>
               </TableCell>
               <TableCell>
                 <div className={classes.algiment}>
-                  <div className={classes.tableHeader}> Zertifikate </div>
+                  <div className={classes.tableHeader}>
+                    {i18n(lng, "CV.tableHeader.certificate")}{" "}
+                  </div>
                   <FilterDialog
                     dialogKey="certification"
                     customSwitchOn="switchFilterLogic"
@@ -260,7 +275,10 @@ export default function SpanningTable() {
               </TableCell>
               <TableCell>
                 <div className={classes.algiment}>
-                  <div className={classes.tableHeader}> Position </div>
+                  <div className={classes.tableHeader}>
+                    {" "}
+                    {i18n(lng, "CV.tableHeader.level")}
+                  </div>
                   <FilterDialog dialogKey="level" />
                 </div>
               </TableCell>
@@ -279,7 +297,7 @@ export default function SpanningTable() {
         className={classes.footer}
         rowsPerPageOptions={[5, 10, 25]}
         component="div"
-        labelRowsPerPage="Zeilen pro Seite:"
+        labelRowsPerPage={i18n(lng, "CV.tableFooter.rowsPerPage")}
         count={employes.length}
         rowsPerPage={rowsPerPage}
         page={page}

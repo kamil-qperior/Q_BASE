@@ -1,1 +1,23 @@
-{}
+{
+  "Base": {
+    "header": {
+      "login": "Login"
+    }
+  },
+  "CV": {
+    "tableHeader": {
+      "employee": "Mitarbeiter",
+      "topicChapter": "Topic Chapter",
+      "certificate": "Zertifikate",
+      "level": "Position",
+      "consultingEmphasis": "Beratungsschwerpunkte",
+      "industryKnowHow": "Branchenkompetenz",
+      "functionalAndMethodCompetencies": "Fach- und Methodenkompetenz",
+      "languages": "Sprachen",
+      "ITCompetencies": "IT-Kompetenz"
+    },
+    "tableFooter": {
+      "rowsPerPage": "Zeilen pro Seite:"
+    }
+  }
+}

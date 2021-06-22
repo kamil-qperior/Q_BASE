@@ -1,22 +1,24 @@
 import { Divider, ListItem } from "@material-ui/core";
 import AppBar from "@material-ui/core/AppBar";
 import Button from "@material-ui/core/Button";
-import Drawer from '@material-ui/core/Drawer';
+import Drawer from "@material-ui/core/Drawer";
 import IconButton from "@material-ui/core/IconButton";
-import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemIcon from "@material-ui/core/ListItemIcon";
 import { makeStyles } from "@material-ui/core/styles";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import DashboardIcon from '@material-ui/icons/Dashboard';
+import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
+import DashboardIcon from "@material-ui/icons/Dashboard";
 import MenuIcon from "@material-ui/icons/Menu";
-import HomeIcon from '@material-ui/icons/Home';
-import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
-import clsx from 'clsx';
+import HomeIcon from "@material-ui/icons/Home";
+import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
+import Links from "@material-ui/core/Link";
+import clsx from "clsx";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-
-
+import { languageCode } from "../store/states";
+import { useRecoilState } from "recoil";
+import { i18n } from "../utils/i18n/i18n";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -28,16 +30,24 @@ const useStyles = makeStyles((theme) => ({
   title: {
     flexGrow: 1,
   },
+  languages: {
+    color: "#FFFFFF",
+    "padding-left": "20px",
+  },
 }));
 
 const Header = () => {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
-
+  const [lng, setLng] = useRecoilState(languageCode);
   const toggleDrawer = () => {
-    console.log('closed drowers');
+    console.log("closed drowers");
     setOpen(!open);
-};
+  };
+  const handleChangeLanguage = (event) => {
+    setLng(event.target.text.toLowerCase());
+  };
+
   return (
     <div className={classes.root}>
       <AppBar position="static">
@@ -55,53 +65,73 @@ const Header = () => {
           <Typography variant="h6" className={classes.title}>
             Q_BASE
           </Typography>
-          <Button color="inherit">Login</Button>
+          <Links
+            className={classes.languages}
+            href="#"
+            onClick={handleChangeLanguage}
+          >
+            DE
+          </Links>
+          <Links
+            className={classes.languages}
+            href="#"
+            onClick={handleChangeLanguage}
+          >
+            EN
+          </Links>
+          <Links className={classes.languages} href="#">
+            {i18n(lng, "Base.header.login")}
+          </Links>
         </Toolbar>
       </AppBar>
-       <Drawer
-                    classes={{
-                        paper: clsx(classes.drawerPaper, !open && classes.drawerPaperClose),
-                    }}
-                    open={open}
-                >
-                    <div className={classes.toolbarIcon}>
-                        <IconButton onClick={toggleDrawer}>
-                            <ChevronLeftIcon />
-                        </IconButton>
-                    </div>
-                    <Divider />
-                
-                    <ListItem button>
-                      <ListItemIcon>
-                        <HomeIcon > 
-                          </HomeIcon > 
-                      </ListItemIcon>
-                        <Link   to="/"  onClick={toggleDrawer} >Home</Link> 
-                    </ListItem>
-                    <ListItem button>
-                      <ListItemIcon>
-                        <DashboardIcon />
-                      </ListItemIcon>
-                      <Link to="/refs" onClick={toggleDrawer}> References </Link>
-                    </ListItem>
-                    <ListItem button>
-                      <ListItemIcon>
-                        <DashboardIcon />
-                      </ListItemIcon>
-                      <Link to="/referencemanager" onClick={toggleDrawer}> New References </Link>
-                    </ListItem>
-                    <ListItem button>
-                      <ListItemIcon>
-                        <ShoppingCartIcon > 
-                          </ShoppingCartIcon > 
-                      </ListItemIcon>
-                        <Link   to="/cv"  onClick={toggleDrawer} >CVs</Link> 
-                    </ListItem>
-                        
-     
+      <Drawer
+        classes={{
+          paper: clsx(classes.drawerPaper, !open && classes.drawerPaperClose),
+        }}
+        open={open}
+      >
+        <div className={classes.toolbarIcon}>
+          <IconButton onClick={toggleDrawer}>
+            <ChevronLeftIcon />
+          </IconButton>
+        </div>
+        <Divider />
 
-                    </Drawer> 
-                
+        <ListItem button>
+          <ListItemIcon>
+            <HomeIcon></HomeIcon>
+          </ListItemIcon>
+          <Link to="/" onClick={toggleDrawer}>
+            Home
+          </Link>
+        </ListItem>
+        <ListItem button>
+          <ListItemIcon>
+            <DashboardIcon />
+          </ListItemIcon>
+          <Link to="/refs" onClick={toggleDrawer}>
+            {" "}
+            References{" "}
+          </Link>
+        </ListItem>
+        <ListItem button>
+          <ListItemIcon>
+            <DashboardIcon />
+          </ListItemIcon>
+          <Link to="/referencemanager" onClick={toggleDrawer}>
+            {" "}
+            New References{" "}
+          </Link>
+        </ListItem>
+        <ListItem button>
+          <ListItemIcon>
+            <ShoppingCartIcon></ShoppingCartIcon>
+          </ListItemIcon>
+          <Link to="/cv" onClick={toggleDrawer}>
+            CVs
+          </Link>
+        </ListItem>
+      </Drawer>
     </div>
   );
 };
