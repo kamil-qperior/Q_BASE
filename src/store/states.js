@@ -5,11 +5,16 @@ import {
 
 import certificationFilter from '../data/certificationFilter.json'
 import certificationClusters from '../data/certificationCluster.json'
-import employees from '../data/employeesNew.json'
+import employees from '../data/employeesJune.json'
 
 const languageCode = atom({
     key: "languageCode",
     default: "de"
+});
+
+const hierachyHeight = atom({
+    key: "hierachyHeight",
+    default: "0px"
 });
 
 const certificationCluster = atom({
@@ -59,6 +64,17 @@ const filterTopicChapterData = atom({
     }), // default value (aka initial value)
 });
 
+const filterEmployeeNamesData = atom({
+    key: "filterEmployeeNamesData", // unique ID (with respect to other atoms/selectors)
+    default: employees.map(el => el.name).map((el) => {
+        return {
+            "data": el,
+            "selected": false,
+            "visible": true
+        }
+    }), // default value (aka initial value)
+});
+
 const filterCertificationData = atom({
     key: "filterCertificationData", // unique ID (with respect to other atoms/selectors)
     default: certificationFilter.certificates.map((el) => {
@@ -68,6 +84,62 @@ const filterCertificationData = atom({
             "visible": true
         }
     }), // default value (aka initial value)
+});
+
+const filterConsultingEmphasisData = atom({
+    key: "filterConsultingEmphasisData", // unique ID (with respect to other atoms/selectors)
+    default: [...new Set([].concat.apply([], employees.map(el => el.consultingEmphasis)))].filter(el => !(el === "")).map((el) => {
+        return {
+            "data": el,
+            "selected": false,
+            "visible": true
+        }
+    }),
+});
+
+
+const filterIndustryKnowHowData = atom({
+    key: "filterIndustryKnowHowData", // unique ID (with respect to other atoms/selectors)
+    default: [...new Set([].concat.apply([], employees.map(el => el.industryKnowHow)))].filter(el => !(el === "")).map((el) => {
+        return {
+            "data": el,
+            "selected": false,
+            "visible": true
+        }
+    }),
+});
+
+const filterFunctionalAndMethodCompetenciesData = atom({
+    key: "filterFunctionalAndMethodCompetenciesData", // unique ID (with respect to other atoms/selectors)
+    default: [...new Set([].concat.apply([], employees.map(el => el.technicalAndMethodologicalCompetence)))].filter(el => !(el === "")).map((el) => {
+        return {
+            "data": el,
+            "selected": false,
+            "visible": true
+        }
+    }),
+});
+
+const filterLanguagesData = atom({
+    key: "filterLanguagesData", // unique ID (with respect to other atoms/selectors)
+    default: [...new Set([].concat.apply([], employees.map(el => el.languages)))].filter(el => !(el === "")).map((el) => {
+        return {
+            "data": el,
+            "selected": false,
+            "visible": true
+        }
+    }),
+});
+
+const filterITCompetenciesData = atom({
+    key: "filterITCompetenciesData", // unique ID (with respect to other atoms/selectors)
+    default: [...new Set([].concat.apply([], employees.map(el => el.itCompetence)))].filter(el => !(el === "")).map((el) => {
+        return {
+            "data": el,
+            "selected": false,
+            "visible": true
+        }
+    }),
 });
 
 const switchFilterLogic = atom({
@@ -81,6 +153,7 @@ const CVsData = atom({
     default:
         employees.map(item => {
             var certificates = {};
+            item.isExpanded = false;
             item.certificates = item.certificates.filter(function (val) {
                 if (certificates[val.name] || val.name === "unknown") {
                     return false;
@@ -237,7 +310,18 @@ const CVsDataWithFilter = selector({
         let filterLevelDataRaw = get(filterLevelData);
         let filterTopicChapterDataRaw = get(filterTopicChapterData);
         let filterCertificationDataRaw = get(filterCertificationData);
+        let filterConsultingEmphasisDataRaw = get(filterConsultingEmphasisData);
+        let filterEmployeeNamesDataRaw = get(filterEmployeeNamesData);
+        let filterIndustryKnowHowDataRaw = get(filterIndustryKnowHowData);
+        let filterFunctionalAndMethodCompetenciesDataRaw = get(filterFunctionalAndMethodCompetenciesData);
+        let filterITCompetenciesDataRaw = get(filterITCompetenciesData);
+        let filterLanguagesDataRaw = get(filterLanguagesData);
+
         let switchFilterLogicRaw = get(switchFilterLogic);
+
+
+
+
 
 
         if (!!filterTopicChapterDataRaw.find(el => el.selected === true)) {
@@ -262,6 +346,72 @@ const CVsDataWithFilter = selector({
                 })
             })
         }
+        if (!!filterEmployeeNamesDataRaw.find(el => el.selected === true)) {
+            filteredCVsData = filteredCVsData.filter((dasCV) => {
+                return filterEmployeeNamesDataRaw.find((el) => {
+                    if (el.selected && el.data === dasCV.name) {
+                        return true
+                    }
+                    return false
+                })
+            })
+        }
+
+
+        if (!!filterConsultingEmphasisDataRaw.find(el => el.selected === true)) {
+            filteredCVsData = filteredCVsData.filter((dasCV) => {
+                return filterConsultingEmphasisDataRaw.find((el) => {
+                    if (el.selected && dasCV.consultingEmphasis.includes(el.data)) {
+                        return true
+                    }
+                    return false
+                })
+            })
+        }
+        if (!!filterIndustryKnowHowDataRaw.find(el => el.selected === true)) {
+            filteredCVsData = filteredCVsData.filter((dasCV) => {
+                return filterIndustryKnowHowDataRaw.find((el) => {
+                    if (el.selected && dasCV.industryKnowHow.includes(el.data)) {
+                        return true
+                    }
+                    return false
+                })
+            })
+        }
+        if (!!filterFunctionalAndMethodCompetenciesDataRaw.find(el => el.selected === true)) {
+            filteredCVsData = filteredCVsData.filter((dasCV) => {
+                return filterFunctionalAndMethodCompetenciesDataRaw.find((el) => {
+                    if (el.selected && dasCV.technicalAndMethodologicalCompetence.includes(el.data)) {
+                        return true
+                    }
+                    return false
+                })
+            })
+        }
+        if (!!filterITCompetenciesDataRaw.find(el => el.selected === true)) {
+            filteredCVsData = filteredCVsData.filter((dasCV) => {
+                return filterITCompetenciesDataRaw.find((el) => {
+                    if (el.selected && dasCV.itCompetence.includes(el.data)) {
+                        return true
+                    }
+                    return false
+                })
+            })
+        }
+        if (!!filterLanguagesDataRaw.find(el => el.selected === true)) {
+            filteredCVsData = filteredCVsData.filter((dasCV) => {
+                return filterLanguagesDataRaw.find((el) => {
+                    if (el.selected && dasCV.languages.includes(el.data)) {
+                        return true
+                    }
+                    return false
+                })
+            })
+        }
+
+
+
+
 
         if (switchFilterLogicRaw) {
             if (!!filterCertificationDataRaw.find(el => el.selected === true)) {
@@ -294,5 +444,5 @@ const CVsDataWithFilter = selector({
     },
 });
 
-export { languageCode, filterLevelData, switchFilterLogic, filterTopicChapterData, CVsData, CVsDataWithFilter, filterCertificationData, certificationCluster, filterTopicChapterDataLevel3, filterTopicChapterDataLevel2, filterTopicChapterDataLevel1 };
+export { languageCode, hierachyHeight, filterLevelData, filterEmployeeNamesData, filterITCompetenciesData, filterLanguagesData, filterFunctionalAndMethodCompetenciesData, filterIndustryKnowHowData, filterConsultingEmphasisData, switchFilterLogic, filterTopicChapterData, CVsData, CVsDataWithFilter, filterCertificationData, certificationCluster, filterTopicChapterDataLevel3, filterTopicChapterDataLevel2, filterTopicChapterDataLevel1 };
 

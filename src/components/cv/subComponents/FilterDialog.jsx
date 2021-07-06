@@ -10,11 +10,15 @@ import {
   filterLevelData,
   filterTopicChapterData,
   filterCertificationData,
+  filterConsultingEmphasisData,
+  filterITCompetenciesData,
+  filterLanguagesData,
+  filterFunctionalAndMethodCompetenciesData,
+  filterIndustryKnowHowData,
+  filterEmployeeNamesData,
 } from "../../../store/states";
 
-import {
-  filterStatusData,
-} from "../../../store/filter";
+import { filterStatusData } from "../../../store/filter";
 
 import { useRecoilState } from "recoil";
 
@@ -44,9 +48,34 @@ export default function PopoverPopupState({ dialogKey, customSwitchOn }) {
     case "certification":
       theRightState = filterCertificationData;
       break;
+
+    case "consultingEmphasis":
+      theRightState = filterConsultingEmphasisData;
+      break;
+
+    case "ITCompetencies":
+      theRightState = filterITCompetenciesData;
+      break;
+
+    case "languages":
+      theRightState = filterLanguagesData;
+      break;
+
+    case "functionalAndMethodCompetencies":
+      theRightState = filterFunctionalAndMethodCompetenciesData;
+      break;
+
+    case "industryKnowHow":
+      theRightState = filterIndustryKnowHowData;
+      break;
+
+    case "employeeNames":
+      theRightState = filterEmployeeNamesData;
+      break;
     case "status":
       theRightState = filterStatusData;
       break;
+
     default:
       theRightState = filterTopicChapterData;
   }
@@ -89,11 +118,11 @@ export default function PopoverPopupState({ dialogKey, customSwitchOn }) {
             // {...bindPopover(popupState)}
             anchorOrigin={{
               vertical: "bottom",
-              horizontal: "right",
+              horizontal: "left",
             }}
             transformOrigin={{
               vertical: "top",
-              horizontal: "left",
+              horizontal: "right",
             }}
           >
             <FilterDialogList

@@ -11,8 +11,15 @@ import TablePagination from "@material-ui/core/TablePagination";
 import FilterDialog from "./subComponents/FilterDialog";
 import {
   languageCode,
+  CVsData,
   CVsDataWithFilter,
   filterCertificationData,
+  hierachyHeight,
+  filterITCompetenciesData,
+  filterFunctionalAndMethodCompetenciesData,
+  filterIndustryKnowHowData,
+  filterConsultingEmphasisData,
+  filterLanguagesData,
 } from "../../store/states";
 import IconButton from "@material-ui/core/IconButton";
 import Chip from "@material-ui/core/Chip";
@@ -28,6 +35,7 @@ import SearchIcon from "@material-ui/icons/Search";
 import ImportContactsIcon from "@material-ui/icons/ImportContacts";
 import { i18n } from "../../utils/i18n/i18n";
 import ShortChip from "./subComponents/ShortChip";
+import SearchBar from "./subComponents/SearchBar";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -37,6 +45,7 @@ const useStyles = makeStyles((theme) => ({
   },
   table: {
     minWidth: 700,
+    color: "green",
   },
   smallMargin: {
     margin: "0px 4px 2px 0px",
@@ -58,7 +67,7 @@ const useStyles = makeStyles((theme) => ({
   tableHeader: {
     "align-self": "center;",
     "font-size": "large;",
-    color: "darkslategray;",
+    // color: "darkslategray;",
   },
   customTableContainer: {
     // overflowX: "initial",
@@ -72,9 +81,23 @@ export default function SpanningTable() {
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [page, setPage] = React.useState(0);
   const [employes] = useRecoilState(CVsDataWithFilter);
+  let [CVsDataRaw, setCVsData] = useRecoilState(CVsData);
+
+  const [theHierachyHeight] = useRecoilState(hierachyHeight);
+
   const [filteredCertificates] = useRecoilState(filterCertificationData);
+  const [filterITCompetencies] = useRecoilState(filterITCompetenciesData);
+  const [filterFunctionalAndMethodCompetencies] = useRecoilState(
+    filterFunctionalAndMethodCompetenciesData
+  );
+  const [filterIndustryKnowHow] = useRecoilState(filterIndustryKnowHowData);
+  const [filterConsultingEmphasis] = useRecoilState(
+    filterConsultingEmphasisData
+  );
+  const [filterLanguages] = useRecoilState(filterLanguagesData);
+
   const [lng] = useRecoilState(languageCode);
-  const [hierachieHight, setHierachieHight] = React.useState("0px");
+  //  const [hierachieHight, setHierachieHight] = React.useState("0px");
   const [theWidth, setWidth] = React.useState(window.innerWidth);
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -84,9 +107,9 @@ export default function SpanningTable() {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
-  const handleClick = () => {
-    setHierachieHight(hierachieHight === "0px" ? "472px" : "0px");
-  };
+  // const handleClick = () => {
+  //   setHierachieHight(hierachieHight === "0px" ? "472px" : "0px");
+  // };
   const Row = (props) => {
     const { row } = props;
     let consultingEmphasis = [...row.consultingEmphasis].filter(Boolean);
@@ -98,8 +121,8 @@ export default function SpanningTable() {
     let itCompetence = [...row.itCompetence].filter(Boolean);
     let certificates = [...row.certificates].filter(Boolean);
     const [open, setOpen] = React.useState(false);
-    const checkValeInArray = (val) => {
-      return filteredCertificates
+    const checkValeInArray = (theArray, val) => {
+      return theArray
         .filter((el) => {
           return el.selected === true;
         })
@@ -113,9 +136,22 @@ export default function SpanningTable() {
             <IconButton
               aria-label="expand row"
               size="small"
-              onClick={() => setOpen(!open)}
+              onClick={() =>
+                setCVsData(
+                  CVsDataRaw.map((el) => {
+                    return {
+                      ...el,
+                      isExpanded: el === row ? !el.isExpanded : el.isExpanded,
+                    };
+                  })
+                )
+              }
             >
-              {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+              {row.isExpanded ? (
+                <KeyboardArrowUpIcon />
+              ) : (
+                <KeyboardArrowDownIcon />
+              )}
             </IconButton>
           </TableCell>
           <TableCell>{row.name}</TableCell>
@@ -130,11 +166,15 @@ export default function SpanningTable() {
               .map((zerti) => (
                 <Chip
                   className={classes.smallMargin}
-                  color={checkValeInArray(zerti.name) ? "primary" : ""}
+                  color={
+                    checkValeInArray(filteredCertificates, zerti.name)
+                      ? "primary"
+                      : ""
+                  }
                   deleteIcon={<DoneIcon />}
                   label={zerti.name}
                   onDelete={
-                    checkValeInArray(zerti.name)
+                    checkValeInArray(filteredCertificates, zerti.name)
                       ? (val) => {
                           console.log(val);
                         }
@@ -148,7 +188,7 @@ export default function SpanningTable() {
 
         <TableRow>
           <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
-            <Collapse in={open} timeout="auto" unmountOnExit>
+            <Collapse in={row.isExpanded} timeout="auto" unmountOnExit>
               <Box margin={1}>
                 <Table>
                   <colgroup>
@@ -184,29 +224,61 @@ export default function SpanningTable() {
                     <TableRow>
                       <TableCell>
                         {[...new Set(consultingEmphasis)].sort().map((el) => (
-                          <ShortChip input={el} classes={classes} />
+                          <ShortChip
+                            input={el}
+                            classes={classes}
+                            isSelected={checkValeInArray(
+                              filterConsultingEmphasis,
+                              el
+                            )}
+                          />
                         ))}
                       </TableCell>
                       <TableCell>
                         {[...new Set(industryKnowHow)].sort().map((el) => (
-                          <ShortChip input={el} classes={classes} />
+                          <ShortChip
+                            input={el}
+                            classes={classes}
+                            isSelected={checkValeInArray(
+                              filterIndustryKnowHow,
+                              el
+                            )}
+                          />
                         ))}
                       </TableCell>
                       <TableCell>
                         {[...new Set(technicalAndMethodologicalCompetence)]
                           .sort()
                           .map((el) => (
-                            <ShortChip input={el} classes={classes} />
+                            <ShortChip
+                              input={el}
+                              classes={classes}
+                              isSelected={checkValeInArray(
+                                filterFunctionalAndMethodCompetencies,
+                                el
+                              )}
+                            />
                           ))}
                       </TableCell>
                       <TableCell>
                         {[...new Set(languages)].sort().map((el) => (
-                          <ShortChip input={el} classes={classes} />
+                          <ShortChip
+                            input={el}
+                            classes={classes}
+                            isSelected={checkValeInArray(filterLanguages, el)}
+                          />
                         ))}
                       </TableCell>
                       <TableCell>
                         {[...new Set(itCompetence)].sort().map((el) => (
-                          <ShortChip input={el} classes={classes} />
+                          <ShortChip
+                            input={el}
+                            classes={classes}
+                            isSelected={checkValeInArray(
+                              filterITCompetencies,
+                              el
+                            )}
+                          />
                         ))}
                       </TableCell>
                     </TableRow>
@@ -225,7 +297,10 @@ export default function SpanningTable() {
     // className={classes.customTableContainer}
     // style={{ height: theHeight - 120 }}
     >
-      <Box height={hierachieHight} className={classes.hierachieTransition}>
+      <Box>
+        <SearchBar></SearchBar>
+      </Box>
+      <Box height={theHierachyHeight} className={classes.hierachieTransition}>
         <Hierachie />
       </Box>
       <TableContainer className={classes.customTableContainer}>
@@ -254,32 +329,31 @@ export default function SpanningTable() {
                   <div className={classes.tableHeader}>
                     {i18n(lng, "CV.tableHeader.topicChapter")}
                   </div>
-                  <FilterDialog dialogKey="topicChapter" />
+                  {/* <FilterDialog dialogKey="topicChapter" /> */}
                 </div>
               </TableCell>
               <TableCell>
                 <div className={classes.algiment}>
                   <div className={classes.tableHeader}>
-                    {i18n(lng, "CV.tableHeader.certificate")}{" "}
+                    {i18n(lng, "CV.tableHeader.certificate")}
                   </div>
-                  <FilterDialog
+                  {/* <FilterDialog
                     dialogKey="certification"
                     customSwitchOn="switchFilterLogic"
-                  />
-                  <IconButton color="primary" onClick={handleClick}>
+                  /> */}
+                  {/* <IconButton color="primary" onClick={handleClick}>
                     <Badge color="primary">
                       <ImportContactsIcon />
                     </Badge>
-                  </IconButton>
+                  </IconButton> */}
                 </div>
               </TableCell>
               <TableCell>
                 <div className={classes.algiment}>
                   <div className={classes.tableHeader}>
-                    {" "}
                     {i18n(lng, "CV.tableHeader.level")}
                   </div>
-                  <FilterDialog dialogKey="level" />
+                  {/* <FilterDialog dialogKey="level" /> */}
                 </div>
               </TableCell>
             </TableRow>

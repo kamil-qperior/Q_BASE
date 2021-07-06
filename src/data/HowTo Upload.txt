@@ -20,3 +20,27 @@ item.certificates = item.certificates.filter(function(val) {
 });
 
 
+Alle Cvs:
+
+( ",) => (",)    // für alle Daten anwenden
+(" ") => ()
+
+(
+,
+      "",
+)
+
+(
+    
+        "raw_name": ""
+)
+
+(, "")
+
+([
+      "",)
+
+
+"\n"
+" \n"
+\t

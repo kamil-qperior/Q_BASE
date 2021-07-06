@@ -109,7 +109,7 @@
     "BIA AT",
     "Q-VERTION",
     "VEV STS",
-    "SAP SCM ",
+    "SAP SCM",
     " CH T&I",
     "CH T&I",
     "KC AZD",
@@ -169,5 +169,14 @@
     "Associate Partner",
     "Principal Consultant",
     "Partner"
-  ]
+  ],
+  "consultingEmphasis": [
+    "Anforderungsmanagement",
+    "IT Prozesse / Prozessanalysen",
+    "Controlling & Reporting"
+  ],
+  "industryKnowHow": [],
+  "functionalAndMethodCompetencies": [],
+  "languages": [],
+  "ITCompetencies": []
 }

@@ -11,7 +11,6 @@ import SearchIcon from "@material-ui/icons/Search";
 import IconButton from "@material-ui/core/IconButton";
 import { useRecoilState } from "recoil";
 import DeleteIcon from "@material-ui/icons/Delete";
-import LazyLoad from "react-lazyload";
 import { VariableSizeList } from "react-window";
 import { switchFilterLogic } from "../../../store/states";
 import Input from "@material-ui/core/Input";
@@ -67,11 +66,12 @@ export default function CheckboxList({ theState, customSwitchOn }) {
   const classes = useStyles();
 
   const [filteredArray, setFilteredArray] = useRecoilState(theState);
+
   const [theSwitchFilterLogic, setSwitchFilterLogic] =
     useRecoilState(switchFilterLogic);
-
+  const ref = React.useRef();
   const handleToggle = (value) => () => {
-    let setSelection = filteredArray.map((el) => {
+    let setSelection = filteredArray.filter(Boolean).map((el) => {
       if (el.data === value) {
         return { data: el.data, selected: !el.selected, visible: el.visible };
       }
@@ -88,6 +88,9 @@ export default function CheckboxList({ theState, customSwitchOn }) {
       return { data: el.data, selected: el.selected, visible: false };
     });
     setFilteredArray(setSelection);
+    setTimeout(() => {
+      ref.current.resetAfterIndex(0);
+    }, 1);
   };
 
   const onHandleDeleteSelections = () => {
@@ -110,17 +113,6 @@ export default function CheckboxList({ theState, customSwitchOn }) {
           ? 1
           : -1;
       });
-    // .sort(function (a, b) {
-    //   var nameA = a.data.toUpperCase();
-    //   var nameB = b.data.toUpperCase();
-    //   if (nameA < nameB) {
-    //     return -1;
-    //   }
-    //   if (nameA > nameB) {
-    //     return 1;
-    //   }
-    //   return 0;
-    // });
   }
 
   const Switchi = (customSwitchOn) => {
@@ -161,7 +153,13 @@ export default function CheckboxList({ theState, customSwitchOn }) {
   );
   const getItemSize = (index) => {
     let size = Math.round(visibleFilteredArray[index].data.length / 18);
-    return size <= 1 ? 50 : size === 2 ? 56 : size === 3 ? 76 : 96;
+    return size <= 1
+      ? 50
+      : size === 2
+      ? 56
+      : size === 3
+      ? 76
+      : 76 + 20 * (Math.round(size) - 3); // size === 4 ? 96 : size === 5 ? 116 : size === 6 ? 136 : size === 7 ? 136 : 156;
   };
   return (
     <div className={classes.rootDeep}>
@@ -178,11 +176,12 @@ export default function CheckboxList({ theState, customSwitchOn }) {
       </div>
       <div className={[classes.root, classes.list].join(" ")}>
         <VariableSizeList
+          ref={ref}
           className={classes.xxx}
           height={400}
           width={257}
           itemSize={getItemSize}
-          overscanCount={10}
+          overscanCount={1}
           itemCount={visibleFilteredArray.length}
         >
           {Row}
