@@ -19,5 +19,25 @@
     "tableFooter": {
       "rowsPerPage": "Zeilen pro Seite:"
     }
+  },
+  "PaperCV": {
+    "leftSide": {
+      "professionalBackground": "Beruflicher Werdegang"
+    },
+    "expanderTitel": {
+      "certificate": "Zertifikate",
+      "level": "Position",
+      "consultingEmphasis": "Beratungsschwerpunkte",
+      "industryKnowHow": "Branchenkompetenz",
+      "functionalAndMethodCompetencies": "Fach- und Methodenkompetenz",
+      "languages": "Sprachen",
+      "ITCompetencies": "IT-Kompetenz"
+    }
+  },
+  "SearchCV": {
+    "header": {
+      "searchCV": "Beratersuche",
+      "selectedCV": "Meine Auswahl"
+    }
   }
 }

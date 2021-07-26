@@ -5,6 +5,7 @@ import ReferenceDashboard from './components/referencemanager/referenceDashboard
 import Dashboard from './components/dashboard'
 import Header from './components/Header'
 import CertificationTable from './components/cv/CertificationTable';
+import MyCv from './components/cv/MyCv';
 
 import {
   BrowserRouter as Router,
@@ -15,7 +16,7 @@ import {
 import {
   RecoilRoot
 } from 'recoil';
-import { Typography,Paper } from '@material-ui/core';
+import { Typography, Paper } from '@material-ui/core';
 import { Card, CardContent, CardMedia } from "@material-ui/core";
 
 
@@ -35,18 +36,21 @@ function App() {
             <Route path="/cv">
               <CertificationTable />
             </Route>
+            <Route path="/mycv">
+              <MyCv />
+            </Route>
             <Route path="/refs">
               <Dashboard />
             </Route>
             <Route path="/referencemanager">
-              <ReferenceDashboard/>
+              <ReferenceDashboard />
             </Route>
             <Route path="/">
               <Paper >
                 <Typography variant="h5">
                   Welcome to Q_BASE, please choose an app from the menu.
                 </Typography>
-              </Paper>   
+              </Paper>
             </Route>
           </Switch>
         </div>

@@ -6,6 +6,8 @@ import {
 import certificationFilter from '../data/certificationFilter.json'
 import certificationClusters from '../data/certificationCluster.json'
 import employees from '../data/employeesJune.json'
+// let deepCopy = JSON.parse(JSON.stringify({ "Projektmanagement": certificationClusters }));
+let deepCopy = JSON.parse(JSON.stringify(certificationClusters));
 
 const languageCode = atom({
     key: "languageCode",
@@ -16,6 +18,44 @@ const hierachyHeight = atom({
     key: "hierachyHeight",
     default: "0px"
 });
+
+const getNewFancyIDPowerdByMicha = () => {
+    return Math.random().toString(36).substr(2)
+}
+const deepChango = (obj, thePath) => {
+    for (const [key, value] of Object.entries(obj)) {
+        obj.path = thePath
+        obj.id = key
+        obj.name = key
+        obj.isSelected = false
+        obj.children = value
+        if (Array.isArray(value)) {
+            value.forEach((item, index) => {
+                if (typeof item === 'string') {
+                    obj[key][index] = { id: getNewFancyIDPowerdByMicha(), name: item, isSelected: false, isLeaf: true, path: thePath + ".children." + index }
+                } else {
+                    // deepChango(item, thePath + "." + index + "." + Object.keys(item)[0]);
+                    deepChango(item, thePath + ".children." + index);
+                }
+            });
+        }
+        delete obj[key]
+    }
+}
+
+deepCopy.map((el, index) => {
+    // deepChango(el, index + "/" + Object.keys(el)[0])
+    deepChango(el, index)
+    el = { ...el, isRoot: true }
+
+})
+
+
+const hierarchyInput = atom({
+    key: "hierarchyInput",
+    default: deepCopy
+});
+
 
 const certificationCluster = atom({
     key: "certificationCluster", // unique ID (with respect to other atoms/selectors)
@@ -444,5 +484,5 @@ const CVsDataWithFilter = selector({
     },
 });
 
-export { languageCode, hierachyHeight, filterLevelData, filterEmployeeNamesData, filterITCompetenciesData, filterLanguagesData, filterFunctionalAndMethodCompetenciesData, filterIndustryKnowHowData, filterConsultingEmphasisData, switchFilterLogic, filterTopicChapterData, CVsData, CVsDataWithFilter, filterCertificationData, certificationCluster, filterTopicChapterDataLevel3, filterTopicChapterDataLevel2, filterTopicChapterDataLevel1 };
+export { languageCode, hierarchyInput, hierachyHeight, filterLevelData, filterEmployeeNamesData, filterITCompetenciesData, filterLanguagesData, filterFunctionalAndMethodCompetenciesData, filterIndustryKnowHowData, filterConsultingEmphasisData, switchFilterLogic, filterTopicChapterData, CVsData, CVsDataWithFilter, filterCertificationData, certificationCluster, filterTopicChapterDataLevel3, filterTopicChapterDataLevel2, filterTopicChapterDataLevel1 };
 

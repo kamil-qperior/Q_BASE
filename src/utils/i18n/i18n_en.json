@@ -19,5 +19,18 @@
     "tableFooter": {
       "rowsPerPage": "Rows per Page:"
     }
+  },
+  "MyCV": {
+    "header": {
+      "test": "content1",
+      "myCV": "My CV",
+      "edit": "Search for CV"
+    }
+  },
+  "SearchCV": {
+    "header": {
+      "searchCV": "Find Consultant",
+      "selectedCV": "My Selection"
+    }
   }
 }

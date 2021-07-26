@@ -36,6 +36,7 @@ import ImportContactsIcon from "@material-ui/icons/ImportContacts";
 import { i18n } from "../../utils/i18n/i18n";
 import ShortChip from "./subComponents/ShortChip";
 import SearchBar from "./subComponents/SearchBar";
+import GeneriyHierachie from "./subComponents/GenericHierachie";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -297,87 +298,89 @@ export default function SpanningTable() {
     // className={classes.customTableContainer}
     // style={{ height: theHeight - 120 }}
     >
-      <Box>
-        <SearchBar></SearchBar>
-      </Box>
-      <Box height={theHierachyHeight} className={classes.hierachieTransition}>
-        <Hierachie />
-      </Box>
-      <TableContainer className={classes.customTableContainer}>
-        {/* <TableContainer style={{ height: theHeight - 120 }}> */}
-        <Table stickyHeader className={classes.table}>
-          <colgroup>
-            <col width="5rem" />
-            <col width={theWidth * 0.1} />
-            <col width={theWidth * 0.1} />
-            <col width={theWidth * 0.6} />
-            <col width={theWidth * 0.1} />
-            {/* <col width={theWidth * 0.1} /> */}
-          </colgroup>
-          <TableHead>
-            <TableRow>
-              <TableCell></TableCell>
-              <TableCell>
-                <div className={classes.algiment}>
-                  <div className={classes.tableHeader}>
-                    {i18n(lng, "CV.tableHeader.employee")}
+      <div>
+        <Box>
+          <SearchBar></SearchBar>
+        </Box>
+        <Box height={theHierachyHeight} className={classes.hierachieTransition}>
+          <Hierachie />
+        </Box>
+        <TableContainer className={classes.customTableContainer}>
+          {/* <TableContainer style={{ height: theHeight - 120 }}> */}
+          <Table stickyHeader className={classes.table}>
+            <colgroup>
+              <col width="5rem" />
+              <col width={theWidth * 0.1} />
+              <col width={theWidth * 0.1} />
+              <col width={theWidth * 0.6} />
+              <col width={theWidth * 0.1} />
+              {/* <col width={theWidth * 0.1} /> */}
+            </colgroup>
+            <TableHead>
+              <TableRow>
+                <TableCell></TableCell>
+                <TableCell>
+                  <div className={classes.algiment}>
+                    <div className={classes.tableHeader}>
+                      {i18n(lng, "CV.tableHeader.employee")}
+                    </div>
                   </div>
-                </div>
-              </TableCell>
-              <TableCell>
-                <div className={classes.algiment}>
-                  <div className={classes.tableHeader}>
-                    {i18n(lng, "CV.tableHeader.topicChapter")}
+                </TableCell>
+                <TableCell>
+                  <div className={classes.algiment}>
+                    <div className={classes.tableHeader}>
+                      {i18n(lng, "CV.tableHeader.topicChapter")}
+                    </div>
+                    {/* <FilterDialog dialogKey="topicChapter" /> */}
                   </div>
-                  {/* <FilterDialog dialogKey="topicChapter" /> */}
-                </div>
-              </TableCell>
-              <TableCell>
-                <div className={classes.algiment}>
-                  <div className={classes.tableHeader}>
-                    {i18n(lng, "CV.tableHeader.certificate")}
-                  </div>
-                  {/* <FilterDialog
+                </TableCell>
+                <TableCell>
+                  <div className={classes.algiment}>
+                    <div className={classes.tableHeader}>
+                      {i18n(lng, "CV.tableHeader.certificate")}
+                    </div>
+                    {/* <FilterDialog
                     dialogKey="certification"
                     customSwitchOn="switchFilterLogic"
                   /> */}
-                  {/* <IconButton color="primary" onClick={handleClick}>
+                    {/* <IconButton color="primary" onClick={handleClick}>
                     <Badge color="primary">
-                      <ImportContactsIcon />
+                    <ImportContactsIcon />
                     </Badge>
                   </IconButton> */}
-                </div>
-              </TableCell>
-              <TableCell>
-                <div className={classes.algiment}>
-                  <div className={classes.tableHeader}>
-                    {i18n(lng, "CV.tableHeader.level")}
                   </div>
-                  {/* <FilterDialog dialogKey="level" /> */}
-                </div>
-              </TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {employes
-              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              .map((row) => (
-                <Row key={row.cvFolder} row={row} />
-              ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-      <TablePagination
-        className={classes.footer}
-        rowsPerPageOptions={[5, 10, 25]}
-        component="div"
-        labelRowsPerPage={i18n(lng, "CV.tableFooter.rowsPerPage")}
-        count={employes.length}
-        rowsPerPage={rowsPerPage}
-        page={page}
-        onChangePage={handleChangePage}
-        onChangeRowsPerPage={handleChangeRowsPerPage}
-      />
+                </TableCell>
+                <TableCell>
+                  <div className={classes.algiment}>
+                    <div className={classes.tableHeader}>
+                      {i18n(lng, "CV.tableHeader.level")}
+                    </div>
+                    {/* <FilterDialog dialogKey="level" /> */}
+                  </div>
+                </TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {employes
+                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                .map((row) => (
+                  <Row key={row.cvFolder} row={row} />
+                ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+        <TablePagination
+          className={classes.footer}
+          rowsPerPageOptions={[5, 10, 25]}
+          component="div"
+          labelRowsPerPage={i18n(lng, "CV.tableFooter.rowsPerPage")}
+          count={employes.length}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          onChangePage={handleChangePage}
+          onChangeRowsPerPage={handleChangeRowsPerPage}
+        />
+      </div>
     </Paper>
   );
 }
