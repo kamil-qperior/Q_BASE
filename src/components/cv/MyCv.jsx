@@ -134,7 +134,7 @@ export default function MyCV() {
           index={1}
           dir={theme.direction}
         >
-          <PaperCV theCVsDataState={CVsData} index={123} />
+           <PaperCV theCVsDataState={CVsData} index={123} /> 
         </TabPanel>
       </SwipeableViews>
     </div>

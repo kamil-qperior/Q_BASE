@@ -18,7 +18,13 @@ import {
   filterEmployeeNamesData,
 } from "../../../store/states";
 
-import { filterStatusData } from "../../../store/filter";
+import {
+  filterStatusData,
+  filterCountryData,
+  filterCityData,
+  filterIndustryData,
+  filterPolicyData,
+} from "../../../store/filter";
 
 import { useRecoilState } from "recoil";
 
@@ -75,7 +81,18 @@ export default function PopoverPopupState({ dialogKey, customSwitchOn }) {
     case "status":
       theRightState = filterStatusData;
       break;
-
+    case "country":
+      theRightState = filterCountryData;
+      break;
+    case "industry":
+      theRightState = filterIndustryData;
+      break;
+    case "policy":
+      theRightState = filterPolicyData;
+      break;
+    case "city":
+      theRightState = filterCityData;
+      break;
     default:
       theRightState = filterTopicChapterData;
   }

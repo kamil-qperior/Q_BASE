@@ -125,6 +125,15 @@ const Header = () => {
         </ListItem>
         <ListItem button>
           <ListItemIcon>
+            <DashboardIcon />
+          </ListItemIcon>
+          <Link to="/referenceSearch" onClick={toggleDrawer}>
+            {" "}
+            Reference Search{" "}
+          </Link>
+        </ListItem>
+        <ListItem button>
+          <ListItemIcon>
             <ShoppingCartIcon></ShoppingCartIcon>
           </ListItemIcon>
           <Link to="/cv" onClick={toggleDrawer}>

@@ -39,5 +39,11 @@
       "searchCV": "Beratersuche",
       "selectedCV": "Meine Auswahl"
     }
+  },
+  "ReferenceSearch": {
+    "header": {
+      "searchRef": "Referenzensuche",
+      "selectedRefs": "Meine Auswahl"
+    }
   }
 }

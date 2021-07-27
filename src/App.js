@@ -2,6 +2,7 @@ import './App.css';
 
 
 import ReferenceDashboard from './components/referencemanager/referenceDashboard'
+import MyReferenceDashboard from './components/referencemanager/MyReferenceDashboard'
 import Dashboard from './components/dashboard'
 import Header from './components/Header'
 import CertificationTable from './components/cv/CertificationTable';
@@ -44,6 +45,9 @@ function App() {
             </Route>
             <Route path="/referencemanager">
               <ReferenceDashboard />
+            </Route>
+            <Route path="/referenceSearch">
+              <MyReferenceDashboard />
             </Route>
             <Route path="/">
               <Paper >

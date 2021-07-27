@@ -6,7 +6,7 @@ import {
 } from "recoil";
 
 export const projectNames = [
-  { title: "Project Name", year: 1994 },
+  "project name"
 ];
 
 export const policies = [
@@ -25,16 +25,7 @@ export const procedures = ["business analysis", "cost reduction"];
 
 export const status = ["tbd", "approved", "approval on request"];
 
-const filterStatusData = atom({
-  key: "filterStatusData", // unique ID (with respect to other atoms/selectors)
-  default: status.map((el) => {
-      return {
-          "data": el,
-          "selected": false,
-          "visible": true
-      }
-  }), // default value (aka initial value)
-});
+
 
 export const languageObjects = [
   {
@@ -520,6 +511,89 @@ export const cities = {
   },
 };
 
+const filterStatusData = atom({
+  key: "filterStatusData", // unique ID (with respect to other atoms/selectors)
+  default: status.map((el) => {
+      return {
+          "data": el,
+          "selected": false,
+          "visible": true
+      }
+  }), // default value (aka initial value)
+});
+
+const filterCountryData = atom({
+  key: "filterCountryData", // unique ID (with respect to other atoms/selectors)
+  default: Object.keys(countries).map((el) => {
+      return {
+          "data": el,
+          "selected": false,
+          "visible": true
+      }
+  }), // default value (aka initial value)
+});
+
+const filterIndustryData = atom({
+  key: "filterIndustryData", 
+  default: industires.map((el) => {
+      return {
+          "data": el,
+          "selected": false,
+          "visible": true
+      }
+  }), // default value (aka initial value)
+});
+
+const filterCityData = atom({
+  key: "filterCityData", 
+  default:  Object.keys(cities).map((el) => {
+      return {
+          "data": el,
+          "selected": false,
+          "visible": true
+      }
+  }), // default value (aka initial value)
+});
+
+const filterPolicyData = atom({
+  key: "filterPolicyData", 
+  default:  policies.map((el) => {
+      return {
+          "data": el,
+          "selected": false,
+          "visible": true
+      }
+  }), // default value (aka initial value)
+});
 
 
-export { filterStatusData}
+const filterNameData = atom({
+  key: "filterNameData", // unique ID (with respect to other atoms/selectors)
+  default: ""
+});
+
+const filterClientData = atom({
+  key: "filterClientData", // unique ID (with respect to other atoms/selectors)
+  default: ""
+});
+
+const filterTechnologyData = atom({
+  key: "filterTechnologyData", // unique ID (with respect to other atoms/selectors)
+  default: ""
+});
+
+const filterProcedureData = atom({
+  key: "filterProcedureData", // unique ID (with respect to other atoms/selectors)
+  default: ""
+});
+
+
+export { filterStatusData, 
+  filterNameData,
+  filterCityData,
+  filterPolicyData,
+  filterClientData,
+  filterProcedureData,
+  filterIndustryData,
+  filterTechnologyData,
+  filterCountryData}
