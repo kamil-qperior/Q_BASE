@@ -134,6 +134,15 @@ const Header = () => {
         </ListItem>
         <ListItem button>
           <ListItemIcon>
+            <DashboardIcon />
+          </ListItemIcon>
+          <Link to="/createReference" onClick={toggleDrawer}>
+            {" "}
+            Create Reference {" "}
+          </Link>
+        </ListItem>
+        <ListItem button>
+          <ListItemIcon>
             <ShoppingCartIcon></ShoppingCartIcon>
           </ListItemIcon>
           <Link to="/cv" onClick={toggleDrawer}>

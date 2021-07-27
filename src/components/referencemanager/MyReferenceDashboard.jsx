@@ -11,9 +11,10 @@ import React from "react";
 import SwipeableViews from "react-swipeable-views";
 import { useRecoilState } from "recoil";
 import { filterLanguagesData, languageCode } from "../../store/states";
+import { filterClientData, clientFilterHolder} from "../../store/filter";
 import { i18n } from "../../utils/i18n/i18n";
 import CertificationTableInside from "../cv/CertificationTableInside";
-import SearchBarLeft from "../cv/subComponents/SearchBarLeft";
+import SearchBarLeftRefs from "./SearchBarLeftRefs";
 import PaperCV from "../cv/subComponents/PaperCV";
 import ReferenceResultTable from "./referenceResultTable";
 import sharedSearchBoxView from "../../styles/reusableStyles";
@@ -87,6 +88,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+//v3 of the dashboard
 export default function MyReferenceDashboard() {
   //export to style classes
   const classes = useStyles();
@@ -94,17 +96,27 @@ export default function MyReferenceDashboard() {
 
   const [value, setValue] = React.useState(0);
   const [filterLanguages] = useRecoilState(filterLanguagesData);
+  const [filterClient, setFilterClient] = useRecoilState(filterClientData);
+  const [clientFilterH, setFilterClientH] = useRecoilState(clientFilterHolder);
+
   const [lng] = useRecoilState(languageCode);
+
+
+  
+  //is necessery for preloading of filterdata into the filers!!
+  setFilterClientH(filterClient)
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
-
+  
   const handleChangeIndex = (index) => {
+    setFilterClientH(filterClient)
     setValue(index);
   };
 
   return (
+       
     <div className={classes.root}>
       <AppBar position="static" color="default">
         <Tabs
@@ -133,10 +145,12 @@ export default function MyReferenceDashboard() {
 
           <div className={classes.searchAndResultContainer}> 
             <Box >
-              <SearchBarLeft></SearchBarLeft>
+              <SearchBarLeftRefs></SearchBarLeftRefs>
             </Box>
-            <Suspense fallback={<div>Loading...</div>}>
+
+            <Suspense>
               <ReferenceResultTable />
+
             </Suspense>
           </div>
         </TabPanel>
@@ -146,7 +160,7 @@ export default function MyReferenceDashboard() {
           value={value}
           index={1}
           dir={theme.direction}
-        >
+          >
           {/*
             TODO create new design for variant selection   
           <PaperCV theCVsDataState={CVsData} index={123} /> */}
@@ -154,5 +168,6 @@ export default function MyReferenceDashboard() {
         </TabPanel>
       </SwipeableViews>
     </div>
+       
   );
 }

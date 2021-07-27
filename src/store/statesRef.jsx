@@ -134,11 +134,11 @@ let filteredReferences = selector({
 
     filteredRefs = filterFreeText(name, filteredRefs);
 
-    if (client?.length > 0) {
+  /*   if (client?.length > 0) {
       filteredRefs = filteredRefs.filter((ref) =>
-        ref.client?.name.toLowerCase().includes(client.toLowerCase())
+        ref.client?.name?.toLowerCase().includes(client.toLowerCase())
       );
-    }
+    } */
 
     return filteredRefs;
   },

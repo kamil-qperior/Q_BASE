@@ -2,8 +2,15 @@
 
 import {
   atom,
-  
+  selector
 } from "recoil";
+
+import {filteredReferences} from "./statesRef"
+import {
+  fetchAllReferenceData,
+  fetchReferenceContent,
+  fetchReferenceDatabyParam,
+} from "../services/referenceService";
 
 export const projectNames = [
   "project name"
@@ -511,6 +518,10 @@ export const cities = {
   },
 };
 
+
+
+
+
 const filterStatusData = atom({
   key: "filterStatusData", // unique ID (with respect to other atoms/selectors)
   default: status.map((el) => {
@@ -568,27 +579,90 @@ const filterPolicyData = atom({
 
 
 const filterNameData = atom({
-  key: "filterNameData", // unique ID (with respect to other atoms/selectors)
-  default: ""
+  key: "filterNameData", 
+  default: []
 });
 
-const filterClientData = atom({
-  key: "filterClientData", // unique ID (with respect to other atoms/selectors)
-  default: ""
+
+
+/* let filterClientData = selector({
+  key: "filterClientData", //dont use queryState otherwise circular
+  default: [],
+  get: async ({ get }) => {
+    const all = await fetchAllReferenceData()
+
+      return all?.map(ref => {
+        return {
+          "data": ref.client?.name,
+          "selected": false,
+          "visible": true
+        }
+      })
+
+  },
+  set: ({ set, get }, newValue) => {
+    //filter status 
+    let filteredCVsDataRaw = get(clientFilterHolder);
+    
+  } 
+})*/
+
+
+
+
+const clientFilterHolder = atom({
+  key: "clientFilterHolder",
+  default: [],
 });
+
+
+const filterClientData = selector({
+  key: "filterClientData",
+  async get({ get }) {
+      const s = get(clientFilterHolder);
+      if (s?.length !== 0) {
+          return s;
+      }
+      
+      const all = await fetchAllReferenceData()
+      return all?.map(ref => {
+        return {
+          "data": ref.client?.name,
+          "selected": false,
+          "visible": true
+        }
+      })
+  },
+  set({ set }, newValue) {
+    //iterate over whole filter array
+
+
+      set(clientFilterHolder, newValue);
+  }
+});
+
+
+
+
+
+/* const filterClientData = atom({
+  key: "filterClientData", 
+  default: fetchAllReferenceData().map(ref => ref.client.name)
+}); */
 
 const filterTechnologyData = atom({
-  key: "filterTechnologyData", // unique ID (with respect to other atoms/selectors)
-  default: ""
+  key: "filterTechnologyData",
+  default: []
 });
 
 const filterProcedureData = atom({
-  key: "filterProcedureData", // unique ID (with respect to other atoms/selectors)
-  default: ""
+  key: "filterProcedureData", 
+  default: []
 });
 
 
-export { filterStatusData, 
+export { 
+  filterStatusData, 
   filterNameData,
   filterCityData,
   filterPolicyData,
@@ -596,4 +670,6 @@ export { filterStatusData,
   filterProcedureData,
   filterIndustryData,
   filterTechnologyData,
-  filterCountryData}
+  filterCountryData,
+  clientFilterHolder
+}

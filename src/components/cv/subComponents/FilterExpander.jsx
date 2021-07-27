@@ -74,10 +74,13 @@ export default function FilterExpander({
   isHierarchie,
   theHierachieState,
 }) {
+  
   const [filteredArray, setFilteredArray] = useRecoilState(theRightState);
-  const countSelectedFilter = filteredArray.filter((el) => el.selected).length;
-
+  
+  const countSelectedFilter = filteredArray?.filter((el) => el.selected).length;
+  
   const [collapseFirst, setCollapseFirst] = React.useState(false);
+
 
   const handleCollapseClick = (event) => {
     !(

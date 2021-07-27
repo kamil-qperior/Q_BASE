@@ -4,6 +4,23 @@
       "login": "Login"
     }
   },
+  "Reference": {
+    "tableHeader": {
+      "name": "Name",
+      "client": "Kunde",
+      "industry": "Industrie",
+      "country": "Land",
+      "status": "Status",
+      "policy": "Regel",
+      "tech_tags": "Technische Tag",
+      "procedure_tags": "Prozesse",
+      "project_start": "Projekt Start",
+      "project_end": "Projekt Ende",
+      "person_days_total": "Personentage",
+      "add": "Hinzufügen"      
+      
+    }
+  },
   "CV": {
     "tableHeader": {
       "employee": "Mitarbeiter",

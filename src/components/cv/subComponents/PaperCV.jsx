@@ -54,7 +54,7 @@ const useStyles = makeStyles((theme) => ({
     "justify-content": "center",
   },
   rootPaper: {
-    minHeight: "500rem",
+    minHeight: "100rem",
     width: "10%",
     "min-width": "94rem",
     display: "flex",
