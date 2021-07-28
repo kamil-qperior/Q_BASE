@@ -8,29 +8,8 @@ import Collapse from "@material-ui/core/Collapse";
 import Badge from "@material-ui/core/Badge";
 import GeneriyHierachie from "./GenericHierachie";
 import DeleteIcon from "@material-ui/icons/Delete";
-
-import ListSubheader from "@material-ui/core/ListSubheader";
-import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import ExpandLess from "@material-ui/icons/ExpandLess";
-import ExpandMore from "@material-ui/icons/ExpandMore";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
-
-import {
-  filterLevelData,
-  filterTopicChapterData,
-  filterCertificationData,
-  filterConsultingEmphasisData,
-  filterITCompetenciesData,
-  filterLanguagesData,
-  filterFunctionalAndMethodCompetenciesData,
-  filterIndustryKnowHowData,
-  filterEmployeeNamesData,
-} from "../../../store/states";
-
-import { filterStatusData } from "../../../store/filter";
 
 import { useRecoilState } from "recoil";
 
@@ -121,37 +100,6 @@ export default function FilterExpander({
         ) : null}
         {collapseFirst ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
       </ListItem>
-      {/* <div className={classes.expandHeader}>
-        <div className={classes.searchBoxRowItemLable}>{title}</div>
-        <div className={classes.expandHeader}>
-          {countSelectedFilter > 0 ? (
-            <div>
-              <IconButton
-                className={classes.collapseIcon}
-                color="primary"
-                onClick={onHandleDeleteSelections}
-              >
-                <Badge badgeContent={countSelectedFilter} color="primary">
-                  <DeleteIcon />
-                </Badge>
-              </IconButton>
-            </div>
-          ) : null}
-          <div>
-            <IconButton
-              className={classes.collapseIcon}
-              color="primary"
-              onClick={handleCollapseClick}
-            >
-              {collapseFirst ? (
-                <KeyboardArrowUpIcon />
-              ) : (
-                <KeyboardArrowDownIcon />
-              )}
-            </IconButton>
-          </div>
-        </div>
-      </div> */}
       <Collapse
         className={classes.FilterExpanderContentWrapper}
         in={collapseFirst}
@@ -170,31 +118,6 @@ export default function FilterExpander({
           />
         )}
       </Collapse>
-      {/* <IconButton color="primary" onClick={handleClick}>
-          <Badge badgeContent={countSelectedFilter} color="primary">
-            <FilterListIcon />
-          </Badge>
-        </IconButton> */}
-
-      {/* <Popover
-            open={open}
-            anchorEl={anchorEl}
-            onClose={handleClose}
-            // {...bindPopover(popupState)}
-            anchorOrigin={{
-              vertical: "bottom",
-              horizontal: "left",
-            }}
-            transformOrigin={{
-              vertical: "top",
-              horizontal: "right",
-            }}
-          >
-            <FilterDialogList
-              theState={theRightState}
-              customSwitchOn={customSwitchOn}
-            />
-          </Popover> */}
     </div>
   );
 }

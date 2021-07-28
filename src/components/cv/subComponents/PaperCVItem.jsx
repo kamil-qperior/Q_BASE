@@ -1,29 +1,12 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import Paper from "@material-ui/core/Paper";
-import Avatar from "@material-ui/core/Avatar";
-import faceImage from "../../../data/businessman1.jpg";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
-import ListItemAvatar from "@material-ui/core/ListItemAvatar";
-import ImageIcon from "@material-ui/icons/Image";
-import WorkIcon from "@material-ui/icons/Work";
-import BeachAccessIcon from "@material-ui/icons/BeachAccess";
-import Divider from "@material-ui/core/Divider";
 import Collapse from "@material-ui/core/Collapse";
-import DeleteIcon from "@material-ui/icons/Delete";
-import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
 import IconButton from "@material-ui/core/IconButton";
 import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
-import EditIcon from "@material-ui/icons/Edit";
-import SaveIcon from "@material-ui/icons/Save";
-import TextField from "@material-ui/core/TextField";
-import PersonIcon from "@material-ui/icons/Person";
-// import CastForEducationIcon from "@material-ui/icons/CastForEducation";
-import TimelineIcon from "@material-ui/icons/Timeline";
-import ApartmentIcon from "@material-ui/icons/Apartment";
 import { i18n } from "../../../utils/i18n/i18n";
 
 import { languageCode } from "../../../store/states";
@@ -97,11 +80,17 @@ const useStyles = makeStyles((theme) => ({
   collapseListItem: {
     padding: "0rem",
   },
+  bulltetPointHeader: {
+    fontWeight: "700",
+  },
+  bulltetPoints: {
+    "list-style-type": "disc",
+  },
 }));
 
 export default function PaperCVItem({ titel, theState, index, propertyKey }) {
   const classes = useStyles();
-  const [collapseFirst, setCollapseFirst] = React.useState(true);
+  const [collapseFirst, setCollapseFirst] = React.useState(false);
   const [CVsDataRaw, setCVsData] = useRecoilState(theState);
   const [lng] = useRecoilState(languageCode);
 
@@ -119,17 +108,6 @@ export default function PaperCVItem({ titel, theState, index, propertyKey }) {
         <div className={classes.boderBottom}>
           <div className={classes.collapseHeader}>{titel}</div>
           <div>
-            {collapseFirst ? (
-              <IconButton
-                className={classes.collapseIcon}
-                color="primary"
-                onClick={handleEditClick}
-              >
-                <EditIcon />
-              </IconButton>
-            ) : (
-              <div />
-            )}
             <IconButton
               className={classes.collapseIcon}
               color="primary"
@@ -154,15 +132,35 @@ export default function PaperCVItem({ titel, theState, index, propertyKey }) {
         <List className={classes.rightList} dense={true}>
           {CVsDataRaw[index][propertyKey].map((el) => (
             <ListItem>
-              <ListItemText primary={el} />
-              <ListItemSecondaryAction>
+              {typeof el === "string" ? (
+                <ListItemText primary={el} />
+              ) : el.name ? (
+                <ListItemText primary={el.name} /> // Zertifikate
+              ) : (
+                // Projekte
+                <div>
+                  <div class={classes.bulltetPointHeader}>
+                    {el.rawName.split(" (")[0]}
+                  </div>
+                  <div class={classes.bulltetPointHeader}>
+                    ({el.rawName.split(" (")[1]}
+                  </div>
+
+                  <ul class={classes.bulltetPoints}>
+                    {el.details.map((el) => (
+                      <li>{el}</li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+              {/* <ListItemSecondaryAction>
                 <IconButton edge="end" aria-label="delete">
                   <DeleteIcon />
                 </IconButton>
-              </ListItemSecondaryAction>
+              </ListItemSecondaryAction> */}
             </ListItem>
           ))}
-          <ListItem>
+          {/* <ListItem>
             <TextField
               id="standard-full-width"
               placeholder="Weiterer Beratungsschwerpunkt"
@@ -173,7 +171,7 @@ export default function PaperCVItem({ titel, theState, index, propertyKey }) {
                 <SaveIcon />
               </IconButton>
             </ListItemSecondaryAction>
-          </ListItem>
+          </ListItem> */}
         </List>
       </Collapse>
     </div>

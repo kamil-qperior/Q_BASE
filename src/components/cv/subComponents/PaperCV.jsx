@@ -50,18 +50,26 @@ const useStyles = makeStyles((theme) => ({
       width: theme.spacing(16),
       height: theme.spacing(16),
     },
-    minHeight: "500rem",
+    height: "auto",
+
+    // READ ONLY
+    // minHeight: "50rem",
     "justify-content": "center",
   },
   rootPaper: {
-    minHeight: "500rem",
+    // READ ONLY
+    // height: "auto",
     width: "10%",
     "min-width": "94rem",
     display: "flex",
+
+    // READ ONLY
+    height: "780px",
   },
   leftPaper: {
     width: "30%",
     "background-color": "aliceblue",
+    "text-align": "center",
   },
   leftList: {
     width: "100%",
@@ -70,6 +78,13 @@ const useStyles = makeStyles((theme) => ({
   },
   rightPaper: {
     width: "70%",
+
+    // READ ONLY
+    // paddingBottom: "2rem",
+
+    // READ ONLY
+    height: "780px",
+    "overflow-x": "hidden",
   },
   imgageContainer: {
     paddingTop: "2rem",
@@ -236,420 +251,50 @@ export default function PaperCV({ theCVsDataState, index }) {
             index={index}
             propertyKey={"consultingEmphasis"}
           />
-          <ListItem
-            button
-            className={classes.collapseListItem}
-            onClick={handleCollapseClick}
-          >
-            <div className={classes.boderBottom}>
-              <div className={classes.collapseHeader}>
-                {i18n(lng, "PaperCV.expanderTitel.consultingEmphasis")}
-              </div>
-              <div>
-                {collapseFirst ? (
-                  <IconButton
-                    className={classes.collapseIcon}
-                    color="primary"
-                    onClick={handleEditClick}
-                  >
-                    <EditIcon />
-                  </IconButton>
-                ) : (
-                  <div />
-                )}
-                <IconButton
-                  className={classes.collapseIcon}
-                  color="primary"
-                  onClick={handleCollapseClick}
-                >
-                  {collapseFirst ? (
-                    <KeyboardArrowUpIcon />
-                  ) : (
-                    <KeyboardArrowDownIcon />
-                  )}
-                </IconButton>
-              </div>
-            </div>
-          </ListItem>
 
-          <Collapse
-            className={classes.collapseStyle}
-            in={collapseFirst}
-            timeout="auto"
-            unmountOnExit
-          >
-            <List className={classes.rightList} dense={true}>
-              {CVsDataRaw[index].consultingEmphasis.map((el) => (
-                <ListItem>
-                  <ListItemText primary={el} />
-                  <ListItemSecondaryAction>
-                    <IconButton edge="end" aria-label="delete">
-                      <DeleteIcon />
-                    </IconButton>
-                  </ListItemSecondaryAction>
-                </ListItem>
-              ))}
-              <ListItem>
-                <TextField
-                  id="standard-full-width"
-                  placeholder="Weiterer Beratungsschwerpunkt"
-                  style={{ width: "20rem" }}
-                />
-                <ListItemSecondaryAction>
-                  <IconButton edge="end" aria-label="delete">
-                    <SaveIcon />
-                  </IconButton>
-                </ListItemSecondaryAction>
-              </ListItem>
-            </List>
-            {/* <div>
-              <Fab
-                className={classes.fixedIcon}
-                color="primary"
-                aria-label="add"
-              >
-                <AddIcon />
-              </Fab>
-            </div> */}
-          </Collapse>
-          <div className={classes.boderBottom}>
-            <div className={classes.collapseHeader}>Branchenkompetenz</div>
-            <div>
-              {collapseAll ? (
-                <IconButton
-                  className={classes.collapseIcon}
-                  color="primary"
-                  onClick={handleEditClick}
-                >
-                  <EditIcon />
-                </IconButton>
-              ) : (
-                <div />
-              )}
-              <IconButton
-                className={classes.collapseIcon}
-                color="primary"
-                onClick={handleCollapseClick}
-              >
-                {collapseAll ? (
-                  <KeyboardArrowUpIcon />
-                ) : (
-                  <KeyboardArrowDownIcon />
-                )}
-              </IconButton>
-            </div>
-          </div>
-          <Collapse
-            className={classes.collapseStyle}
-            in={collapseAll}
-            timeout="auto"
-            unmountOnExit
-          >
-            <List className={classes.rightList} dense={true}>
-              {CVsDataRaw[0].consultingEmphasis.map((el) => (
-                <ListItem>
-                  <ListItemText primary={el} />
-                  <ListItemSecondaryAction>
-                    <IconButton edge="end" aria-label="delete">
-                      <DeleteIcon />
-                    </IconButton>
-                  </ListItemSecondaryAction>
-                </ListItem>
-              ))}
-              <ListItem>
-                <TextField
-                  id="standard-full-width"
-                  placeholder="Weitere Branchenkompetenz"
-                  style={{ width: "20rem" }}
-                />
-                <ListItemSecondaryAction>
-                  <IconButton edge="end" aria-label="delete">
-                    <SaveIcon />
-                  </IconButton>
-                </ListItemSecondaryAction>
-              </ListItem>
-            </List>
-            {/* <div>
-              <Fab
-                className={classes.fixedIcon}
-                color="primary"
-                aria-label="add"
-              >
-                <AddIcon />
-              </Fab>
-            </div> */}
-          </Collapse>
-          <div className={classes.boderBottom}>
-            <div className={classes.collapseHeader}>
-              Fach- und Methodenkompetenz
-            </div>
-            <div>
-              {collapseAll ? (
-                <IconButton
-                  className={classes.collapseIcon}
-                  color="primary"
-                  onClick={handleEditClick}
-                >
-                  <EditIcon />
-                </IconButton>
-              ) : (
-                <div />
-              )}
-              <IconButton
-                className={classes.collapseIcon}
-                color="primary"
-                onClick={handleCollapseClick}
-              >
-                {collapseAll ? (
-                  <KeyboardArrowUpIcon />
-                ) : (
-                  <KeyboardArrowDownIcon />
-                )}
-              </IconButton>
-            </div>
-          </div>
-          <Collapse
-            className={classes.collapseStyle}
-            in={collapseAll}
-            timeout="auto"
-            unmountOnExit
-          >
-            <List className={classes.rightList} dense={true}>
-              {/* {CVsDataRaw[0].consultingEmphasis.map((el) => (
-                <ListItem>
-                  <ListItemText primary={el} />
-                  <ListItemSecondaryAction>
-                    <IconButton edge="end" aria-label="delete">
-                      <DeleteIcon />
-                    </IconButton>
-                  </ListItemSecondaryAction>
-                </ListItem>
-              ))} */}
-              <ListItem>
-                <TextField
-                  id="standard-full-width"
-                  placeholder="Weitere Branchenkompetenz"
-                  style={{ width: "20rem" }}
-                />
-                <ListItemSecondaryAction>
-                  <IconButton edge="end" aria-label="delete">
-                    <SaveIcon />
-                  </IconButton>
-                </ListItemSecondaryAction>
-              </ListItem>
-            </List>
-            {/* <div>
-              <Fab
-                className={classes.fixedIcon}
-                color="primary"
-                aria-label="add"
-              >
-                <AddIcon />
-              </Fab>
-            </div> */}
-          </Collapse>
-          <div className={classes.boderBottom}>
-            <div className={classes.collapseHeader}>Sprachen</div>
-            <div>
-              {collapseAll ? (
-                <IconButton
-                  className={classes.collapseIcon}
-                  color="primary"
-                  onClick={handleEditClick}
-                >
-                  <EditIcon />
-                </IconButton>
-              ) : (
-                <div />
-              )}
-              <IconButton
-                className={classes.collapseIcon}
-                color="primary"
-                onClick={handleCollapseClick}
-              >
-                {collapseAll ? (
-                  <KeyboardArrowUpIcon />
-                ) : (
-                  <KeyboardArrowDownIcon />
-                )}
-              </IconButton>
-            </div>
-          </div>
-          <Collapse
-            className={classes.collapseStyle}
-            in={collapseAll}
-            timeout="auto"
-            unmountOnExit
-          >
-            <List className={classes.rightList} dense={true}>
-              {/* {CVsDataRaw[0].consultingEmphasis.map((el) => (
-                <ListItem>
-                  <ListItemText primary={el} />
-                  <ListItemSecondaryAction>
-                    <IconButton edge="end" aria-label="delete">
-                      <DeleteIcon />
-                    </IconButton>
-                  </ListItemSecondaryAction>
-                </ListItem>
-              ))} */}
-              <ListItem>
-                <TextField
-                  id="standard-full-width"
-                  placeholder="Weitere Branchenkompetenz"
-                  style={{ width: "20rem" }}
-                />
-                <ListItemSecondaryAction>
-                  <IconButton edge="end" aria-label="delete">
-                    <SaveIcon />
-                  </IconButton>
-                </ListItemSecondaryAction>
-              </ListItem>
-            </List>
-            {/* <div>
-              <Fab
-                className={classes.fixedIcon}
-                color="primary"
-                aria-label="add"
-              >
-                <AddIcon />
-              </Fab>
-            </div> */}
-          </Collapse>
+          <PaperCVItem
+            titel={i18n(lng, "PaperCV.expanderTitel.industryKnowHow")}
+            theState={theCVsDataState}
+            index={index}
+            propertyKey={"industryKnowHow"}
+          />
 
-          <div className={classes.boderBottom}>
-            <div className={classes.collapseHeader}>IT-Kompetenz</div>
-            <div>
-              {collapseAll ? (
-                <IconButton
-                  className={classes.collapseIcon}
-                  color="primary"
-                  onClick={handleEditClick}
-                >
-                  <EditIcon />
-                </IconButton>
-              ) : (
-                <div />
-              )}
-              <IconButton
-                className={classes.collapseIcon}
-                color="primary"
-                onClick={handleCollapseClick}
-              >
-                {collapseAll ? (
-                  <KeyboardArrowUpIcon />
-                ) : (
-                  <KeyboardArrowDownIcon />
-                )}
-              </IconButton>
-            </div>
-          </div>
-          <Collapse
-            className={classes.collapseStyle}
-            in={collapseAll}
-            timeout="auto"
-            unmountOnExit
-          >
-            <List className={classes.rightList} dense={true}>
-              {/* {CVsDataRaw[0].consultingEmphasis.map((el) => (
-                <ListItem>
-                  <ListItemText primary={el} />
-                  <ListItemSecondaryAction>
-                    <IconButton edge="end" aria-label="delete">
-                      <DeleteIcon />
-                    </IconButton>
-                  </ListItemSecondaryAction>
-                </ListItem>
-              ))} */}
-              <ListItem>
-                <TextField
-                  id="standard-full-width"
-                  placeholder="Weitere Branchenkompetenz"
-                  style={{ width: "20rem" }}
-                />
-                <ListItemSecondaryAction>
-                  <IconButton edge="end" aria-label="delete">
-                    <SaveIcon />
-                  </IconButton>
-                </ListItemSecondaryAction>
-              </ListItem>
-            </List>
-            {/* <div>
-              <Fab
-                className={classes.fixedIcon}
-                color="primary"
-                aria-label="add"
-              >
-                <AddIcon />
-              </Fab>
-            </div> */}
-          </Collapse>
-          <div className={classes.boderBottom}>
-            <div className={classes.collapseHeader}>Zertifikate</div>
-            <div>
-              {collapseAll ? (
-                <IconButton
-                  className={classes.collapseIcon}
-                  color="primary"
-                  onClick={handleEditClick}
-                >
-                  <EditIcon />
-                </IconButton>
-              ) : (
-                <div />
-              )}
-              <IconButton
-                className={classes.collapseIcon}
-                color="primary"
-                onClick={handleCollapseClick}
-              >
-                {collapseAll ? (
-                  <KeyboardArrowUpIcon />
-                ) : (
-                  <KeyboardArrowDownIcon />
-                )}
-              </IconButton>
-            </div>
-          </div>
-          <Collapse
-            className={classes.collapseStyle}
-            in={collapseAll}
-            timeout="auto"
-            unmountOnExit
-          >
-            <List className={classes.rightList} dense={true}>
-              {/* {CVsDataRaw[0].consultingEmphasis.map((el) => (
-                <ListItem>
-                  <ListItemText primary={el} />
-                  <ListItemSecondaryAction>
-                    <IconButton edge="end" aria-label="delete">
-                      <DeleteIcon />
-                    </IconButton>
-                  </ListItemSecondaryAction>
-                </ListItem>
-              ))} */}
-              <ListItem>
-                <TextField
-                  id="standard-full-width"
-                  placeholder="Weitere Branchenkompetenz"
-                  style={{ width: "20rem" }}
-                />
-                <ListItemSecondaryAction>
-                  <IconButton edge="end" aria-label="delete">
-                    <SaveIcon />
-                  </IconButton>
-                </ListItemSecondaryAction>
-              </ListItem>
-            </List>
-            {/* <div>
-              <Fab
-                className={classes.fixedIcon}
-                color="primary"
-                aria-label="add"
-              >
-                <AddIcon />
-              </Fab>
-            </div> */}
-          </Collapse>
+          <PaperCVItem
+            titel={i18n(
+              lng,
+              "PaperCV.expanderTitel.functionalAndMethodCompetencies"
+            )}
+            theState={theCVsDataState}
+            index={index}
+            propertyKey={"technicalAndMethodologicalCompetence"}
+          />
+
+          <PaperCVItem
+            titel={i18n(lng, "PaperCV.expanderTitel.languages")}
+            theState={theCVsDataState}
+            index={index}
+            propertyKey={"languages"}
+          />
+
+          <PaperCVItem
+            titel={i18n(lng, "PaperCV.expanderTitel.ITCompetencies")}
+            theState={theCVsDataState}
+            index={index}
+            propertyKey={"itCompetence"}
+          />
+
+          <PaperCVItem
+            titel={i18n(lng, "PaperCV.expanderTitel.certificate")}
+            theState={theCVsDataState}
+            index={index}
+            propertyKey={"certificates"}
+          />
+          <PaperCVItem
+            titel={i18n(lng, "PaperCV.expanderTitel.projects")}
+            theState={theCVsDataState}
+            index={index}
+            propertyKey={"projectexperience"}
+          />
         </div>
       </Paper>
     </div>
