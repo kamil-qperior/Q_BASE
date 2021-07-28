@@ -11,7 +11,7 @@ import React from "react";
 import SwipeableViews from "react-swipeable-views";
 import { useRecoilState } from "recoil";
 import { filterLanguagesData, languageCode } from "../../store/states";
-import { filterClientData, clientFilterHolder} from "../../store/filter";
+import { filterClientData, clientFilterHolder, filterNameData, filterNameDataHolder} from "../../store/filter";
 import { i18n } from "../../utils/i18n/i18n";
 import CertificationTableInside from "../cv/CertificationTableInside";
 import SearchBarLeftRefs from "./SearchBarLeftRefs";
@@ -95,23 +95,36 @@ export default function MyReferenceDashboard() {
   const theme = useTheme();
 
   const [value, setValue] = React.useState(0);
+  const [counter, setCounter] = React.useState(0);
   const [filterLanguages] = useRecoilState(filterLanguagesData);
   const [filterClient, setFilterClient] = useRecoilState(filterClientData);
   const [clientFilterH, setFilterClientH] = useRecoilState(clientFilterHolder);
+
+  const [filterName, setFilterNameData] = useRecoilState(filterNameData);
+  const [filterNameDataH, setFilterNameDataH] = useRecoilState(filterNameDataHolder);
 
   const [lng] = useRecoilState(languageCode);
 
 
   
   //is necessery for preloading of filterdata into the filers!!
-  setFilterClientH(filterClient)
+  //once per first render you set your data into the holder
+  if(counter===0) {
+
+    setFilterClientH(filterClient)
+    setFilterNameDataH(filterName) 
+    setCounter(1)
+  
+    console.log('rerender my reference dashborad in if');
+  }
+
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
   
   const handleChangeIndex = (index) => {
-    setFilterClientH(filterClient)
+   
     setValue(index);
   };
 
@@ -130,13 +143,14 @@ export default function MyReferenceDashboard() {
           <Tab label={i18n(lng, "ReferenceSearch.header.searchRef")} />
           <Tab label={i18n(lng, "ReferenceSearch.header.selectedRefs")} />
         </Tabs>
-      </AppBar>
+      </AppBar>¨
+
       <SwipeableViews
         // axis={theme.direction === "rtl" ? "x-reverse" : "x"}
         index={value}
         onChangeIndex={handleChangeIndex}
         className={classes.tabContentTableView}
-      >
+        >
         <TabPanel className={classes.tabContentTable} value={value} index={0}>
           {/* {i18n(lng, "MyCV.header.test")} */}
           {/* TODO change the reference table to new searchbar left standard*/}
@@ -144,14 +158,17 @@ export default function MyReferenceDashboard() {
           <CertificationTableInside /> */}
 
           <div className={classes.searchAndResultContainer}> 
+          <Suspense>
             <Box >
               <SearchBarLeftRefs></SearchBarLeftRefs>
             </Box>
+          </Suspense>
 
-            <Suspense>
+            
+          <Suspense>
               <ReferenceResultTable />
+        </Suspense>
 
-            </Suspense>
           </div>
         </TabPanel>
 
@@ -162,7 +179,7 @@ export default function MyReferenceDashboard() {
           dir={theme.direction}
           >
           {/*
-            TODO create new design for variant selection   
+            TODO create new design for variant selection, from paperCV 
           <PaperCV theCVsDataState={CVsData} index={123} /> */}
               <SlideDialog></SlideDialog>
         </TabPanel>

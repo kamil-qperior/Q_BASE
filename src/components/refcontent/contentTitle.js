@@ -22,7 +22,7 @@ import ContentItem from "../stepperUtil/contentItem";
 const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
-    margin: 10,
+    margin: 20,
   },
   button: {
     marginRight: theme.spacing(1),
@@ -52,7 +52,8 @@ export default function ContentTitleForm(props) {
   return (
     <div className={classes.root}>
       <ContentCreator title={title} single={true} language={language} ></ContentCreator>
-      <Grid container>
+      <Grid className={classes.root} direction="row" container justify="center" spacing={0} >
+      
         <FormControl component="legend">
           <FormLabel component="legend">Language</FormLabel>
           <RadioGroup onChange={handleChangeRadioLang}   value={language} aria-label="language" name="language">

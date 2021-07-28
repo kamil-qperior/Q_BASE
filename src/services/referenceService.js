@@ -3,6 +3,8 @@ import { token } from './slidedeck/slideDeckServ.js'
 
 
 export const fetchAllReferenceData = async () => {
+
+  console.log('fetch made call to backend');
   const result = await fetch(`${referenceUrl}`, {
     headers: new Headers({ 'Authorization': token })
   })
@@ -13,6 +15,8 @@ export const fetchAllReferenceData = async () => {
 
 
 export const fetchReferenceDatabyName = async (name) => {
+
+  console.log('fetch made call to backend name');
   const result = await fetch(
     `${referenceUrl}?filter=${encodeURI(JSON.stringify({ "where": { "name": name } }))}`, {
     headers: new Headers({ 'Authorization': token })
@@ -65,7 +69,7 @@ export const fetchReferenceDatabyParam = async (searchQuery) => {
 
 //checks if reference with array contains value
 export const fetchReferenceDatabyParamArrays = async (value, param) => {
-
+  console.log('fetch made call to backend array');
 
   const result = await fetch(
     `${referenceUrl}?filter=${encodeURI(JSON.stringify({ "where": { [param]: { like: value, options: "i" } } }))}`, {

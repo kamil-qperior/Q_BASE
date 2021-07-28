@@ -13,6 +13,7 @@ import {
   filter,
   filterStatusData,
   filterNameData,
+  filterNameDataHolder,
   filterCityData,
   filterPolicyData,
   filterClientData,
@@ -55,14 +56,14 @@ export default function PopoverPopupState() {
   return (
     <div className={classes.searchBox}>
       <div className={classes.searchBoxRow}>
-        {/*         <div className={classes.searchBoxRowItem}>
+        <div className={classes.searchBoxRowItem}>
           <FilterExpander
             title={i18n(lng, "Reference.tableHeader.name")}
-            theRightState={filterNameData}
+            theRightState={filterNameDataHolder}
             customSwitchOn={false}
             isHierarchie={false}
           />
-        </div> */}
+        </div>
         {/* <Divider /> */}
         <div className={classes.searchBoxRowItem}>
           <FilterExpander
@@ -73,24 +74,22 @@ export default function PopoverPopupState() {
           />
         </div>
 
-        
-          <div className={classes.searchBoxRowItem}>
-            <FilterExpander
-              title={i18n(lng, "Reference.tableHeader.industry")}
-              theRightState={filterIndustryData}
-              customSwitchOn={false}
-              isHierarchie={false}
-            />
-          </div>
-          <div className={classes.searchBoxRowItem}>
-            <FilterExpander
-              title={i18n(lng, "Reference.tableHeader.country")}
-              theRightState={filterCountryData}
-              customSwitchOn={false}
-              isHierarchie={false}
-            />
-          </div>
-        
+        <div className={classes.searchBoxRowItem}>
+          <FilterExpander
+            title={i18n(lng, "Reference.tableHeader.industry")}
+            theRightState={filterIndustryData}
+            customSwitchOn={false}
+            isHierarchie={false}
+          />
+        </div>
+        <div className={classes.searchBoxRowItem}>
+          <FilterExpander
+            title={i18n(lng, "Reference.tableHeader.country")}
+            theRightState={filterCountryData}
+            customSwitchOn={false}
+            isHierarchie={false}
+          />
+        </div>
       </div>
     </div>
   );

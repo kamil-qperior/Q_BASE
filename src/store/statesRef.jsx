@@ -115,10 +115,10 @@ let filteredReferences = selector({
     const country = get(filterCountryData); 
     const industry = get(filterIndustryData); 
     const policy = get(filterPolicyData); 
-    
-    //free text
-    const client = get(filterClientData); 
     const name = get(filterNameData); 
+    
+    const client = get(filterClientData); 
+    //free text
     
     //tags
     const techTag = get(filterTechnologyData); 
@@ -131,14 +131,17 @@ let filteredReferences = selector({
     filteredRefs = filterData(country, filteredRefs, "country");
     filteredRefs = filterData(industry, filteredRefs, "industry");
     filteredRefs = filterData(policy, filteredRefs, "policy");
+    filteredRefs = filterData(name, filteredRefs, "name");
 
-    filteredRefs = filterFreeText(name, filteredRefs);
+    filteredRefs = filterNestedData(client, filteredRefs, "client", "name");
 
-  /*   if (client?.length > 0) {
+    //filteredRefs = filterFreeText(name, filteredRefs);
+
+    /*  if (client?.length > 0) {
       filteredRefs = filteredRefs.filter((ref) =>
         ref.client?.name?.toLowerCase().includes(client.toLowerCase())
       );
-    } */
+    }  */
 
     return filteredRefs;
   },
@@ -241,6 +244,20 @@ export {
       filteredRefs = filteredRefs.filter((ref) => {
         return filterObj.find((el) => {
           if (el.selected && el.data === ref[key]) {
+            return true;
+          }
+          return false;
+        });
+      });
+    }
+    return filteredRefs;
+  }
+
+  function filterNestedData(filterObj, filteredRefs, key1, key2) {
+    if (!!filterObj.find((el) => el.selected === true)) {
+      filteredRefs = filteredRefs.filter((ref) => {
+        return filterObj.find((el) => {
+          if (el.selected && el.data === ref[key1][key2]) {
             return true;
           }
           return false;

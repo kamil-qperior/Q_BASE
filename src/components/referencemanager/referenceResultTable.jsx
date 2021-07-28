@@ -69,12 +69,14 @@ export default function ReferenceResultTable() {
   const [lng] = useRecoilState(languageCode);
 
   //from store
-  const [filterName, setFilterNameData] = useRecoilState(filterNameData);
-  const [filterClient, setFilterClient] = useRecoilState(clientFilterHolder);
-  const [filterTechnology, setFilterTechnology] =
+/*   const [filterName, setFilterNameData] = useRecoilState(filterNameData);
+  const [filterClient, setFilterClient] = useRecoilState(clientFilterHolder); */
+
+  //do we want to do it via table or filter on the left
+/*   const [filterTechnology, setFilterTechnology] =
     useRecoilState(filterTechnologyData);
   const [filterProcedure, setFilterProcedureData] =
-    useRecoilState(filterProcedureData);
+    useRecoilState(filterProcedureData); */
 
   const [filteredRefs] = useRecoilState(filteredReferences);
   const [chosenRefs, setChosenRefs] = useRecoilState(chosenRefsState);
@@ -95,14 +97,14 @@ export default function ReferenceResultTable() {
     setPage(newPage);
   };
 
-  function handleNameChange(event, value) {
+/*   function handleNameChange(event, value) {
     setFilterNameData(event.target.value);
   }
 
   function handleClientChange(event, value) {
     setFilterClient(event.target.value);
   }
-
+ */
   //TODO only page filtering works , not changing page
   return (
     <div>
@@ -212,7 +214,7 @@ export default function ReferenceResultTable() {
                   <TableCell
                     onClick={async () => {
                       setOpen(true);
-
+                      //this is the data to use for PaperRef
                       setRefState(mapFromApi(row));
 
                       const contentsDE = await fetchReferenceContent(
@@ -245,8 +247,8 @@ export default function ReferenceResultTable() {
                         label={tag}
                         onClick={(e) => {
                           //fix to handle arrays
-                          setFilterTechnology(tag);
-                        }}
+/*                           setFilterTechnology(tag);
+ */                        }}
                       ></Chip>
                     ))}
                   </TableCell>
@@ -256,8 +258,8 @@ export default function ReferenceResultTable() {
                         key={tag}
                         label={tag}
                         onClick={(e) => {
-                          setFilterProcedureData(tag);
-                        }}
+/*                           setFilterProcedureData(tag);
+ */                        }}
                       ></Chip>
                     ))}
                   </TableCell>

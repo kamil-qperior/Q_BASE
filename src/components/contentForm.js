@@ -30,7 +30,11 @@ import ContentCreator from "./stepperUtil/contentCreator";
 const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
-    margin: 10,
+    margin: 20,
+  },
+  form: {
+    width: "100%",
+    margin: 20,
   },
 
   button: {
@@ -61,8 +65,8 @@ export default function ContentForm(props) {
   return (
     <div className={classes.root}>
       <ContentCreator title={title} language={language} category={category} ></ContentCreator>
-      <Grid container>
-        <FormControl component="legend">
+      <Grid className={classes.form} direction="row" container justify="center" spacing={0} >
+        <FormControl  component="legend">
           <FormLabel component="legend">Language</FormLabel>
           <RadioGroup onChange={handleChangeRadioLang} value={language} aria-label="language" name="language">
             <FormControlLabel value="DE" control={<Radio />} label="deutsch" />

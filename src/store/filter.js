@@ -1,20 +1,15 @@
 //TODO get from DB
 
-import {
-  atom,
-  selector
-} from "recoil";
+import { atom, selector } from "recoil";
 
-import {filteredReferences} from "./statesRef"
+import { filteredReferences } from "./statesRef";
 import {
   fetchAllReferenceData,
   fetchReferenceContent,
   fetchReferenceDatabyParam,
 } from "../services/referenceService";
 
-export const projectNames = [
-  "project name"
-];
+export const projectNames = ["project name"];
 
 export const policies = [
   "pm contact approved - always",
@@ -24,15 +19,19 @@ export const policies = [
   "string",
 ];
 
-export const industires = ["consulting", "service company", "services", "automative/public sector", "insurance"];
+export const industires = [
+  "consulting",
+  "service company",
+  "services",
+  "automative/public sector",
+  "insurance",
+];
 
 export const technologies = ["SAP", "Java"];
 
 export const procedures = ["business analysis", "cost reduction"];
 
 export const status = ["tbd", "approved", "approval on request"];
-
-
 
 export const languageObjects = [
   {
@@ -518,151 +517,146 @@ export const cities = {
   },
 };
 
-
-
-
-
 const filterStatusData = atom({
   key: "filterStatusData", // unique ID (with respect to other atoms/selectors)
   default: status.map((el) => {
-      return {
-          "data": el,
-          "selected": false,
-          "visible": true
-      }
+    return {
+      data: el,
+      selected: false,
+      visible: true,
+    };
   }), // default value (aka initial value)
 });
 
 const filterCountryData = atom({
   key: "filterCountryData", // unique ID (with respect to other atoms/selectors)
   default: Object.keys(countries).map((el) => {
-      return {
-          "data": el,
-          "selected": false,
-          "visible": true
-      }
+    return {
+      data: el,
+      selected: false,
+      visible: true,
+    };
   }), // default value (aka initial value)
 });
 
 const filterIndustryData = atom({
-  key: "filterIndustryData", 
+  key: "filterIndustryData",
   default: industires.map((el) => {
-      return {
-          "data": el,
-          "selected": false,
-          "visible": true
-      }
+    return {
+      data: el,
+      selected: false,
+      visible: true,
+    };
   }), // default value (aka initial value)
 });
 
 const filterCityData = atom({
-  key: "filterCityData", 
-  default:  Object.keys(cities).map((el) => {
-      return {
-          "data": el,
-          "selected": false,
-          "visible": true
-      }
+  key: "filterCityData",
+  default: Object.keys(cities).map((el) => {
+    return {
+      data: el,
+      selected: false,
+      visible: true,
+    };
   }), // default value (aka initial value)
 });
 
 const filterPolicyData = atom({
-  key: "filterPolicyData", 
-  default:  policies.map((el) => {
-      return {
-          "data": el,
-          "selected": false,
-          "visible": true
-      }
+  key: "filterPolicyData",
+  default: policies.map((el) => {
+    return {
+      data: el,
+      selected: false,
+      visible: true,
+    };
   }), // default value (aka initial value)
 });
 
-
-const filterNameData = atom({
-  key: "filterNameData", 
-  default: []
+const filterNameDataHolder = atom({
+  key: "filterNameDataHolder",
+  default: [],
 });
 
+const filterNameData = selector({
+  key: "filterNameData",
+  async get({ get }) {
+    const s = get(filterNameDataHolder);
+    if (s?.length !== 0) {
+      return s;
+    }
 
-
-/* let filterClientData = selector({
-  key: "filterClientData", //dont use queryState otherwise circular
-  default: [],
-  get: async ({ get }) => {
-    const all = await fetchAllReferenceData()
-
-      return all?.map(ref => {
-        return {
-          "data": ref.client?.name,
-          "selected": false,
-          "visible": true
-        }
-      })
-
+    const all = await fetchAllReferenceData();
+    return all?.map((ref) => {
+      return {
+        data: ref?.name,
+        selected: false,
+        visible: true,
+      };
+    });
   },
-  set: ({ set, get }, newValue) => {
-    //filter status 
-    let filteredCVsDataRaw = get(clientFilterHolder);
-    
-  } 
-})*/
+  set({ set }, newValue) {
+    //iterate over whole filter array
 
-
-
+    set(filterNameDataHolder, newValue);
+  },
+});
 
 const clientFilterHolder = atom({
   key: "clientFilterHolder",
   default: [],
 });
 
-
 const filterClientData = selector({
   key: "filterClientData",
   async get({ get }) {
-      const s = get(clientFilterHolder);
-      if (s?.length !== 0) {
-          return s;
-      }
-      
-      const all = await fetchAllReferenceData()
-      return all?.map(ref => {
-        return {
-          "data": ref.client?.name,
-          "selected": false,
-          "visible": true
-        }
-      })
+    const s = get(clientFilterHolder);
+    if (s?.length !== 0) {
+      return s;
+    }
+
+    const all = await fetchAllReferenceData();
+
+    const allData = all?.map((ref) => ref.client.name);
+    const uniqueValues = [...new Set(allData)];
+
+    const mappedFilters = uniqueValues?.map((data) => {
+      return {
+        data: data,
+        selected: false,
+        visible: true,
+      };
+    });
+
+    return [...new Set(mappedFilters)];
   },
   set({ set }, newValue) {
     //iterate over whole filter array
 
-
-      set(clientFilterHolder, newValue);
-  }
+    set(clientFilterHolder, newValue);
+  },
 });
 
-
-
-
-
-/* const filterClientData = atom({
-  key: "filterClientData", 
-  default: fetchAllReferenceData().map(ref => ref.client.name)
-}); */
+function uniqBy(a, key) {
+  let seen = new Set();
+  return a.filter((item) => {
+    let k = key(item);
+    return seen.has(k) ? false : seen.add(k);
+  });
+}
 
 const filterTechnologyData = atom({
   key: "filterTechnologyData",
-  default: []
+  default: [],
 });
 
 const filterProcedureData = atom({
-  key: "filterProcedureData", 
-  default: []
+  key: "filterProcedureData",
+  default: [],
 });
 
-
-export { 
-  filterStatusData, 
+export {
+  filterStatusData,
+  filterNameDataHolder,
   filterNameData,
   filterCityData,
   filterPolicyData,
@@ -671,5 +665,5 @@ export {
   filterIndustryData,
   filterTechnologyData,
   filterCountryData,
-  clientFilterHolder
-}
+  clientFilterHolder,
+};
