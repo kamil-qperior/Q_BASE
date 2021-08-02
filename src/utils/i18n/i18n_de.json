@@ -23,7 +23,7 @@
   },
   "CV": {
     "tableHeader": {
-      "employee": "Mitarbeiter",
+      "employee": "Vorname Nachname",
       "topicChapter": "Topic Chapter",
       "certificate": "Zertifikate",
       "level": "Position",
@@ -48,7 +48,8 @@
       "industryKnowHow": "Branchenkompetenz",
       "functionalAndMethodCompetencies": "Fach- und Methodenkompetenz",
       "languages": "Sprachen",
-      "ITCompetencies": "IT-Kompetenz"
+      "ITCompetencies": "IT-Kompetenz",
+      "projects": "Projekte"
     }
   },
   "SearchCV": {

@@ -13,18 +13,8 @@ import {
   filterITCompetenciesData,
   hierarchyInput,
 } from "../../../store/states";
-import FilterDialog from "./FilterDialog";
 import FilterExpander from "./FilterExpander";
-
-import Divider from "@material-ui/core/Divider";
-import IconButton from "@material-ui/core/IconButton";
-import Badge from "@material-ui/core/Badge";
-
-import ImportContactsIcon from "@material-ui/icons/ImportContacts";
 import { i18n } from "../../../utils/i18n/i18n";
-import GeneriyHierachie from "./GenericHierachie";
-import Collapse from "@material-ui/core/Collapse";
-
 import { useRecoilState } from "recoil";
 
 const useStyles = makeStyles((theme) => ({
@@ -48,13 +38,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function PopoverPopupState() {
   const [lng] = useRecoilState(languageCode);
-  const [theFilterEmployeeNamesData, setFilterEmployeeNamesData] =
-    useRecoilState(filterEmployeeNamesData);
-  const [theHierachyHeight, setHierachyHeight] = useRecoilState(hierachyHeight);
   const classes = useStyles();
-  const handleClick = () => {
-    // setHierachyHeight(theHierachyHeight === "0px" ? "472px" : "0px");
-  };
   return (
     <div className={classes.searchBox}>
       <div className={classes.searchBoxRow}>
@@ -75,14 +59,6 @@ export default function PopoverPopupState() {
             isHierarchie={false}
           />
         </div>
-        {/* <div className={classes.searchBoxRowItem}>
-          <FilterExpander
-            title={i18n(lng, "CV.tableHeader.certificate")}
-            theRightState={filterCertificationData}
-            customSwitchOn={true}
-            isHierarchie={false}
-          />
-        </div> */}
         <div className={classes.searchBoxRowItem}>
           <FilterExpander
             title={i18n(lng, "CV.tableHeader.certificate")}

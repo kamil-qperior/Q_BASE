@@ -27,7 +27,7 @@
       "certificate": "Certificate",
       "level": "Position",
       "consultingEmphasis": "Consulting Emphasis",
-      "industryKnowHow": "Industry Know-how ",
+      "industryKnowHow": "Industry Know-how",
       "functionalAndMethodCompetencies": "Functional and Method Competencies",
       "languages": "Languages",
       "ITCompetencies": "IT Competencies"
@@ -36,11 +36,19 @@
       "rowsPerPage": "Rows per Page:"
     }
   },
-  "MyCV": {
-    "header": {
-      "test": "content1",
-      "myCV": "My CV",
-      "edit": "Search for CV"
+  "PaperCV": {
+    "leftSide": {
+      "professionalBackground": "Professional Background"
+    },
+    "expanderTitel": {
+      "certificate": "Certificate",
+      "level": "Position",
+      "consultingEmphasis": "Consulting Emphasis",
+      "industryKnowHow": "Industry Know-how",
+      "functionalAndMethodCompetencies": "Functional and Method Competencies",
+      "languages": "Languages",
+      "ITCompetencies": "IT Competencies",
+      "projects": "Projects"
     }
   },
   "SearchCV": {

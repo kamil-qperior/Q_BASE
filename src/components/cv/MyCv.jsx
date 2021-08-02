@@ -25,7 +25,7 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import Checkbox from "@material-ui/core/Checkbox";
 import GeneriyHierachie from "./subComponents/GenericHierachie";
-
+import SelectedTableItems from "./SelectedTableItems";
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
   return (
@@ -134,7 +134,7 @@ export default function MyCV() {
           index={1}
           dir={theme.direction}
         >
-           <PaperCV theCVsDataState={CVsData} index={123} /> 
+          <SelectedTableItems />
         </TabPanel>
       </SwipeableViews>
     </div>

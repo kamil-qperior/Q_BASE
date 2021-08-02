@@ -5,7 +5,7 @@ import {
 
 import certificationFilter from '../data/certificationFilter.json'
 import certificationClusters from '../data/certificationCluster.json'
-import employees from '../data/employeesJune.json'
+import employees from '../data/employeesAugust.json'
 // let deepCopy = JSON.parse(JSON.stringify({ "Projektmanagement": certificationClusters }));
 let deepCopy = JSON.parse(JSON.stringify(certificationClusters));
 
@@ -187,6 +187,11 @@ const switchFilterLogic = atom({
     default: false
 })
 
+const showCVPopover = atom({
+    key: "showCVPopover", // unique ID (with respect to other atoms/selectors)
+    default: false
+})
+
 
 const CVsData = atom({
     key: "CVsData", // unique ID (with respect to other atoms/selectors)
@@ -194,6 +199,8 @@ const CVsData = atom({
         employees.map(item => {
             var certificates = {};
             item.isExpanded = false;
+            item.id = getNewFancyIDPowerdByMicha();
+            item.isSelected = false;
             item.certificates = item.certificates.filter(function (val) {
                 if (certificates[val.name] || val.name === "unknown") {
                     return false;
@@ -484,5 +491,5 @@ const CVsDataWithFilter = selector({
     },
 });
 
-export { languageCode, hierarchyInput, hierachyHeight, filterLevelData, filterEmployeeNamesData, filterITCompetenciesData, filterLanguagesData, filterFunctionalAndMethodCompetenciesData, filterIndustryKnowHowData, filterConsultingEmphasisData, switchFilterLogic, filterTopicChapterData, CVsData, CVsDataWithFilter, filterCertificationData, certificationCluster, filterTopicChapterDataLevel3, filterTopicChapterDataLevel2, filterTopicChapterDataLevel1 };
+export { languageCode, hierarchyInput, showCVPopover, hierachyHeight, filterLevelData, filterEmployeeNamesData, filterITCompetenciesData, filterLanguagesData, filterFunctionalAndMethodCompetenciesData, filterIndustryKnowHowData, filterConsultingEmphasisData, switchFilterLogic, filterTopicChapterData, CVsData, CVsDataWithFilter, filterCertificationData, certificationCluster, filterTopicChapterDataLevel3, filterTopicChapterDataLevel2, filterTopicChapterDataLevel1 };
 
