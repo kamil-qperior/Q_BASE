@@ -143,7 +143,8 @@ export default function PaperCVItem({ titel, theState, index, propertyKey }) {
                     {el.rawName.split(" (")[0]}
                   </div>
                   <div class={classes.bulltetPointHeader}>
-                    ({el.rawName.split(" (")[1]}
+                    {el.rawName.split(" (")[1]?.length > 0 ? "(" : null}
+                    {el.rawName.split(" (")[1]}
                   </div>
 
                   <ul class={classes.bulltetPoints}>

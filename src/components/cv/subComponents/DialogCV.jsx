@@ -27,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function DialogCV({ theCVsDataState, index }) {
+export default function DialogCV({ theCVsDataState, index, modus }) {
   //   const [anchorEl, setAnchorEl] = React.useState(null);
 
   const [theShowCVPopover, setShowCVPopover] = useRecoilState(showCVPopover);
@@ -56,7 +56,11 @@ export default function DialogCV({ theCVsDataState, index }) {
               horizontal: "right",
             }}
           >
-            <PaperCV theCVsDataState={theCVsDataState} index={index} />
+            <PaperCV
+              theCVsDataState={theCVsDataState}
+              index={index}
+              modus={modus}
+            />
           </Popover>
         </div>
       )}

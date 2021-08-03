@@ -1,4 +1,5 @@
 import React from "react";
+import { useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -12,6 +13,7 @@ import FilterDialog from "./subComponents/FilterDialog";
 import {
   languageCode,
   CVsData,
+  CVsDataSelected,
   CVsDataWithFilter,
   filterCertificationData,
   hierachyHeight,
@@ -87,6 +89,11 @@ export default function SpanningTable() {
   const [page, setPage] = React.useState(0);
   const [employes] = useRecoilState(CVsDataWithFilter);
   let [CVsDataRaw, setCVsData] = useRecoilState(CVsData);
+  // useEffect(() => {
+  //   setCVsDataSelected(CVsDataRaw.filter((el) => el.isSelected));
+  // }, [CVsDataRaw]);
+  const [CVsDataSelectedRaw, setCVsDataSelected] =
+    useRecoilState(CVsDataSelected);
 
   const index = CVsDataRaw.findIndex((el) => el.isExpanded);
 
@@ -128,14 +135,9 @@ export default function SpanningTable() {
     let itCompetence = [...row.itCompetence].filter(Boolean);
     let certificates = [...row.certificates].filter(Boolean);
     const [open, setOpen] = React.useState(false);
-    const onSelectRow = (event, rowID, isExpanded) => {
+    const onSelectRow = (event, rowID) => {
       if (event.target.type !== "checkbox") {
-        console.log(theShowCVPopover);
-        setTimeout(() => {
-          setShowCVPopover(!theShowCVPopover);
-        }, 1);
-        console.log(theShowCVPopover);
-
+        setShowCVPopover(true);
         setCVsData(
           CVsDataRaw.map((el) =>
             el.id === rowID
@@ -151,12 +153,42 @@ export default function SpanningTable() {
           el.id === rowID ? { ...el, isSelected: !el.isSelected } : { ...el }
         )
       );
+      if (event.target.checked) {
+        // Array.from(Array(10).keys()).map(el => 1)
+        // Object.keys(x[0]).forEach(el => {
+
+        //   console.log(Array.isArray(x[0][el]))
+
+        //   })
+        setCVsDataSelected(
+          [
+            CVsDataRaw.filter((el) => el.id === rowID).map((el) => {
+              let newValue = JSON.parse(JSON.stringify(el));
+              Object.keys(newValue).forEach((val) => {
+                if (Array.isArray(newValue[val])) {
+                  newValue[val + "Selection"] = Array.from(
+                    Array(newValue[val].length).keys()
+                  ).map((elx) => 1);
+                }
+              });
+              return {
+                ...newValue,
+                isSelected: !el.isSelected,
+              };
+            }),
+            CVsDataSelectedRaw,
+          ].flat()
+        );
+      } else {
+        setCVsDataSelected(CVsDataSelectedRaw.filter((el) => el.id !== rowID));
+      }
+      // setCVsDataSelected(CVsDataSelectedRaw.filter((el) => el.id !== rowID));
     };
     return (
       <React.Fragment>
         <TableRow
           hover
-          onClick={(event) => onSelectRow(event, row.id, row.isExpanded)}
+          onClick={(event) => onSelectRow(event, row.id)}
           key={row.id}
           style={{ cursor: "pointer" }}
           selected={row.isExpanded}
@@ -246,7 +278,9 @@ export default function SpanningTable() {
           onChangeRowsPerPage={handleChangeRowsPerPage}
         />
       </div>
-      {index > -1 ? <DialogCV theCVsDataState={CVsData} index={index} /> : null}
+      {index > -1 ? (
+        <DialogCV theCVsDataState={CVsData} index={index} modus="read" />
+      ) : null}
     </div>
   );
 }

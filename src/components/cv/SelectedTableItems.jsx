@@ -14,6 +14,7 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import {
   languageCode,
   CVsData,
+  CVsDataSelected,
   CVsDataWithFilter,
   filterCertificationData,
   hierachyHeight,
@@ -89,8 +90,10 @@ export default function SelectedTableItems() {
   const [page, setPage] = React.useState(0);
   const [employes] = useRecoilState(CVsDataWithFilter);
   let [CVsDataRaw, setCVsData] = useRecoilState(CVsData);
+  const [CVsDataSelectedRaw, setCVsDataSelected] =
+    useRecoilState(CVsDataSelected);
 
-  const index = CVsDataRaw.findIndex((el) => el.isExpanded);
+  const index = CVsDataSelectedRaw.findIndex((el) => el.isExpanded);
 
   const [theHierachyHeight] = useRecoilState(hierachyHeight);
 
@@ -131,14 +134,22 @@ export default function SelectedTableItems() {
     let certificates = [...row.certificates].filter(Boolean);
     const [open, setOpen] = React.useState(false);
     const onSelectRow = (event, rowID) => {
-      setShowCVPopover(!theShowCVPopover);
-      setCVsData(
-        CVsDataRaw.map((el) =>
+      setShowCVPopover(true);
+      setCVsDataSelected(
+        CVsDataSelectedRaw.map((el) =>
           el.id === rowID
             ? { ...el, isExpanded: !el.isExpanded }
             : { ...el, isExpanded: false }
         )
       );
+    };
+    const onDelteSelectedRow = (event, rowID) => {
+      setCVsData(
+        CVsDataRaw.map((el) =>
+          el.id === rowID ? { ...el, isSelected: !el.isSelected } : { ...el }
+        )
+      );
+      setCVsDataSelected(CVsDataSelectedRaw.filter((el) => el.id !== rowID));
     };
     return (
       <React.Fragment>
@@ -168,7 +179,7 @@ export default function SelectedTableItems() {
               // size="small"
               // className={classes.collapseIcon}
               color="primary"
-              onClick={(event) => onSelectRow(event, row.id)}
+              onClick={(event) => onDelteSelectedRow(event, row.id)}
               // data-type="DeleteIcon"
             >
               <DeleteIcon />
@@ -226,12 +237,12 @@ export default function SelectedTableItems() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {employes
-                .filter((el) => el.isSelected)
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((row) => (
-                  <Row key={row.cvFolder} row={row} />
-                ))}
+              {CVsDataSelectedRaw.slice(
+                page * rowsPerPage,
+                page * rowsPerPage + rowsPerPage
+              ).map((row) => (
+                <Row key={row.cvFolder} row={row} />
+              ))}
             </TableBody>
           </Table>
         </TableContainer>
@@ -240,14 +251,20 @@ export default function SelectedTableItems() {
           rowsPerPageOptions={[5, 10, 25]}
           component="div"
           labelRowsPerPage={i18n(lng, "CV.tableFooter.rowsPerPage")}
-          count={employes.filter((el) => el.isSelected).length}
+          count={CVsDataSelectedRaw.filter((el) => el.isSelected).length}
           rowsPerPage={rowsPerPage}
           page={page}
           onChangePage={handleChangePage}
           onChangeRowsPerPage={handleChangeRowsPerPage}
         />
       </div>
-      {index > -1 ? <DialogCV theCVsDataState={CVsData} index={index} /> : null}
+      {index > -1 ? (
+        <DialogCV
+          theCVsDataState={CVsDataSelected}
+          index={index}
+          modus="write"
+        />
+      ) : null}
     </div>
   );
 }

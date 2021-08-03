@@ -212,6 +212,11 @@ const CVsData = atom({
         })
 });
 
+const CVsDataSelected = atom({
+    key: "CVsDataSelected",
+    default: []
+});
+
 const filterTopicChapterDataLevel1 = selector({
     key: "filterTopicChapterDataLevel1", // unique ID (with respect to other atoms/selectors)
     get: ({ get }) => {
@@ -491,5 +496,5 @@ const CVsDataWithFilter = selector({
     },
 });
 
-export { languageCode, hierarchyInput, showCVPopover, hierachyHeight, filterLevelData, filterEmployeeNamesData, filterITCompetenciesData, filterLanguagesData, filterFunctionalAndMethodCompetenciesData, filterIndustryKnowHowData, filterConsultingEmphasisData, switchFilterLogic, filterTopicChapterData, CVsData, CVsDataWithFilter, filterCertificationData, certificationCluster, filterTopicChapterDataLevel3, filterTopicChapterDataLevel2, filterTopicChapterDataLevel1 };
+export { languageCode, hierarchyInput, showCVPopover, hierachyHeight, filterLevelData, filterEmployeeNamesData, filterITCompetenciesData, filterLanguagesData, filterFunctionalAndMethodCompetenciesData, filterIndustryKnowHowData, filterConsultingEmphasisData, switchFilterLogic, filterTopicChapterData, CVsData, CVsDataSelected, CVsDataWithFilter, filterCertificationData, certificationCluster, filterTopicChapterDataLevel3, filterTopicChapterDataLevel2, filterTopicChapterDataLevel1 };
 

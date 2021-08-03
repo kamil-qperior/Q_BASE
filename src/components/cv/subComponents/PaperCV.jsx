@@ -156,7 +156,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function PaperCV({ theCVsDataState, index }) {
+export default function PaperCV({ theCVsDataState, index, modus }) {
   const classes = useStyles();
   const [collapseAll, setCollapseAll] = React.useState(false);
   const [collapseFirst, setCollapseFirst] = React.useState(true);
