@@ -54,7 +54,8 @@ export default function StepFormVariant(props) {
   const procedures = refContents.filter((rc) => rc.type === "procedure");
 
   return (
-    <Grid container spacing={2} alignItems="center">
+    <Grid container spacing={2} alignItems="center" justify="center"
+    direction ="column">
       <Grid container spacing={3} justify="center" alignItems="center">
           <Grid style={{ width: 250, margin: 20}}  item>
             <Typography  variant ="h8" wrap="true"> Title </Typography>
@@ -78,7 +79,7 @@ export default function StepFormVariant(props) {
             </Grid>
           
       </Grid>
-      <Grid item>
+      <Grid item xs={12}>
         <CheckboxesGroup
           title="Goals"
           rcTitle= {rcTitle}
@@ -87,7 +88,7 @@ export default function StepFormVariant(props) {
           refId={referenceId}
         />
       </Grid>
-      <Grid item>
+      <Grid item xs={12}>
         <CheckboxesGroup
           title="Procedures"
           content={procedures}
@@ -95,7 +96,7 @@ export default function StepFormVariant(props) {
           refId={referenceId}
         />
       </Grid>
-      <Grid item>
+      <Grid item xs={12}>
         <CheckboxesGroup
           title="Results"
           content={results}

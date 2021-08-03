@@ -81,32 +81,15 @@ export default function SlideDialog() {
   if(chosenRefs.length===0) {
     return(
       <ScopedCssBaseline>
-        <Button variant="contained" color="primary" onClick={handleClickOpen}>
-        Create Slides
-      </Button>
-      <Dialog onClose={handleClose} aria-labelledby="simple-dialog-title" open={open}>
-        <DialogTitle id="simple-dialog-title">Add references from the list first!</DialogTitle>
-      </Dialog>
+        <Typography id="simple-dialog-title">Add references from the list first! </Typography>
       </ScopedCssBaseline>
+      
     )
   }
 
   return (
     <ScopedCssBaseline>
-      <Button variant="contained" color="primary" onClick={handleClickOpen}>
-        Create Slides
-      </Button>
-      <Badge badgeContent={chosenRefs.length} color="secondary">
-        <HowToVoteIcon />
-      </Badge>
-      <Dialog
-        maxWidth="md"
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="slide-dialog-title"
-      >
-        <DialogTitle id="slide-dialog-title">Choose Slide Content</DialogTitle>
-        <DialogContent>
+
         <Suspense fallback={<div>Loading...</div>}>
 
           <HorizontalLinearVariantStepper
@@ -118,19 +101,7 @@ export default function SlideDialog() {
             <Typography variant="h5">{chosenRefs[0]?.name}</Typography>
           </HorizontalLinearVariantStepper>
         </Suspense>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose} color="primary">
-            Cancel
-          </Button>
-          <Button
-            onClick={(e) => { getDeck(referenceVariantIds)}}
-            color="primary"
-          >
-            generate slides
-          </Button>
-        </DialogActions>
-      </Dialog>
+
     </ScopedCssBaseline>
   );
 }

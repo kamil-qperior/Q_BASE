@@ -4,6 +4,22 @@
       "login": "Login"
     }
   },
+  "Reference": {
+    "tableHeader": {
+      "name": "Name",
+      "client": "Client",
+      "industry": "Industrie",
+      "country": "Country",
+      "status": "Status",
+      "policy": "Policy",
+      "tech_tags": "Technology tags",
+      "procedure_tags": "Procedure tags",
+      "project_start": "Project start",
+      "project_end": "Project end",
+      "person_days_total": "Person days total",
+      "add": "Add"      
+    }
+  },
   "CV": {
     "tableHeader": {
       "employee": "Employee",
@@ -39,6 +55,12 @@
     "header": {
       "searchCV": "Find Consultant",
       "selectedCV": "My Selection"
+    }
+  },
+  "ReferenceSearch": {
+    "header": {
+      "searchRef": "Reference search",
+      "selectedRefs": "My selection"
     }
   }
 }
