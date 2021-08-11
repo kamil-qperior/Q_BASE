@@ -14,33 +14,28 @@ import Paper from "@material-ui/core/Paper";
 import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import ApartmentIcon from "@material-ui/icons/Apartment";
-import DeleteIcon from "@material-ui/icons/Delete";
-import EditIcon from "@material-ui/icons/Edit";
-import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
-import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
+import FormatAlignJustifyIcon from "@material-ui/icons/FormatAlignJustify";
+import ToggleButton from "@material-ui/lab/ToggleButton";
+import ToggleButtonGroup from "@material-ui/lab/ToggleButtonGroup";
 import PersonIcon from "@material-ui/icons/Person";
 import SaveIcon from "@material-ui/icons/Save";
 // import CastForEducationIcon from "@material-ui/icons/CastForEducation";
 import TimelineIcon from "@material-ui/icons/Timeline";
 import WorkIcon from "@material-ui/icons/Work";
 import React from "react";
-import { useRecoilState,useRecoilValue } from "recoil";
-import faceImage from "./businessman.jpg";
+import { useRecoilState, useRecoilValue } from "recoil";
+import faceImage from "./Adac.png";
 import PaperRefItem from "./PaperRefItem";
-import {
-  languageCode,
-  CVsData
-} from "../../store/states";
+import { languageCode } from "../../store/states";
 
 import {
   refTextFieldsState,
   formOpenState,
   contentListsState,
+  chosenVariantLanguageState,
 } from "../../store/statesRef";
 
-
 import { i18n } from "../../utils/i18n/i18n";
-
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -51,13 +46,14 @@ const useStyles = makeStyles((theme) => ({
       width: theme.spacing(16),
       height: theme.spacing(16),
     },
-    minHeight: "500rem",
+    height: "auto",
     "justify-content": "center",
   },
   rootPaper: {
-    minHeight: "100rem",
+    minHeight: "45rem",
+    height: "auto",
     width: "10%",
-    "min-width": "94rem",
+    "min-width": "84rem",
     display: "flex",
   },
   leftPaper: {
@@ -73,17 +69,17 @@ const useStyles = makeStyles((theme) => ({
     width: "70%",
   },
   imageContainer: {
-    paddingTop: "2rem",
+    "text-align-last": "center",
+    padding: "10px"
   },
   faceImage: {
-    paddingLeft: "5rem",
-    width: "10rem",
-    height: "10rem",
-    "border-radius": "200px",
+    width: "7rem",
+    height: "7rem",
+    "border-radius": "5px",
   },
   fontName: {
     // "font-weight": "bolder",
-    "font-weight": 400,
+    "font-weight": 600,
     "font-size": "1rem",
     "font-family": "'Roboto', 'Helvetica', 'Arial', sans-serif",
     "line-height": 1.5,
@@ -94,7 +90,6 @@ const useStyles = makeStyles((theme) => ({
   },
   listItems: {
     "list-style": "disc",
-    "padding-left": "77px",
     "font-weight": 400,
     "font-size": "1rem",
     "font-family": "'Roboto', 'Helvetica', 'Arial', sans-serif",
@@ -141,18 +136,26 @@ const useStyles = makeStyles((theme) => ({
   collapseListItem: {
     padding: "0rem",
   },
+  languageToggle: {
+    "text-align-last": "center;"
+  },
+  clientName: {
+    "font-weight": "800"
+  },
 }));
 
-export default function PaperRef( data) {
+export default function PaperRef(data) {
   const index = 123;
   const classes = useStyles();
   const [collapseAll, setCollapseAll] = React.useState(false);
   const [collapseFirst, setCollapseFirst] = React.useState(true);
   const [lng] = useRecoilState(languageCode);
-  
-  
-  const [CVsDataRaw, setCVsData] = useRecoilState(CVsData);
+
+  const [chosenVariantLanguge, setChosenVariantLanguageState] = useRecoilState(
+    chosenVariantLanguageState
+  );
   const [open, setOpen] = useRecoilState(formOpenState);
+  
   //metadata
   const [refState, setRefState] = useRecoilState(refTextFieldsState);
 
@@ -167,146 +170,109 @@ export default function PaperRef( data) {
   const handleClose = () => {
     //TODO add more clean  up
     setOpen(false);
-    
   };
 
-  console.log('what we got goals', goals);
-  console.log('what we refState', refState);
+  console.log("what we got title", title);
+  console.log("what we refState", refState);
+
+  const handleChosenLanguage = (event, newLanguage) => {
+    setChosenVariantLanguageState(newLanguage);
+  };
 
   const handleEditClick = (event) => {};
   const handleCollapseClick = (event) => {
     setCollapseFirst(!collapseFirst);
   };
+
+  //TODO do language dependence
   return (
     <div className={classes.root}>
-    <Paper className={classes.rootPaper} elevation={3}>
-      <div className={classes.leftPaper}>
-        <div className={classes.imgageContainer}>
-          <img src={faceImage} className={classes.faceImage} alt="fireSpot" />
+      <Paper className={classes.rootPaper} elevation={3}>
+        <div className={classes.leftPaper}>
+          <div className={classes.imageContainer}>
+            <img src={faceImage} className={classes.faceImage} alt="fireSpot" />
+          </div>
+          <List className={classes.leftList}>
+            <ListItem >
+              <ListItemAvatar>
+                <Avatar>
+                  <WorkIcon />
+                </Avatar>
+              </ListItemAvatar>
+              <ListItemText className={classes.listItems}  >
+              <div className={classes.fontName}>{refState.clientName}</div>
+              </ListItemText  >
+            </ListItem>
+            <ListItem>
+              <ListItemAvatar>
+                <Avatar>
+                  <PersonIcon />
+                </Avatar>
+              </ListItemAvatar>
+              <ListItemText primary={refState.name} />
+            </ListItem>
+            <ListItem>
+              <ListItemAvatar>
+                <Avatar>
+                  <ApartmentIcon />
+                </Avatar>
+              </ListItemAvatar>
+              <ListItemText primary={refState.industry} />
+            </ListItem>
+            <ListItem>
+              <ListItemAvatar>
+                <Avatar>
+                  <ApartmentIcon />
+                </Avatar>
+              </ListItemAvatar>
+              <ListItemText primary={"more meta data to come"} />
+            </ListItem>
+          </List>
+
+          <div className={classes.languageToggle}>
+            <ToggleButtonGroup
+              value={chosenVariantLanguge}
+              exclusive
+              onChange={handleChosenLanguage}
+              aria-label="text alignment"
+            >
+              <ToggleButton value="DE" aria-label="german">
+                DE
+              </ToggleButton>
+              <ToggleButton value="EN" aria-label="english">
+                EN
+              </ToggleButton>
+            </ToggleButtonGroup>
+          </div>
         </div>
-        <List className={classes.leftList}>
-          <ListItem>
-            <ListItemAvatar>
-              <Avatar>
-                <PersonIcon />
-              </Avatar>
-            </ListItemAvatar>
-            <div className={classes.fontName}>{CVsDataRaw[index].name}</div>
-          </ListItem>
-          <ListItem>
-            <ListItemAvatar>
-              <Avatar>
-                <WorkIcon />
-              </Avatar>
-            </ListItemAvatar>
-            <ListItemText primary="Dipl. Ingeneur" secondary="" />
-          </ListItem>
-          <ListItem>
-            <ListItemAvatar>
-              <Avatar>
-                <ApartmentIcon />
-              </Avatar>
-            </ListItemAvatar>
-            <ListItemText
-              primary={CVsDataRaw[index].level}
-              secondary={CVsDataRaw[index].topicChapter}
-            />
-          </ListItem>
-          <Divider variant="inset" component="li" />
-          <ListItem>
-            <div className={classes.innerList}>
-              <div className={classes.hAlgin}>
-                <ListItemAvatar>
-                  <Avatar>
-                    <TimelineIcon />
-                  </Avatar>
-                </ListItemAvatar>
-                <ListItemText
-                  primary={i18n(
-                    lng,
-                    "PaperCV.leftSide.professionalBackground"
-                  )}
-                />
-              </div>
-              <div className={classes.innerListNumeration}>
-                <ul className={classes.listItems}>
-                  <li>
-                    <ListItemText
-                      primary="Q_PERIOR"
-                      secondary="seit Juni 2017"
-                    />
-                  </li>
-                  <li>
-                    <ListItemText
-                      primary="Allianz"
-                      secondary="Oktober 2012 - Mai 2016"
-                    />
-                  </li>
-                  <li>
-                    <ListItemText
-                      primary="Helsana"
-                      secondary="Juni 2009 - Mai 2012"
-                    />
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </ListItem>
-        </List>
-      </div>
-      <div className={classes.rightPaper}>
-        <PaperRefItem
-          titel={i18n(lng, "PaperCV.expanderTitel.consultingEmphasis")}
-          theState={theCVsDataState}
-          index={index}
-          propertyKey={"consultingEmphasis"}
-        />
+        <div className={classes.rightPaper}>
+          <PaperRefItem
+            titel={i18n(lng, "PaperRef.expanderTitel.title")}
+            content={title}
+            index={index}
+            propertyKey={"title"}
+          />
+          <PaperRefItem
+            titel={i18n(lng, "PaperRef.expanderTitel.goals")}
+            content={goals}
+            index={index}
+            propertyKey={"goals"}
+          />
 
-        <PaperRefItem
-          titel={i18n(lng, "PaperCV.expanderTitel.industryKnowHow")}
-          theState={theCVsDataState}
-          index={index}
-          propertyKey={"industryKnowHow"}
-        />
-
-        <PaperRefItem
-          titel={i18n(
-            lng,
-            "PaperCV.expanderTitel.functionalAndMethodCompetencies"
-          )}
-          theState={theCVsDataState}
-          index={index}
-          propertyKey={"technicalAndMethodologicalCompetence"}
-        />
-
-        <PaperRefItem
-          titel={i18n(lng, "PaperCV.expanderTitel.languages")}
-          theState={theCVsDataState}
-          index={index}
-          propertyKey={"languages"}
-        />
-
-        <PaperRefItem
-          titel={i18n(lng, "PaperCV.expanderTitel.ITCompetencies")}
-          theState={theCVsDataState}
-          index={index}
-          propertyKey={"itCompetence"}
-        />
-
-        <PaperRefItem
-          titel={i18n(lng, "PaperCV.expanderTitel.certificate")}
-          theState={theCVsDataState}
-          index={index}
-          propertyKey={"certificates"}
-        />
-        <PaperRefItem
-          titel={i18n(lng, "PaperCV.expanderTitel.projects")}
-          theState={theCVsDataState}
-          index={index}
-          propertyKey={"projectexperience"}
-        />
-      </div>
-    </Paper>
-  </div>
+          <PaperRefItem
+            titel={i18n(lng, "PaperRef.expanderTitel.procedures")}
+            content={procedures}
+            index={index}
+            propertyKey={"procedures"}
+          />
+          <PaperRefItem
+            titel={i18n(lng, "PaperRef.expanderTitel.results")}
+            content={results}
+            index={index}
+            propertyKey={"results"}
+          />
+        </div>
+      </Paper>
+    </div>
   );
 }

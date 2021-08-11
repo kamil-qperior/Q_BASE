@@ -14,8 +14,7 @@ import SaveIcon from "@material-ui/icons/Save";
 import React from "react";
 import { useRecoilState } from "recoil";
 import { languageCode } from "../../store/states";
-
-
+import { formEditState } from "../../store/statesRef";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -64,7 +63,7 @@ const useStyles = makeStyles((theme) => ({
     bottom: theme.spacing(2),
   },
   rightList: {
-    width: "35rem",
+    width: "45rem",
     "padding-left": "5rem",
     display: "inline-grid",
   },
@@ -87,10 +86,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function PaperRefItem({ titel, theState, index, propertyKey }) {
+export default function PaperRefItem({ titel, content, index, propertyKey }) {
   const classes = useStyles();
-  const [collapseFirst, setCollapseFirst] = React.useState(true);
+  const [collapseFirst, setCollapseFirst] = React.useState(false);
   //const [CVsDataRaw, setCVsData] = useRecoilState(theState);
+  const [enabledEdit, setEnabledEdit] = useRecoilState(formEditState);
   const [lng] = useRecoilState(languageCode);
 
   const handleEditClick = (event) => {};
@@ -99,84 +99,49 @@ export default function PaperRefItem({ titel, theState, index, propertyKey }) {
   };
 
 
-  console.log('content inside paper item',content);
-
   return (
     <div className={classes.rightPaper}>
-    <ListItem
-      button
-      className={classes.collapseListItem}
-      onClick={handleCollapseClick}
-    >
-      <div className={classes.boderBottom}>
-        <div className={classes.collapseHeader}>{titel}</div>
-        <div>
-          <IconButton
-            className={classes.collapseIcon}
-            color="primary"
-            onClick={handleCollapseClick}
-          >
-            {collapseFirst ? (
-              <KeyboardArrowUpIcon />
-            ) : (
-              <KeyboardArrowDownIcon />
-            )}
-          </IconButton>
-        </div>
-      </div>
-    </ListItem>
-
-    <Collapse
-      className={classes.collapseStyle}
-      in={collapseFirst}
-      timeout="auto"
-      unmountOnExit
-    >
-      <List className={classes.rightList} dense={true}>
-        {CVsDataRaw[index][propertyKey].map((el) => (
-          <ListItem>
-            {typeof el === "string" ? (
-              <ListItemText primary={el} />
-            ) : el.name ? (
-              <ListItemText primary={el.name} /> // Zertifikate
-            ) : (
-              // Projekte
-              <div>
-                <div class={classes.bulltetPointHeader}>
-                  {el.rawName.split(" (")[0]}
-                </div>
-                <div class={classes.bulltetPointHeader}>
-                  ({el.rawName.split(" (")[1]}
-                </div>
-
-                <ul class={classes.bulltetPoints}>
-                  {el.details.map((el) => (
-                    <li>{el}</li>
-                  ))}
-                </ul>
-              </div>
-            )}
-            {/* <ListItemSecondaryAction>
-              <IconButton edge="end" aria-label="delete">
-                <DeleteIcon />
-              </IconButton>
-            </ListItemSecondaryAction> */}
-          </ListItem>
-        ))}
-        {/* <ListItem>
-          <TextField
-            id="standard-full-width"
-            placeholder="Weiterer Beratungsschwerpunkt"
-            style={{ width: "20rem" }}
-          />
-          <ListItemSecondaryAction>
-            <IconButton edge="end" aria-label="delete">
-              <SaveIcon />
+      {enabledEdit ? "enabled edit" : "not enabled edit"}
+      <ListItem
+        button
+        className={classes.collapseListItem}
+        onClick={handleCollapseClick}
+      >
+        <div className={classes.boderBottom}>
+          <div className={classes.collapseHeader}>{titel}</div>
+          <div>
+            <IconButton
+              className={classes.collapseIcon}
+              color="primary"
+              onClick={handleCollapseClick}
+            >
+              {collapseFirst ? (
+                <KeyboardArrowUpIcon />
+              ) : (
+                <KeyboardArrowDownIcon />
+              )}
             </IconButton>
-          </ListItemSecondaryAction>
-        </ListItem> */}
-      </List>
-    </Collapse>
-  </div>
+          </div>
+        </div>
+      </ListItem>
+
+      <Collapse
+        className={classes.collapseStyle}
+        in={collapseFirst}
+        timeout="auto"
+        unmountOnExit
+      >
+        <List className={classes.rightList} dense={true}>
+          {content.map((el) => (
+            <ListItem>
+              <ListItemText primary={el.content} />
+
+
+            </ListItem>
+          ))}
+
+        </List>
+      </Collapse>
+    </div>
   );
 }

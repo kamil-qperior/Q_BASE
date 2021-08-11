@@ -89,12 +89,7 @@ export default function CheckboxesGroup(props) {
           </FormGroup>
           <FormHelperText>Pick content to be displayed on slides.</FormHelperText>
         </FormControl>
- {/*        <Button onClick={e => {
-                       console.log('LOG CURRENT SELECTION', referenceVariantSelection);
-                      }}
-          color="primary">
-          LOG SELECTION
-        </Button> */}
+
       </Paper>
     </div>
   );

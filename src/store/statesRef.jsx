@@ -206,6 +206,11 @@ const formOpenState = atom({
   default: false,
 });
 
+const formEditState = atom({
+  key: "formEditState",
+  default: false,
+});
+
 const refIdForEditState = atom({
   key: "refIdForEditState",
   default: false,
@@ -226,6 +231,7 @@ export {
   activeStepState,
   referenceVariantIdsFromResult,
   formOpenState,
+  formEditState,
   chosenVariantLanguageState,
   refIdForEditState,
   filteredReferenceContentsForEdit,

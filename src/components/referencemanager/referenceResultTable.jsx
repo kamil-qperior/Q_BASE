@@ -1,6 +1,8 @@
 import { TableContainer, TableHead } from "@material-ui/core";
 import Chip from "@material-ui/core/Chip";
 import IconButton from "@material-ui/core/IconButton";
+import DeleteIcon from "@material-ui/icons/Delete";
+import EditIcon from "@material-ui/icons/Edit";
 import Link from "@material-ui/core/Link";
 import { makeStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
@@ -26,6 +28,7 @@ import {
   chosenRefsState,
   filteredReferenceContentsForEdit,
   filteredReferences,
+  formEditState,
   formOpenState,
   refTextFieldsState,
 } from "../../store/statesRef";
@@ -33,12 +36,20 @@ import { i18n } from "../../utils/i18n/i18n";
 import FilterDialog from "../cv/subComponents/FilterDialog";
 
 const useStyles = makeStyles((theme) => ({
-  seeMore: {
+  root: {
+    // width: "100%",
     marginTop: theme.spacing(3),
+    overflowX: "auto",
   },
-  customTableContainer: {
-    "overflow-x": "initial",
-    width: "50%",
+  table: {
+    minWidth: 700,
+    color: "green",
+  },
+  smallMargin: {
+    margin: "0px 4px 2px 0px",
+  },
+  algiment: {
+    display: "flex;",
   },
   footer: {
     left: 0,
@@ -47,21 +58,23 @@ const useStyles = makeStyles((theme) => ({
     position: "sticky",
     "background-color": "aliceblue",
   },
-  vAlgiment: {
-    display: "initial",
-  },
-  hAlgiment: {
-    display: "flex;",
+  hierachieTransition: {
+    transition: "height 1s",
+    overflow: "hidden",
   },
   tableHeader: {
-    minWidth: "5rem",
     "align-self": "center;",
     "font-size": "large;",
-    color: "darkslategray;",
+    // color: "darkslategray;",
+  },
+  customTableContainer: {
+    // overflowX: "initial",
+    // padding: 5,
+    "overflow-x": "initial",
   },
 }));
 
-export default function ReferenceResultTable() {
+export default function ReferenceResultTable(data) {
   const classes = useStyles();
 
   const [page, setPage] = useState(0);
@@ -69,11 +82,11 @@ export default function ReferenceResultTable() {
   const [lng] = useRecoilState(languageCode);
 
   //from store
-/*   const [filterName, setFilterNameData] = useRecoilState(filterNameData);
+  /*   const [filterName, setFilterNameData] = useRecoilState(filterNameData);
   const [filterClient, setFilterClient] = useRecoilState(clientFilterHolder); */
 
   //do we want to do it via table or filter on the left
-/*   const [filterTechnology, setFilterTechnology] =
+  /*   const [filterTechnology, setFilterTechnology] =
     useRecoilState(filterTechnologyData);
   const [filterProcedure, setFilterProcedureData] =
     useRecoilState(filterProcedureData); */
@@ -88,16 +101,21 @@ export default function ReferenceResultTable() {
   //for editing of existing refrences
   const [open, setOpen] = useRecoilState(formOpenState);
   const [refState, setRefState] = useRecoilState(refTextFieldsState);
+  const [enabledEdit, setEnabledEdit] = useRecoilState(formEditState);
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
+  const onlySelection = data.onlySelection;
 
+
+  const rowsToBeDisplayed = onlySelection ? chosenRefs : filteredRefs;
+  
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
 
-/*   function handleNameChange(event, value) {
+  /*   function handleNameChange(event, value) {
     setFilterNameData(event.target.value);
   }
 
@@ -105,8 +123,6 @@ export default function ReferenceResultTable() {
     setFilterClient(event.target.value);
   }
  */
-
-
 
   //TODO only page filtering works , not changing page
   return (
@@ -118,7 +134,6 @@ export default function ReferenceResultTable() {
               <TableCell>
                 <div className={classes.vAlgiment}>
                   <div className={classes.tableHeader}>
-                    
                     {i18n(lng, "Reference.tableHeader.name")}
                   </div>
                 </div>
@@ -162,11 +177,11 @@ export default function ReferenceResultTable() {
                 </div>
               </TableCell> */}
               <TableCell>
-              <div className={classes.vAlgiment}>
-                <div className={classes.tableHeader}>
-                  {" "}
-                  {i18n(lng, "Reference.tableHeader.project_start")}{" "}
-                </div>
+                <div className={classes.vAlgiment}>
+                  <div className={classes.tableHeader}>
+                    {" "}
+                    {i18n(lng, "Reference.tableHeader.project_start")}{" "}
+                  </div>
                 </div>
               </TableCell>
               <TableCell>
@@ -200,10 +215,27 @@ export default function ReferenceResultTable() {
                   {i18n(lng, "Reference.tableHeader.add")}
                 </div>
               </TableCell>
+              {/* only for selection view */}
+              {onlySelection ? (
+                <TableCell>
+                  <div className={classes.tableHeader}>
+                    {" "}
+                    {i18n(lng, "Reference.tableHeader.edit")}
+                  </div>
+                </TableCell>
+              ) : null}
+              {onlySelection ? (
+                <TableCell>
+                  <div className={classes.tableHeader}>
+                    {" "}
+                    {i18n(lng, "Reference.tableHeader.delete")}
+                  </div>
+                </TableCell>
+              ) : null}
             </TableRow>
           </TableHead>
           <TableBody>
-            {filteredRefs
+            {rowsToBeDisplayed
               .slice(page * rowsPerPage, rowsPerPage + page * rowsPerPage)
               .map((row) => (
                 <TableRow
@@ -215,29 +247,7 @@ export default function ReferenceResultTable() {
                   }
                 >
                   <TableCell
-                    onClick={async () => {
-                      //this is the data to use for PaperRef
-                      console.log('click');
-                      const contentsDE = await fetchReferenceContent(
-                        row.referenceID,
-                        "DE"
-                        );
-                        const contentsEN = await fetchReferenceContent(
-                          row.referenceID,
-                          "EN"
-                          );
-                          //sending both langauges
-                          const combinedLng = contentsDE.concat(contentsEN);
-                          console.log('combinedLng', combinedLng);
-                          setFilteredReferenceContentsForEdit(
-                            combinedLng
-                            );
-
-
-                            setRefState(mapFromApi(row));
-                            
-                            setOpen(true);
-                    }}
+                    onClick={handleRefPopUp(row, setFilteredReferenceContentsForEdit, setOpen, setRefState,setEnabledEdit, onlySelection)  } //last param enabels edit 
                   >
                     <Link>{row.name}</Link>
                   </TableCell>
@@ -255,8 +265,9 @@ export default function ReferenceResultTable() {
                         label={tag}
                         onClick={(e) => {
                           //fix to handle arrays
-/*                           setFilterTechnology(tag);
- */                        }}
+                          /*                           setFilterTechnology(tag);
+                           */
+                        }}
                       ></Chip>
                     ))}
                   </TableCell>
@@ -266,8 +277,9 @@ export default function ReferenceResultTable() {
                         key={tag}
                         label={tag}
                         onClick={(e) => {
-/*                           setFilterProcedureData(tag);
- */                        }}
+                          /*                           setFilterProcedureData(tag);
+                           */
+                        }}
                       ></Chip>
                     ))}
                   </TableCell>
@@ -282,13 +294,39 @@ export default function ReferenceResultTable() {
                       <AddBoxIcon />{" "}
                     </IconButton>
                   </TableCell>
+                  {onlySelection ? (
+                    <TableCell align="right">
+                      <IconButton
+                        onClick={handleRefPopUp(row, setFilteredReferenceContentsForEdit, setOpen, setRefState,setEnabledEdit, onlySelection)}
+                        color="primary"
+                        aria-label="edit"
+                      >
+                        {" "}
+                        <EditIcon />{" "}
+                      </IconButton>
+                    </TableCell>
+                  ) : null}
+                  {onlySelection ? (
+                    <TableCell align="right">
+                      <IconButton
+                        onClick={(e) =>
+                          setChosenRefs(changeRef(chosenRefs, row))
+                        }
+                        color="primary"
+                        aria-label="delete"
+                      >
+                        {" "}
+                        <DeleteIcon />{" "}
+                      </IconButton>
+                    </TableCell>
+                  ) : null}
                 </TableRow>
               ))}
           </TableBody>
         </Table>
       </TableContainer>
       <TablePagination
-        className={classes.footer}
+       className={classes.footer}
         rowsPerPageOptions={[10, 25, 100]}
         component="div"
         count={filteredRefs.length}
@@ -299,6 +337,30 @@ export default function ReferenceResultTable() {
       />
     </div>
   );
+}
+
+function handleRefPopUp(row, setFilteredReferenceContentsForEdit, setOpen, setRefState,setEnabledEdit, enableEdit) {
+  return async () => {
+    //this is the data to use for PaperRef
+    console.log("click");
+    const contentsDE = await fetchReferenceContent(
+      row.referenceID,
+      "DE"
+    );
+    const contentsEN = await fetchReferenceContent(
+      row.referenceID,
+      "EN"
+    );
+    //sending both langauges
+    const combinedLng = contentsDE.concat(contentsEN);
+    console.log("combinedLng", combinedLng);
+    setFilteredReferenceContentsForEdit(combinedLng);
+
+    setOpen(true);
+    
+    setEnabledEdit(enableEdit)
+    setRefState(mapFromApi(row));
+  };
 }
 
 function changeRef(chosenRefs, row) {

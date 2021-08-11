@@ -17,7 +17,9 @@
       "project_start": "Projekt Start",
       "project_end": "Projekt Ende",
       "person_days_total": "Personentage",
-      "add": "Hinzufügen"      
+      "add": "Hinzufügen",      
+      "edit": "Auswahl editieren",     
+      "delete": "Entfernen"      
       
     }
   },
@@ -70,7 +72,8 @@
   "ReferenceSearch": {
     "header": {
       "searchRef": "Referenzensuche",
-      "selectedRefs": "Meine Auswahl"
+      "selectedRefs": "Meine Auswahl",
+      "generateSlides": "Erstelle Slides"
     }
   }
 }

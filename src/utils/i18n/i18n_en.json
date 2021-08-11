@@ -17,7 +17,9 @@
       "project_start": "Project start",
       "project_end": "Project end",
       "person_days_total": "Person days total",
-      "add": "Add"      
+      "add": "Add",
+      "edit": "Edit selection",     
+      "delete": "Delete"  
     }
   },
   "CV": {
@@ -60,7 +62,8 @@
   "ReferenceSearch": {
     "header": {
       "searchRef": "Reference search",
-      "selectedRefs": "My selection"
+      "selectedRefs": "My selection",
+      "generateSlides": "Generate slides"
     }
   },
   "PaperRef": {

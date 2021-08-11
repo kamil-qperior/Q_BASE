@@ -3,8 +3,10 @@ import React from "react";
 import { useState } from "react";
 import Grid from "@material-ui/core/Grid";
 import CheckboxesGroup from "./checkboxgroup";
-import { Typography, TextField,FormControl, FormLabel } from "@material-ui/core";
+import { Typography, TextField,FormControl, FormLabel, List, ListItem } from "@material-ui/core";
 import { useRecoilState } from "recoil";
+import Collapse from '@material-ui/core/Collapse';
+
 
 import {
   filteredReferenceContents,
@@ -21,15 +23,11 @@ export default function StepFormVariant(props) {
   //make editable later
   //const [variantTitle, setVariantTitle] = useRecoilState(variantTitleState(step));
   
+//collapse state
+const [open, setOpen] = useState(false);
+
   const placeHolderVariantName = `Reference variant ${step}`;
   
-  //get content for Ref id
-  console.log(
-    "refContents in stepform variant",
-    refContents,
-    "refid",
-    placeHolderVariantName
-  );
 
   if (refContents.length === 0) {
     return (
@@ -54,6 +52,47 @@ export default function StepFormVariant(props) {
   const procedures = refContents.filter((rc) => rc.type === "procedure");
 
   return (
+    <div>
+        <List >
+          <ListItem onClick={(e) =>setOpen(!open)}>Goals</ListItem>
+          <Collapse
+      /* className={classes.collapseStyle} */
+      in={open} 
+      timeout="auto"
+      unmountOnExit
+    >
+      <List >
+          <ListItem>
+      <CheckboxesGroup
+        title="Goals"
+        rcTitle= {rcTitle}
+        content={goals}
+        variantName={chooseName() }
+        refId={referenceId}
+      />
+                </ListItem>
+          <ListItem>
+      <CheckboxesGroup
+        title="Goals"
+        rcTitle= {rcTitle}
+        content={goals}
+        variantName={chooseName() }
+        refId={referenceId}
+      />
+                </ListItem>
+
+            </List>
+        </Collapse>
+          <ListItem>Procedures</ListItem>
+          <ListItem>Results</ListItem>
+      </List>
+    <div>
+    
+
+    </div>
+    <div>
+
+   
     <Grid container spacing={2} alignItems="center" justify="center"
     direction ="column">
       <Grid container spacing={3} justify="center" alignItems="center">
@@ -79,14 +118,9 @@ export default function StepFormVariant(props) {
             </Grid>
           
       </Grid>
+
+    
       <Grid item xs={12}>
-        <CheckboxesGroup
-          title="Goals"
-          rcTitle= {rcTitle}
-          content={goals}
-          variantName={chooseName() }
-          refId={referenceId}
-        />
       </Grid>
       <Grid item xs={12}>
         <CheckboxesGroup
@@ -105,6 +139,8 @@ export default function StepFormVariant(props) {
         />
       </Grid>
     </Grid>
+    </div>
+    </div>
   );
 
   function chooseName() {
