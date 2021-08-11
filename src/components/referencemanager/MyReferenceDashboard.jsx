@@ -12,6 +12,7 @@ import SwipeableViews from "react-swipeable-views";
 import { useRecoilState } from "recoil";
 import { filterLanguagesData, languageCode } from "../../store/states";
 import { filterClientData, clientFilterHolder, filterNameData, filterNameDataHolder} from "../../store/filter";
+import { filteredReferenceContentsForEdit} from "../../store/statesRef";
 import { i18n } from "../../utils/i18n/i18n";
 import CertificationTableInside from "../cv/CertificationTableInside";
 import SearchBarLeftRefs from "./SearchBarLeftRefs";
@@ -19,6 +20,7 @@ import PaperCV from "../cv/subComponents/PaperCV";
 import ReferenceResultTable from "./referenceResultTable";
 import sharedSearchBoxView from "../../styles/reusableStyles";
 import SlideDialog from "../variant/slideDialog"
+import PaperRef from "./PaperRef"
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -103,6 +105,11 @@ export default function MyReferenceDashboard() {
   const [filterName, setFilterNameData] = useRecoilState(filterNameData);
   const [filterNameDataH, setFilterNameDataH] = useRecoilState(filterNameDataHolder);
 
+
+//data for popup content
+const [filteredReferenceContents, setFilteredReferenceContentsForEdit] = useRecoilState(filteredReferenceContentsForEdit);
+
+
   const [lng] = useRecoilState(languageCode);
 
 
@@ -167,6 +174,10 @@ export default function MyReferenceDashboard() {
             
           <Suspense>
               <ReferenceResultTable />
+              {/* does it need to be here because of prerender, popup does not work otherwise */}
+        <PaperRef data={filteredReferenceContents}>
+
+        </PaperRef>
         </Suspense>
 
           </div>

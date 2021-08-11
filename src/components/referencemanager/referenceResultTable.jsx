@@ -105,6 +105,9 @@ export default function ReferenceResultTable() {
     setFilterClient(event.target.value);
   }
  */
+
+
+
   //TODO only page filtering works , not changing page
   return (
     <div>
@@ -213,22 +216,27 @@ export default function ReferenceResultTable() {
                 >
                   <TableCell
                     onClick={async () => {
-                      setOpen(true);
                       //this is the data to use for PaperRef
-                      setRefState(mapFromApi(row));
-
+                      console.log('click');
                       const contentsDE = await fetchReferenceContent(
                         row.referenceID,
                         "DE"
-                      );
-                      const contentsEN = await fetchReferenceContent(
-                        row.referenceID,
-                        "EN"
-                      );
-                      //sending both langauges
-                      setFilteredReferenceContentsForEdit(
-                        contentsDE.concat(contentsEN)
-                      );
+                        );
+                        const contentsEN = await fetchReferenceContent(
+                          row.referenceID,
+                          "EN"
+                          );
+                          //sending both langauges
+                          const combinedLng = contentsDE.concat(contentsEN);
+                          console.log('combinedLng', combinedLng);
+                          setFilteredReferenceContentsForEdit(
+                            combinedLng
+                            );
+
+
+                            setRefState(mapFromApi(row));
+                            
+                            setOpen(true);
                     }}
                   >
                     <Link>{row.name}</Link>

@@ -52,6 +52,15 @@
       "projects": "Projekte"
     }
   },
+  "PaperRef": {
+    "expanderTitel": {
+      "title": "Titel",
+      "goals": "Ziele",
+      "procedures": "Verfahren",
+      "results": "Resultate"
+
+    }
+  },
   "SearchCV": {
     "header": {
       "searchCV": "Beratersuche",

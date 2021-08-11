@@ -62,5 +62,14 @@
       "searchRef": "Reference search",
       "selectedRefs": "My selection"
     }
+  },
+  "PaperRef": {
+    "expanderTitel": {
+      "title": "Title",
+      "goals": "Goals",
+      "procedures": "Procedures",
+      "results": "Results"
+
+    }
   }
 }

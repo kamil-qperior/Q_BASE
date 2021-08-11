@@ -2,27 +2,11 @@ import { makeStyles } from "@material-ui/core/styles";
 import React from "react";
 import { useRecoilState } from "recoil";
 import {
-  filterCertificationData,
-  filterEmployeeNamesData,
-  filterTopicChapterData,
-  hierachyHeight,
-  hierarchyInput,
-  languageCode,
-} from "../../store/states";
-import {
-  filter,
-  filterStatusData,
-  filterNameData,
-  filterNameDataHolder,
-  filterCityData,
-  filterPolicyData,
-  filterClientData,
-  clientFilterHolder,
-  filterProcedureData,
-  filterIndustryData,
-  filterTechnologyData,
-  filterCountryData,
+  clientFilterHolder, filterCountryData, filterIndustryData, filterNameDataHolder
 } from "../../store/filter";
+import {
+  languageCode
+} from "../../store/states";
 import { i18n } from "../../utils/i18n/i18n";
 import FilterExpander from "../cv/subComponents/FilterExpander";
 

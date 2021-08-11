@@ -186,6 +186,7 @@ let filteredReferenceContentsForEdit = selector({
     }
   },
   set: ({ set }, contents) => {
+    console.log('are we here');
     const title = contents.filter((content) => content.type === "title");
     const goals = contents.filter((content) => content.type === "goal");
     const procedures = contents.filter(

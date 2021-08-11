@@ -1,33 +1,21 @@
-import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import Paper from "@material-ui/core/Paper";
-import Avatar from "@material-ui/core/Avatar";
-import faceImage from "../../../data/businessman1.jpg";
+import Collapse from "@material-ui/core/Collapse";
+import IconButton from "@material-ui/core/IconButton";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
-import ListItemText from "@material-ui/core/ListItemText";
-import ListItemAvatar from "@material-ui/core/ListItemAvatar";
-import ImageIcon from "@material-ui/icons/Image";
-import WorkIcon from "@material-ui/icons/Work";
-import BeachAccessIcon from "@material-ui/icons/BeachAccess";
-import Divider from "@material-ui/core/Divider";
-import Collapse from "@material-ui/core/Collapse";
-import DeleteIcon from "@material-ui/icons/Delete";
 import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
-import IconButton from "@material-ui/core/IconButton";
+import ListItemText from "@material-ui/core/ListItemText";
+import { makeStyles } from "@material-ui/core/styles";
+import TextField from "@material-ui/core/TextField";
+import DeleteIcon from "@material-ui/icons/Delete";
+import EditIcon from "@material-ui/icons/Edit";
 import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
-import EditIcon from "@material-ui/icons/Edit";
 import SaveIcon from "@material-ui/icons/Save";
-import TextField from "@material-ui/core/TextField";
-import PersonIcon from "@material-ui/icons/Person";
-// import CastForEducationIcon from "@material-ui/icons/CastForEducation";
-import TimelineIcon from "@material-ui/icons/Timeline";
-import ApartmentIcon from "@material-ui/icons/Apartment";
-import { i18n } from "../../../utils/i18n/i18n";
-
-import { languageCode } from "../../../store/states";
+import React from "react";
 import { useRecoilState } from "recoil";
+import { languageCode } from "../../store/states";
+
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -99,83 +87,96 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function PaperCVItem({ titel, theState, index, propertyKey }) {
+export default function PaperRefItem({ titel, theState, index, propertyKey }) {
   const classes = useStyles();
   const [collapseFirst, setCollapseFirst] = React.useState(true);
-  const [CVsDataRaw, setCVsData] = useRecoilState(theState);
+  //const [CVsDataRaw, setCVsData] = useRecoilState(theState);
   const [lng] = useRecoilState(languageCode);
 
   const handleEditClick = (event) => {};
   const handleCollapseClick = (event) => {
     setCollapseFirst(!collapseFirst);
   };
+
+
+  console.log('content inside paper item',content);
+
   return (
     <div className={classes.rightPaper}>
-      <ListItem
-        button
-        className={classes.collapseListItem}
-        onClick={handleCollapseClick}
-      >
-        <div className={classes.boderBottom}>
-          <div className={classes.collapseHeader}>{titel}</div>
-          <div>
+    <ListItem
+      button
+      className={classes.collapseListItem}
+      onClick={handleCollapseClick}
+    >
+      <div className={classes.boderBottom}>
+        <div className={classes.collapseHeader}>{titel}</div>
+        <div>
+          <IconButton
+            className={classes.collapseIcon}
+            color="primary"
+            onClick={handleCollapseClick}
+          >
             {collapseFirst ? (
-              <IconButton
-                className={classes.collapseIcon}
-                color="primary"
-                onClick={handleEditClick}
-              >
-                <EditIcon />
-              </IconButton>
+              <KeyboardArrowUpIcon />
             ) : (
-              <div />
+              <KeyboardArrowDownIcon />
             )}
-            <IconButton
-              className={classes.collapseIcon}
-              color="primary"
-              onClick={handleCollapseClick}
-            >
-              {collapseFirst ? (
-                <KeyboardArrowUpIcon />
-              ) : (
-                <KeyboardArrowDownIcon />
-              )}
-            </IconButton>
-          </div>
+          </IconButton>
         </div>
-      </ListItem>
+      </div>
+    </ListItem>
 
-      <Collapse
-        className={classes.collapseStyle}
-        in={collapseFirst}
-        timeout="auto"
-        unmountOnExit
-      >
-        <List className={classes.rightList} dense={true}>
-          {CVsDataRaw[index][propertyKey].map((el) => (
-            <ListItem>
-              <ListItemText primary={el} />
-              <ListItemSecondaryAction>
-                <IconButton edge="end" aria-label="delete">
-                  <DeleteIcon />
-                </IconButton>
-              </ListItemSecondaryAction>
-            </ListItem>
-          ))}
+    <Collapse
+      className={classes.collapseStyle}
+      in={collapseFirst}
+      timeout="auto"
+      unmountOnExit
+    >
+      <List className={classes.rightList} dense={true}>
+        {CVsDataRaw[index][propertyKey].map((el) => (
           <ListItem>
-            <TextField
-              id="standard-full-width"
-              placeholder="Weiterer Beratungsschwerpunkt"
-              style={{ width: "20rem" }}
-            />
-            <ListItemSecondaryAction>
+            {typeof el === "string" ? (
+              <ListItemText primary={el} />
+            ) : el.name ? (
+              <ListItemText primary={el.name} /> // Zertifikate
+            ) : (
+              // Projekte
+              <div>
+                <div class={classes.bulltetPointHeader}>
+                  {el.rawName.split(" (")[0]}
+                </div>
+                <div class={classes.bulltetPointHeader}>
+                  ({el.rawName.split(" (")[1]}
+                </div>
+
+                <ul class={classes.bulltetPoints}>
+                  {el.details.map((el) => (
+                    <li>{el}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+            {/* <ListItemSecondaryAction>
               <IconButton edge="end" aria-label="delete">
-                <SaveIcon />
+                <DeleteIcon />
               </IconButton>
-            </ListItemSecondaryAction>
+            </ListItemSecondaryAction> */}
           </ListItem>
-        </List>
-      </Collapse>
-    </div>
+        ))}
+        {/* <ListItem>
+          <TextField
+            id="standard-full-width"
+            placeholder="Weiterer Beratungsschwerpunkt"
+            style={{ width: "20rem" }}
+          />
+          <ListItemSecondaryAction>
+            <IconButton edge="end" aria-label="delete">
+              <SaveIcon />
+            </IconButton>
+          </ListItemSecondaryAction>
+        </ListItem> */}
+      </List>
+    </Collapse>
+  </div>
   );
 }
