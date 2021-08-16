@@ -8,6 +8,7 @@ export const local = 'http://[::1]:3000/slide-deck?';
 export const getDeck = (variantIds) => {
   
   const init = variantIds.map(variantId => ["id", variantId]);
+  console.log('init', init);
   
   const searchParams = new URLSearchParams(init)
 

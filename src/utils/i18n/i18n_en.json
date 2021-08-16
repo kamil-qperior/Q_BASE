@@ -5,8 +5,13 @@
     }
   },
   "Reference": {
+    "languageToggle": {
+      "contentLanguage":"Content language:"
+    },
     "tableHeader": {
       "name": "Name",
+      "ready": "Ready",
+      "chosenLanguage": "Chosen language",
       "client": "Client",
       "industry": "Industrie",
       "country": "Country",
@@ -17,7 +22,9 @@
       "project_start": "Project start",
       "project_end": "Project end",
       "person_days_total": "Person days total",
-      "add": "Add"      
+      "add": "Add",
+      "edit": "Edit selection",     
+      "delete": "Delete"  
     }
   },
   "CV": {
@@ -60,7 +67,17 @@
   "ReferenceSearch": {
     "header": {
       "searchRef": "Reference search",
-      "selectedRefs": "My selection"
+      "selectedRefs": "My selection",
+      "generateSlides": "Overview"
+    }
+  },
+  "PaperRef": {
+    "expanderTitel": {
+      "title": "Title",
+      "goals": "Goals",
+      "procedures": "Procedures",
+      "results": "Results"
+
     }
   }
 }

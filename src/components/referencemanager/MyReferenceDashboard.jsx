@@ -1,24 +1,38 @@
 import AppBar from "@material-ui/core/AppBar";
 import Box from "@material-ui/core/Box";
-import { useState, Suspense } from "react";
+import Button from "@material-ui/core/Button";
 import { green } from "@material-ui/core/colors";
+import Popover from "@material-ui/core/Popover";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import Tab from "@material-ui/core/Tab";
 import Tabs from "@material-ui/core/Tabs";
 import Typography from "@material-ui/core/Typography";
+import ToggleButton from "@material-ui/lab/ToggleButton";
+import ToggleButtonGroup from "@material-ui/lab/ToggleButtonGroup";
+import PopupState from "material-ui-popup-state";
 import PropTypes from "prop-types";
-import React from "react";
+import React, { Suspense } from "react";
 import SwipeableViews from "react-swipeable-views";
 import { useRecoilState } from "recoil";
+import { getDeck } from "../../services/slidedeck/slideDeckServ";
+import {
+  clientFilterHolder,
+  filterClientData,
+  filterNameData,
+  filterNameDataHolder,
+} from "../../store/filter";
 import { filterLanguagesData, languageCode } from "../../store/states";
-import { filterClientData, clientFilterHolder, filterNameData, filterNameDataHolder} from "../../store/filter";
+import {
+  filteredReferenceContentsForEdit,
+  referenceVariantIdsFromResult,
+  formOpenState,
+  chosenVariantLanguageState,
+} from "../../store/statesRef";
 import { i18n } from "../../utils/i18n/i18n";
-import CertificationTableInside from "../cv/CertificationTableInside";
-import SearchBarLeftRefs from "./SearchBarLeftRefs";
-import PaperCV from "../cv/subComponents/PaperCV";
+import SlideDialog from "../variant/slideDialog";
+import PaperRef from "./PaperRef";
 import ReferenceResultTable from "./referenceResultTable";
-import sharedSearchBoxView from "../../styles/reusableStyles";
-import SlideDialog from "../variant/slideDialog"
+import SearchBarLeftRefs from "./SearchBarLeftRefs";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -49,7 +63,7 @@ const useStyles = makeStyles((theme) => ({
     position: "relative",
     minHeight: 200,
     display: "initial  !important",
-    
+
     "overflow-x": "initial",
   },
   tabContent: {
@@ -86,6 +100,28 @@ const useStyles = makeStyles((theme) => ({
     overflowX: "initial",
     display: "flex",
   },
+  footer: {
+    left: 0,
+    bottom: 0, // <-- KEY
+    zIndex: 2,
+    position: "sticky",
+    "background-color": "aliceblue",
+  },
+  generateSlideButton: {
+    "padding-top":"1rem",
+    "background-color": "primary",
+  },
+  languageToggle: {
+    
+    
+    "text-align-last": "center;",
+  },
+  languageToggleText: {
+    "display": "contents;",
+  },
+  languageToggleTextTypo: {
+    "padding-bottom":"1rem",
+  },
 }));
 
 //v3 of the dashboard
@@ -98,38 +134,54 @@ export default function MyReferenceDashboard() {
   const [counter, setCounter] = React.useState(0);
   const [filterLanguages] = useRecoilState(filterLanguagesData);
   const [filterClient, setFilterClient] = useRecoilState(filterClientData);
+  const [open, setOpen] = useRecoilState(formOpenState);
   const [clientFilterH, setFilterClientH] = useRecoilState(clientFilterHolder);
 
+  const [chosenVariantLanguge, setChosenVariantLanguageState] = useRecoilState(
+    chosenVariantLanguageState
+  );
+
   const [filterName, setFilterNameData] = useRecoilState(filterNameData);
-  const [filterNameDataH, setFilterNameDataH] = useRecoilState(filterNameDataHolder);
+  const [filterNameDataH, setFilterNameDataH] =
+    useRecoilState(filterNameDataHolder);
+
+  //data for popup content also containers referenceID 
+  const [filteredReferenceContents, setFilteredReferenceContentsForEdit] =
+    useRecoilState(filteredReferenceContentsForEdit);
 
   const [lng] = useRecoilState(languageCode);
 
+  //use for generation of slides from chosen variants, ist set by save variant
+  const [referenceVariantIds, setReferenceVariantIds] = useRecoilState(
+    referenceVariantIdsFromResult
+  );
 
-  
   //is necessery for preloading of filterdata into the filers!!
   //once per first render you set your data into the holder
-  if(counter===0) {
+  if (counter === 0) {
+    setFilterClientH(filterClient);
+    setFilterNameDataH(filterName);
+    setCounter(1);
 
-    setFilterClientH(filterClient)
-    setFilterNameDataH(filterName) 
-    setCounter(1)
-  
-    console.log('rerender my reference dashborad in if');
+    console.log("rerender my reference dashborad in if");
   }
 
-
+  const handleClose = (event, newValue) => {
+    setOpen(false);
+  };
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
-  
+
   const handleChangeIndex = (index) => {
-   
     setValue(index);
   };
 
+  const handleChosenLanguage = (event, newLanguage) => {
+    setChosenVariantLanguageState(newLanguage);
+  };
+
   return (
-       
     <div className={classes.root}>
       <AppBar position="static" color="default">
         <Tabs
@@ -142,49 +194,130 @@ export default function MyReferenceDashboard() {
         >
           <Tab label={i18n(lng, "ReferenceSearch.header.searchRef")} />
           <Tab label={i18n(lng, "ReferenceSearch.header.selectedRefs")} />
+          <Tab label={i18n(lng, "ReferenceSearch.header.generateSlides")} />
         </Tabs>
-      </AppBar>¨
-
+      </AppBar>
       <SwipeableViews
         // axis={theme.direction === "rtl" ? "x-reverse" : "x"}
         index={value}
         onChangeIndex={handleChangeIndex}
         className={classes.tabContentTableView}
-        >
+      >
         <TabPanel className={classes.tabContentTable} value={value} index={0}>
-          {/* {i18n(lng, "MyCV.header.test")} */}
-          {/* TODO change the reference table to new searchbar left standard*/}
-          {/* 
-          <CertificationTableInside /> */}
+          <div className={classes.searchAndResultContainer}>
+            <Suspense>
+              <Box>
+                <SearchBarLeftRefs></SearchBarLeftRefs>
+              </Box>
+            </Suspense>
 
-          <div className={classes.searchAndResultContainer}> 
-          <Suspense>
-            <Box >
-              <SearchBarLeftRefs></SearchBarLeftRefs>
-            </Box>
-          </Suspense>
+            <Suspense>
+              <ReferenceResultTable onlySelection={false} />
 
-            
-          <Suspense>
-              <ReferenceResultTable />
-        </Suspense>
+              {/* does it need to be here because of prerender, popup does not work otherwise */}
 
+              <PopupState variant="popover" popupId="demo-popup-popover">
+                {(popupState) => (
+                  <div>
+                    <Popover
+                      open={open}
+                      onClose={handleClose}
+                      anchorOrigin={{
+                        vertical: "bottom",
+                        horizontal: "right",
+                      }}
+                      transformOrigin={{
+                        vertical: "top",
+                        horizontal: "right",
+                      }}
+                    >
+                      <PaperRef />
+                    </Popover>
+                  </div>
+                )}
+              </PopupState>
+              {/*  <PaperRef data={filteredReferenceContents}></PaperRef> */}
+            </Suspense>
           </div>
         </TabPanel>
 
+        {/*  selection tab*/}
+        <TabPanel className={classes.tabContentTable} value={value} index={1}>
+          <div className={classes.languageToggle}>
+            <div className={classes.languageToggleText}>
+            <Typography  className={classes.languageToggleTextTypo}>
+            {i18n(lng, "ReferenceSearch.languageToggle.contentLanguage")}
+            Inhaltssprache: 
+            </Typography>
+
+            </div>
+            <ToggleButtonGroup
+              value={chosenVariantLanguge}
+              exclusive
+              onChange={handleChosenLanguage}
+              aria-label="text alignment"
+            >
+              <ToggleButton value="DE" aria-label="german">
+                DE
+              </ToggleButton>
+              <ToggleButton value="EN" aria-label="english">
+                EN
+              </ToggleButton>
+            </ToggleButtonGroup>
+          </div>
+          <div className={classes.searchAndResultContainer}>
+            <Suspense>
+              <ReferenceResultTable onlySelection={true} />
+
+              {/* does it need to be here because of prerender, popup does not work otherwise */}
+
+              <PopupState    variant="popover" popupId="demo-popup-popover">
+                {(popupState) => (
+                  <div>
+                    <Popover
+                      open={open}
+                      onClose={handleClose}
+                      anchorOrigin={{
+                        vertical: "bottom",
+                        horizontal: "right",
+                      }}
+                      transformOrigin={{
+                        vertical: "top",
+                        horizontal: "right",
+                      }}
+                    >
+                      <PaperRef  />
+                    </Popover>
+                  </div>
+                )}
+              </PopupState>
+              {/*  <PaperRef data={filteredReferenceContents}></PaperRef> */}
+            </Suspense>
+          </div>
+          <div className={classes.generateSlideButton}>
+                <Button
+                variant="contained"
+                  onClick={(e) => {
+                    console.log('referenceVariantIds for slides generation', referenceVariantIds);
+                    getDeck(referenceVariantIds);
+                  }}
+                  color="primary"
+                >
+                  generate slides
+                </Button>
+              </div>
+        </TabPanel>
+
+        {/*  generate slides tab*/}
         <TabPanel
           className={classes.tabContent}
           value={value}
-          index={1}
+          index={2}
           dir={theme.direction}
-          >
-          {/*
-            TODO create new design for variant selection, from paperCV 
-          <PaperCV theCVsDataState={CVsData} index={123} /> */}
-              <SlideDialog></SlideDialog>
+        >
+          <SlideDialog></SlideDialog>
         </TabPanel>
       </SwipeableViews>
     </div>
-       
   );
 }

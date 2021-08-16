@@ -5,8 +5,13 @@
     }
   },
   "Reference": {
+    "languageToggle": {
+      "contentLanguage":"Inhaltssprache:"
+    },
     "tableHeader": {
       "name": "Name",
+      "ready": "Bereit",
+      "chosenLanguage": "Ausgewählte Sprache",
       "client": "Kunde",
       "industry": "Industrie",
       "country": "Land",
@@ -17,7 +22,9 @@
       "project_start": "Projekt Start",
       "project_end": "Projekt Ende",
       "person_days_total": "Personentage",
-      "add": "Hinzufügen"      
+      "add": "Hinzufügen",      
+      "edit": "Auswahl editieren",     
+      "delete": "Entfernen"      
       
     }
   },
@@ -52,6 +59,15 @@
       "projects": "Projekte"
     }
   },
+  "PaperRef": {
+    "expanderTitel": {
+      "title": "Titel",
+      "goals": "Ziele",
+      "procedures": "Verfahren",
+      "results": "Resultate"
+
+    }
+  },
   "SearchCV": {
     "header": {
       "searchCV": "Beratersuche",
@@ -61,7 +77,8 @@
   "ReferenceSearch": {
     "header": {
       "searchRef": "Referenzensuche",
-      "selectedRefs": "Meine Auswahl"
+      "selectedRefs": "Meine Auswahl",
+      "generateSlides": "Übersicht"
     }
   }
 }

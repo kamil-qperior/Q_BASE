@@ -179,6 +179,7 @@ export default function SelectedTableItems() {
     let certificates = [...row.certificates].filter(Boolean);
     const [open, setOpen] = React.useState(false);
     const onSelectRow = (event, rowID) => {
+      console.log('row was selected');
       setShowCVPopover(true);
       setCVsDataSelected(
         CVsDataSelectedRaw.map((el) =>
