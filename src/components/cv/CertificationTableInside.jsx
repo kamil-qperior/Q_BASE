@@ -168,7 +168,7 @@ export default function SpanningTable() {
                 if (Array.isArray(newValue[val])) {
                   newValue[val + "Selection"] = Array.from(
                     Array(newValue[val].length).keys()
-                  ).map((elx) => 1);
+                  ).map((elx) => true);
                 }
               });
               return {

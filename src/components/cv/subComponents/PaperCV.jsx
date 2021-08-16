@@ -250,6 +250,7 @@ export default function PaperCV({ theCVsDataState, index, modus }) {
             theState={theCVsDataState}
             index={index}
             propertyKey={"consultingEmphasis"}
+            modus={modus}
           />
 
           <PaperCVItem
@@ -257,6 +258,7 @@ export default function PaperCV({ theCVsDataState, index, modus }) {
             theState={theCVsDataState}
             index={index}
             propertyKey={"industryKnowHow"}
+            modus={modus}
           />
 
           <PaperCVItem
@@ -267,6 +269,7 @@ export default function PaperCV({ theCVsDataState, index, modus }) {
             theState={theCVsDataState}
             index={index}
             propertyKey={"technicalAndMethodologicalCompetence"}
+            modus={modus}
           />
 
           <PaperCVItem
@@ -274,6 +277,7 @@ export default function PaperCV({ theCVsDataState, index, modus }) {
             theState={theCVsDataState}
             index={index}
             propertyKey={"languages"}
+            modus={modus}
           />
 
           <PaperCVItem
@@ -281,6 +285,7 @@ export default function PaperCV({ theCVsDataState, index, modus }) {
             theState={theCVsDataState}
             index={index}
             propertyKey={"itCompetence"}
+            modus={modus}
           />
 
           <PaperCVItem
@@ -288,12 +293,14 @@ export default function PaperCV({ theCVsDataState, index, modus }) {
             theState={theCVsDataState}
             index={index}
             propertyKey={"certificates"}
+            modus={modus}
           />
           <PaperCVItem
             titel={i18n(lng, "PaperCV.expanderTitel.projects")}
             theState={theCVsDataState}
             index={index}
             propertyKey={"projectexperience"}
+            modus={modus}
           />
         </div>
       </Paper>

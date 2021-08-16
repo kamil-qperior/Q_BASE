@@ -42,6 +42,11 @@ import ShortChip from "./subComponents/ShortChip";
 import SearchBarLeft from "./subComponents/SearchBarLeft";
 import Checkbox from "@material-ui/core/Checkbox";
 import DialogCV from "./subComponents/DialogCV";
+import { getCVs } from "./subComponents/restCalls/getCVService";
+import Select from "@material-ui/core/Select";
+import Toolbar from "@material-ui/core/Toolbar";
+import MenuItem from "@material-ui/core/MenuItem";
+import Button from "@material-ui/core/Button";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -82,12 +87,23 @@ const useStyles = makeStyles((theme) => ({
     "overflow-x": "initial",
   },
   leftSearchBar: {},
+  selectTemplate: {
+    width: "9rem",
+  },
+  toolbar: {
+    "justify-content": "flex-end",
+  },
+  buttonDownload: {
+    "margin-left": "2rem",
+  },
 }));
 
 export default function SelectedTableItems() {
   const classes = useStyles();
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [page, setPage] = React.useState(0);
+  const [templateID, setTemplateID] = React.useState(20);
+
   const [employes] = useRecoilState(CVsDataWithFilter);
   let [CVsDataRaw, setCVsData] = useRecoilState(CVsData);
   const [CVsDataSelectedRaw, setCVsDataSelected] =
@@ -119,9 +135,38 @@ export default function SelectedTableItems() {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
-  // const handleClick = () => {
-  //   setHierachieHight(hierachieHight === "0px" ? "472px" : "0px");
-  // };
+
+  const handleTemplateChange = (event) => {
+    setTemplateID(event.target.value);
+  };
+  const handleDownloadClick = (event) => {
+    getCVs(templateID);
+  };
+
+  const EnhancedTableToolbar = () => {
+    return (
+      <Toolbar className={classes.toolbar}>
+        <Select
+          labelId="demo-simple-select-label"
+          id="demo-simple-select"
+          className={classes.selectTemplate}
+          value={templateID}
+          onChange={handleTemplateChange}
+        >
+          <MenuItem value={10}>Q_PERIOR</MenuItem>
+          <MenuItem value={20}>SBB</MenuItem>
+        </Select>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={handleDownloadClick}
+          className={classes.buttonDownload}
+        >
+          DOWNLOAD
+        </Button>
+      </Toolbar>
+    );
+  };
   const Row = (props) => {
     const { row } = props;
     let consultingEmphasis = [...row.consultingEmphasis].filter(Boolean);
@@ -193,9 +238,10 @@ export default function SelectedTableItems() {
   return (
     <div className={classes.root}>
       <div>
-        <Box height={theHierachyHeight} className={classes.hierachieTransition}>
+        {/* <Box height={theHierachyHeight} className={classes.hierachieTransition}>
           <Hierachie />
-        </Box>
+        </Box> */}
+        <EnhancedTableToolbar />
         <TableContainer className={classes.customTableContainer}>
           {/* <TableContainer style={{ height: theHeight - 120 }}> */}
           <Table stickyHeader className={classes.table}>
