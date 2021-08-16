@@ -4,6 +4,7 @@ import IconButton from "@material-ui/core/IconButton";
 import DeleteIcon from "@material-ui/icons/Delete";
 import EditIcon from "@material-ui/icons/Edit";
 import Link from "@material-ui/core/Link";
+import Checkbox from "@material-ui/core/Checkbox";
 import { makeStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -28,6 +29,7 @@ import {
   chosenRefsState,
   filteredReferenceContentsForEdit,
   filteredReferences,
+  filteredReferenceContents,
   formEditState,
   formOpenState,
   refTextFieldsState,
@@ -72,6 +74,11 @@ const useStyles = makeStyles((theme) => ({
     // padding: 5,
     "overflow-x": "initial",
   },
+  tableRow: {
+    "&&:hover": {
+      backgroundColor: "#0CB5F3",
+    },
+  },
 }));
 
 export default function ReferenceResultTable(data) {
@@ -93,9 +100,10 @@ export default function ReferenceResultTable(data) {
 
   const [filteredRefs] = useRecoilState(filteredReferences);
   const [chosenRefs, setChosenRefs] = useRecoilState(chosenRefsState);
+  const [refContents] = useRecoilState(filteredReferenceContents);
 
   //content of refs
-  const [filteredReferenceContents, setFilteredReferenceContentsForEdit] =
+  const [filteredRefsContentsForEdit, setFilteredReferenceContentsForEdit] =
     useRecoilState(filteredReferenceContentsForEdit);
 
   //for editing of existing refrences
@@ -108,9 +116,8 @@ export default function ReferenceResultTable(data) {
   };
   const onlySelection = data.onlySelection;
 
-
   const rowsToBeDisplayed = onlySelection ? chosenRefs : filteredRefs;
-  
+
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -138,6 +145,15 @@ export default function ReferenceResultTable(data) {
                   </div>
                 </div>
               </TableCell>
+              {onlySelection ? (
+                <TableCell>
+                  <div className={classes.vAlgiment}>
+                    <div className={classes.tableHeader}>
+                      {i18n(lng, "Reference.tableHeader.ready")}
+                    </div>
+                  </div>
+                </TableCell>
+              ) : null}
               <TableCell>
                 <div className={classes.vAlgiment}>
                   <div className={classes.tableHeader}>
@@ -176,20 +192,24 @@ export default function ReferenceResultTable(data) {
                   <FilterDialog dialogKey="policy" />
                 </div>
               </TableCell> */}
-              <TableCell>
-                <div className={classes.vAlgiment}>
+              {!onlySelection ? (
+                <TableCell>
+                  <div className={classes.vAlgiment}>
+                    <div className={classes.tableHeader}>
+                      {" "}
+                      {i18n(lng, "Reference.tableHeader.project_start")}{" "}
+                    </div>
+                  </div>
+                </TableCell>
+              ) : null}
+              {!onlySelection ? (
+                <TableCell>
                   <div className={classes.tableHeader}>
                     {" "}
-                    {i18n(lng, "Reference.tableHeader.project_start")}{" "}
+                    {i18n(lng, "Reference.tableHeader.project_end")}{" "}
                   </div>
-                </div>
-              </TableCell>
-              <TableCell>
-                <div className={classes.tableHeader}>
-                  {" "}
-                  {i18n(lng, "Reference.tableHeader.project_end")}{" "}
-                </div>
-              </TableCell>
+                </TableCell>
+              ) : null}
               <TableCell>
                 <div className={classes.tableHeader}>
                   {" "}
@@ -202,19 +222,22 @@ export default function ReferenceResultTable(data) {
                   {i18n(lng, "Reference.tableHeader.procedure_tags")}{" "}
                 </div>
               </TableCell>
-              <TableCell>
-                <div className={classes.tableHeader}>
-                  {" "}
-                  {i18n(lng, "Reference.tableHeader.person_days_total")}{" "}
-                </div>
-              </TableCell>
-
-              <TableCell>
-                <div className={classes.tableHeader}>
-                  {" "}
-                  {i18n(lng, "Reference.tableHeader.add")}
-                </div>
-              </TableCell>
+              {!onlySelection ? (
+                <TableCell>
+                  <div className={classes.tableHeader}>
+                    {" "}
+                    {i18n(lng, "Reference.tableHeader.person_days_total")}{" "}
+                  </div>
+                </TableCell>
+              ) : null}
+              {!onlySelection ? (
+                <TableCell>
+                  <div className={classes.tableHeader}>
+                    {" "}
+                    {i18n(lng, "Reference.tableHeader.add")}
+                  </div>
+                </TableCell>
+              ) : null}
               {/* only for selection view */}
               {onlySelection ? (
                 <TableCell>
@@ -247,17 +270,35 @@ export default function ReferenceResultTable(data) {
                   }
                 >
                   <TableCell
-                    onClick={handleRefPopUp(row, setFilteredReferenceContentsForEdit, setOpen, setRefState,setEnabledEdit, onlySelection)  } //last param enabels edit 
+                    onClick={handleRefPopUp(
+                      row,
+                      setFilteredReferenceContentsForEdit,
+                      setOpen,
+                      setRefState,
+                      setEnabledEdit,
+                      onlySelection
+                    )} //last param enabels edit
+                    selected={true}
                   >
                     <Link>{row.name}</Link>
                   </TableCell>
+                  {onlySelection ? (
+                    <TableCell>
+                      <Checkbox checked={row?.configured === true} />
+                    </TableCell>
+                  ) : null}
+
                   <TableCell>{row.client.name}</TableCell>
                   <TableCell>{row.industry}</TableCell>
                   <TableCell>{row.country}</TableCell>
                   {/*                   <TableCell>{row.status}</TableCell>
                   <TableCell>{row.policy}</TableCell> */}
-                  <TableCell>{row.projectBegin.substring(0, 10)}</TableCell>
-                  <TableCell>{row.projectEnd.substring(0, 10)}</TableCell>
+                  {!onlySelection ? (
+                    <TableCell>{row.projectBegin.substring(0, 10)}</TableCell>
+                  ) : null}
+                  {!onlySelection ? (
+                    <TableCell>{row.projectEnd.substring(0, 10)}</TableCell>
+                  ) : null}
                   <TableCell>
                     {row.technologyTag.map((tag) => (
                       <Chip
@@ -283,21 +324,34 @@ export default function ReferenceResultTable(data) {
                       ></Chip>
                     ))}
                   </TableCell>
-                  <TableCell align="right">{row.personDaysTotal}</TableCell>
-                  <TableCell align="right">
-                    <IconButton
-                      onClick={(e) => setChosenRefs(changeRef(chosenRefs, row))}
-                      color="primary"
-                      aria-label="add"
-                    >
-                      {" "}
-                      <AddBoxIcon />{" "}
-                    </IconButton>
-                  </TableCell>
+                  {!onlySelection ? (
+                    <TableCell align="right">{row.personDaysTotal}</TableCell>
+                  ) : null}
+                  {!onlySelection ? (
+                    <TableCell align="right">
+                      <IconButton
+                        onClick={(e) =>
+                          setChosenRefs(changeRef(chosenRefs, row))
+                        }
+                        color="primary"
+                        aria-label="add"
+                      >
+                        {" "}
+                        <AddBoxIcon />{" "}
+                      </IconButton>
+                    </TableCell>
+                  ) : null}
                   {onlySelection ? (
                     <TableCell align="right">
                       <IconButton
-                        onClick={handleRefPopUp(row, setFilteredReferenceContentsForEdit, setOpen, setRefState,setEnabledEdit, onlySelection)}
+                        onClick={handleRefPopUp(
+                          row,
+                          setFilteredReferenceContentsForEdit,
+                          setOpen,
+                          setRefState,
+                          setEnabledEdit,
+                          onlySelection
+                        )}
                         color="primary"
                         aria-label="edit"
                       >
@@ -326,7 +380,7 @@ export default function ReferenceResultTable(data) {
         </Table>
       </TableContainer>
       <TablePagination
-       className={classes.footer}
+        className={classes.footer}
         rowsPerPageOptions={[10, 25, 100]}
         component="div"
         count={filteredRefs.length}
@@ -339,26 +393,26 @@ export default function ReferenceResultTable(data) {
   );
 }
 
-function handleRefPopUp(row, setFilteredReferenceContentsForEdit, setOpen, setRefState,setEnabledEdit, enableEdit) {
+function handleRefPopUp(
+  row,
+  setFilteredReferenceContentsForEdit,
+  setOpen,
+  setRefState,
+  setEnabledEdit,
+  enableEdit
+) {
   return async () => {
     //this is the data to use for PaperRef
-    console.log("click");
-    const contentsDE = await fetchReferenceContent(
-      row.referenceID,
-      "DE"
-    );
-    const contentsEN = await fetchReferenceContent(
-      row.referenceID,
-      "EN"
-    );
+    const contentsDE = await fetchReferenceContent(row.referenceID, "DE");
+    const contentsEN = await fetchReferenceContent(row.referenceID, "EN");
     //sending both langauges
     const combinedLng = contentsDE.concat(contentsEN);
-    console.log("combinedLng", combinedLng);
     setFilteredReferenceContentsForEdit(combinedLng);
 
     setOpen(true);
-    
-    setEnabledEdit(enableEdit)
+    // set  row.referenceID for the currently chosen ref to edit
+
+    setEnabledEdit(enableEdit);
     setRefState(mapFromApi(row));
   };
 }

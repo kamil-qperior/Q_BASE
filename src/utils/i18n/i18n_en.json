@@ -5,8 +5,13 @@
     }
   },
   "Reference": {
+    "languageToggle": {
+      "contentLanguage":"Content language:"
+    },
     "tableHeader": {
       "name": "Name",
+      "ready": "Ready",
+      "chosenLanguage": "Chosen language",
       "client": "Client",
       "industry": "Industrie",
       "country": "Country",
@@ -63,7 +68,7 @@
     "header": {
       "searchRef": "Reference search",
       "selectedRefs": "My selection",
-      "generateSlides": "Generate slides"
+      "generateSlides": "Overview"
     }
   },
   "PaperRef": {

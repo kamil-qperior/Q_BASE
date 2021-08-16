@@ -58,14 +58,19 @@ export default function CheckboxesGroup(props) {
       
   const handleChange = (event, title) => {
     const newState = { ...boxState, [event.target.name]: event.target.checked };
-
     setBoxState(newState, boxId);  //since setState call back does not work properly here and does not wait for change to state, i pass newState to recoil update method
     updateVariantSelection(title, newState, chosenVariantLanguage, refId)
-   
+  
   };
 
   return (
+
+
+
+
+    
     <div className={classes.root}>
+      {/* old below new above */}
       <Paper maxW>
         <FormControl component="fieldset" className={classes.formControl}>
           <FormLabel component="legend">{`Pick ${props.title}`}</FormLabel>
@@ -93,7 +98,8 @@ export default function CheckboxesGroup(props) {
       </Paper>
     </div>
   );
-
+  
+  //moved to paperrefItem
   function updateVariantSelection(title, newState, chosenVariantLanguage, refId, rcTitle) {
    
     setReferenceVariantSelection((prev) => {

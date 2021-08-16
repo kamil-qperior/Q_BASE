@@ -22,9 +22,10 @@ const contentListsState = atomFamily({
 });
 const variantNameState = atomFamily({
   key: "variantNameState",
-  default: null,
+  default: "Reference Variant ",
 });
 
+//used to save checkbox content to a specific variant, used to be guided by step counter
 const variantContentListsState = atomFamily({
   key: "variantContentListsState",
   default: [],
@@ -53,6 +54,7 @@ const activeStepState = atom({
   default: 0,
 });
 
+//TODO needs to be updated
 const refIdForVariantState = selector({
   key: "refIdForVariantState",
   default: "",
@@ -80,6 +82,7 @@ const referenceVariantState = atom({
   },
 });
 
+//saved variants after selection in "my selection"
 const referenceVariantSelectionState = atom({
   key: "referenceVariantSelectionState",
   default: [],
@@ -124,8 +127,6 @@ let filteredReferences = selector({
     const techTag = get(filterTechnologyData); 
     const procedureTag = get(filterProcedureData); 
     
-
-    console.log("client ", client);
 
     filteredRefs = filterData(status, filteredRefs, "status");
     filteredRefs = filterData(country, filteredRefs, "country");
@@ -186,7 +187,6 @@ let filteredReferenceContentsForEdit = selector({
     }
   },
   set: ({ set }, contents) => {
-    console.log('are we here');
     const title = contents.filter((content) => content.type === "title");
     const goals = contents.filter((content) => content.type === "goal");
     const procedures = contents.filter(

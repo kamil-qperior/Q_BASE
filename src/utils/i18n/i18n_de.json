@@ -5,8 +5,13 @@
     }
   },
   "Reference": {
+    "languageToggle": {
+      "contentLanguage":"Inhaltssprache:"
+    },
     "tableHeader": {
       "name": "Name",
+      "ready": "Bereit",
+      "chosenLanguage": "Ausgewählte Sprache",
       "client": "Kunde",
       "industry": "Industrie",
       "country": "Land",
@@ -73,7 +78,7 @@
     "header": {
       "searchRef": "Referenzensuche",
       "selectedRefs": "Meine Auswahl",
-      "generateSlides": "Erstelle Slides"
+      "generateSlides": "Übersicht"
     }
   }
 }
