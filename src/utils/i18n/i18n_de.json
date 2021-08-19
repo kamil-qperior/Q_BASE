@@ -6,7 +6,7 @@
   },
   "Reference": {
     "languageToggle": {
-      "contentLanguage":"Inhaltssprache:"
+      "contentLanguage": "Inhaltssprache:"
     },
     "tableHeader": {
       "name": "Name",
@@ -22,15 +22,14 @@
       "project_start": "Projekt Start",
       "project_end": "Projekt Ende",
       "person_days_total": "Personentage",
-      "add": "Hinzufügen",      
-      "edit": "Auswahl editieren",     
-      "delete": "Entfernen"      
-      
+      "add": "Hinzufügen",
+      "edit": "Auswahl editieren",
+      "delete": "Entfernen"
     }
   },
   "CV": {
     "tableHeader": {
-      "employee": "Vorname Nachname",
+      "employee": "Nachname Vorname",
       "topicChapter": "Topic Chapter",
       "certificate": "Zertifikate",
       "level": "Position",
@@ -42,6 +41,10 @@
     },
     "tableFooter": {
       "rowsPerPage": "Zeilen pro Seite:"
+    },
+    "tableIcons": {
+      "edit": "Variante bearbeiten",
+      "delete": "Auswahl entfernen"
     }
   },
   "PaperCV": {
@@ -65,7 +68,6 @@
       "goals": "Ziele",
       "procedures": "Verfahren",
       "results": "Resultate"
-
     }
   },
   "SearchCV": {

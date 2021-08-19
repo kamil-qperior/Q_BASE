@@ -189,7 +189,7 @@ export default function PaperCV({ theCVsDataState, index, modus }) {
                   <WorkIcon />
                 </Avatar>
               </ListItemAvatar>
-              <ListItemText primary="Dipl. Ingeneur" secondary="" />
+              <ListItemText primary="Dipl. Ingenieur" secondary="" />
             </ListItem>
             <ListItem>
               <ListItemAvatar>

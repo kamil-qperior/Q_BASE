@@ -30,6 +30,7 @@ const useStyles = makeStyles((theme) => ({
   search: {
     "text-align": "initial;",
     "margin-top": "1rem;",
+    "margin-left": "32px",
   },
   list: {
     // "overflow-y": "overlay;",
@@ -109,10 +110,13 @@ export default function FilterExpanderContent({ theState, customSwitchOn }) {
   };
   let visibleFilteredArray;
   if (theState.key === "filterLevelData") {
-    visibleFilteredArray = filteredArray.filter((el) => el.visible);
+    visibleFilteredArray = filteredArray
+      .filter((el) => el.visible)
+      .filter((el) => el.data.length > 2);
   } else {
     visibleFilteredArray = filteredArray
       .filter((el) => el.visible)
+      .filter((el) => el.data.length > 2)
       .sort((a, b) => {
         return a.data.toUpperCase().trim() > b.data.toUpperCase().trim()
           ? 1

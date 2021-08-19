@@ -19,6 +19,8 @@ import { Link } from "react-router-dom";
 import { languageCode } from "../store/states";
 import { useRecoilState } from "recoil";
 import { i18n } from "../utils/i18n/i18n";
+import AccountBoxIcon from "@material-ui/icons/AccountBox";
+import FindInPageIcon from "@material-ui/icons/FindInPage";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -138,15 +140,23 @@ const Header = () => {
           </ListItemIcon>
           <Link to="/createReference" onClick={toggleDrawer}>
             {" "}
-            Create Reference {" "}
+            Create Reference{" "}
           </Link>
         </ListItem>
         <ListItem button>
           <ListItemIcon>
-            <ShoppingCartIcon></ShoppingCartIcon>
+            <AccountBoxIcon></AccountBoxIcon>
           </ListItemIcon>
-          <Link to="/cv" onClick={toggleDrawer}>
-            CVs
+          <Link to="/mypapercv" onClick={toggleDrawer}>
+            Mein CV
+          </Link>
+        </ListItem>
+        <ListItem button>
+          <ListItemIcon>
+            <FindInPageIcon></FindInPageIcon>
+          </ListItemIcon>
+          <Link to="/mycv" onClick={toggleDrawer}>
+            Beratersuche
           </Link>
         </ListItem>
       </Drawer>

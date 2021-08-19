@@ -6,7 +6,7 @@
   },
   "Reference": {
     "languageToggle": {
-      "contentLanguage":"Content language:"
+      "contentLanguage": "Content language:"
     },
     "tableHeader": {
       "name": "Name",
@@ -23,8 +23,8 @@
       "project_end": "Project end",
       "person_days_total": "Person days total",
       "add": "Add",
-      "edit": "Edit selection",     
-      "delete": "Delete"  
+      "edit": "Edit selection",
+      "delete": "Delete"
     }
   },
   "CV": {
@@ -41,6 +41,10 @@
     },
     "tableFooter": {
       "rowsPerPage": "Rows per Page:"
+    },
+    "tableIcons": {
+      "edit": "Edit template",
+      "delete": "Remove selection"
     }
   },
   "PaperCV": {
@@ -77,7 +81,6 @@
       "goals": "Goals",
       "procedures": "Procedures",
       "results": "Results"
-
     }
   }
 }

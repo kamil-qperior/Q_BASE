@@ -173,6 +173,7 @@ export default function SpanningTable() {
               });
               return {
                 ...newValue,
+                isEdited: 0,
                 isSelected: !el.isSelected,
               };
             }),

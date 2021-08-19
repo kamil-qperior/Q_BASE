@@ -26,7 +26,10 @@ const useStyles = makeStyles((theme) => ({
     "min-width": "17rem;",
     "max-width": "18rem;",
   },
-  search: { "text-align": "center;", "margin-top": "1rem;" },
+  search: {
+    "text-align": "center;",
+    "margin-top": "1rem;",
+  },
   list: {
     // "overflow-y": "overlay;",
     margin: "0.5rem 1rem 0.2rem 1rem;",

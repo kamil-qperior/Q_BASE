@@ -15,7 +15,11 @@ import UpIcon from "@material-ui/icons/KeyboardArrowUp";
 import { green } from "@material-ui/core/colors";
 import Box from "@material-ui/core/Box";
 import { i18n } from "../../utils/i18n/i18n";
-import { languageCode, filterLanguagesData, CVsData } from "../../store/states";
+import {
+  languageCode,
+  filterLanguagesData,
+  CVsDataSelected,
+} from "../../store/states";
 import { useRecoilState } from "recoil";
 import PaperCV from "./subComponents/PaperCV";
 import CertificationTableInside from "./CertificationTableInside";
@@ -92,7 +96,7 @@ export default function MyCV() {
   const [value, setValue] = React.useState(0);
   const [filterLanguages] = useRecoilState(filterLanguagesData);
   const [lng] = useRecoilState(languageCode);
-
+  const [CVsDataSelectedRaw] = useRecoilState(CVsDataSelected);
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
@@ -113,7 +117,14 @@ export default function MyCV() {
           centered="true"
         >
           <Tab label={i18n(lng, "SearchCV.header.searchCV")} />
-          <Tab label={i18n(lng, "SearchCV.header.selectedCV")} />
+          <Tab
+            label={
+              i18n(lng, "SearchCV.header.selectedCV") +
+              " (" +
+              CVsDataSelectedRaw.length +
+              ")"
+            }
+          />
         </Tabs>
       </AppBar>
       <SwipeableViews
