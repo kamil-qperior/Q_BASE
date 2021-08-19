@@ -132,10 +132,7 @@ const [referenceVariantSelection, setReferenceVariantSelection] =
      //makes sure we initiate the state properly and once with full state
 if( loadedBefore.findIndex(alreadyLoadedBox => alreadyLoadedBox === boxId) < 0)  {
 
-  console.log('chosenVariantLanguage',chosenVariantLanguage);
-  console.log('content',languageFilteredContent);
   const initialState = languageFilteredContent.reduce((o, key) => Object.assign(o, { [key.id]: true }), {});
-  console.log('we initialState xxx', initialState, chosenVariantLanguage );
   setBoxState(initialState, boxId)
   updateVariantSelection(propertyKey, initialState, chosenVariantLanguage, referenceId, rcTitle)
   setLoadedBefore(loadedBefore.concat(boxId))

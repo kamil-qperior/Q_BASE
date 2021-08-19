@@ -1,34 +1,29 @@
 import Avatar from "@material-ui/core/Avatar";
+import Fab from "@material-ui/core/Fab";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import ListItemText from "@material-ui/core/ListItemText";
-import TextField from "@material-ui/core/TextField";
 import Paper from "@material-ui/core/Paper";
-import Button from "@material-ui/core/Button";
 import { makeStyles } from "@material-ui/core/styles";
+import TextField from "@material-ui/core/TextField";
 import ApartmentIcon from "@material-ui/icons/Apartment";
 import PersonIcon from "@material-ui/icons/Person";
 import WorkIcon from "@material-ui/icons/Work";
-import ToggleButton from "@material-ui/lab/ToggleButton";
-import ToggleButtonGroup from "@material-ui/lab/ToggleButtonGroup";
 import { default as React } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { saveReferenceVariant } from "../../services/referenceService";
 import { languageCode } from "../../store/states";
 import {
   chosenVariantLanguageState,
   contentListsState,
-  chosenRefsState,
   formOpenState,
-  variantNameState,
   referenceVariantSelectionState,
   refTextFieldsState,
-  referenceVariantIdsFromResult,
 } from "../../store/statesRef";
 import { i18n } from "../../utils/i18n/i18n";
-import faceImage from "./Adac.png";
-import PaperRefItem from "./PaperRefItem";
+import logoImage from "./Adac.png";
+import projectImage from "./adac_gross.jpg";
+import PaperRefItemCreate from "./PaperRefItemCreate";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -61,13 +56,30 @@ const useStyles = makeStyles((theme) => ({
   rightPaper: {
     width: "70%",
   },
+  bottomImageContainer: {
+    "text-align-last": "center",
+    marginTop: "4rem",
+    padding: "10px",
+    width: "11rem",
+    height: "8rem",
+  },
   imageContainer: {
     "text-align-last": "center",
     padding: "10px",
-  },
-  faceImage: {
     width: "7rem",
     height: "7rem",
+    marginTop: "1rem;",
+  },
+  faceImage: {
+    marginTop: "3rem;",
+    width: "7rem",
+    height: "7rem",
+    "border-radius": "5px",
+  },
+  projectImage: {
+    marginTop: "4rem;",
+    width: "22rem",
+    height: "12rem",
     "border-radius": "5px",
   },
   fontName: {
@@ -141,15 +153,13 @@ const useStyles = makeStyles((theme) => ({
   },
   variantNameTextField: {
     "text-align-last": "center;",
-    "padding-top": "30px;"
+    "padding-top": "30px;",
   },
 }));
 
-export default function PaperRef() {
-  //const [collapseAll, setCollapseAll] = React.useState(false);
- 
+//for reference creation needs to replace content form
+export default function PaperRefCreate() {
   const classes = useStyles();
-  const [collapseFirst, setCollapseFirst] = React.useState(true);
   const [lng] = useRecoilState(languageCode);
 
   const [chosenVariantLanguge, setChosenVariantLanguageState] = useRecoilState(
@@ -161,86 +171,70 @@ export default function PaperRef() {
   const [refState, setRefState] = useRecoilState(refTextFieldsState);
 
   //also here is the data for which refId we are using
-  const title = useRecoilValue(contentListsState("title"));
-  const goals = useRecoilValue(contentListsState("goal"));
-  const procedures = useRecoilValue(contentListsState("procedure"));
-  const results = useRecoilValue(contentListsState("result"));
+  const [title, setTitle] = useRecoilState(contentListsState("title"));
 
-  const [chosenRefs, setChosenRefs] = useRecoilState(chosenRefsState);
-
-  const indexOfTheCurrentlySelectedRef = chosenRefs.findIndex(cf => (cf.referenceID === title[0]?.referenceId) )
-  const readableIndex = indexOfTheCurrentlySelectedRef + 1;
-
-  //varaint name 
-  const [variantName, setVariantName] = useRecoilState(variantNameState(readableIndex));
-
-  const placeHolderVariantName = variantName +readableIndex//`Reference variant ${indexOfTheCurrentlySelectedRef+1}`; //for readable numbers
-
-
-  //use for saving variant
-  const referenceVariantSelection = useRecoilValue(
-    referenceVariantSelectionState
-  );
-  const [referenceVariantIds, setReferenceVariantIds] = useRecoilState(
-    referenceVariantIdsFromResult
-  );
-
-  const handleSaveVariant = async () => {
-    const resultingIds = [];
-
-    for await (const referenceVariant of referenceVariantSelection) {
-      
-      console.log("referenceVariant we saving ", referenceVariant);
-      const res = await saveReferenceVariant(referenceVariant);
-      console.log("referenceVariantSelection res", res);
-      
-      
-      resultingIds.push(res?.id);
-      
-      //mark that changes has been made
-      const configuredRef = { ...chosenRefs[indexOfTheCurrentlySelectedRef], configured: true, chosenLanguage: chosenVariantLanguge ?? "DE" };
-  
-
-      const updatedChosenRefs = [...chosenRefs];
-      updatedChosenRefs.splice(indexOfTheCurrentlySelectedRef, 1, configuredRef)
-      
-      setChosenRefs(updatedChosenRefs)
-    }
-    setReferenceVariantIds(resultingIds);
-
-    //do alternative iteration with index and order of chosen refs
-    //setActiveStep((prevActiveStep) => prevActiveStep + 1);
-  };
   ///////////////////
+
 
   const handleClickOpen = () => {
     setOpen(true);
   };
 
-  const handleVariantNameChange = (event, newName) => {
-  
-    
-    setVariantName(event.target.value, readableIndex)
-    
+  const handleTitleChange = (event) => {
+    const newName = event.target.value;
+
+    console.log("event.target.value", newName);
+    console.log("title", title);
+    //TOOD make language variable
+
+    //setTitle([{...title[0], content: newName}], "title");
   };
 
-  const handleChosenLanguage = (event, newLanguage) => {
-    setChosenVariantLanguageState(newLanguage);
-  };
+  const handleUploadClick = (event) => {
+    var file = event.target.files[0];
+    const reader = new FileReader();
+    var url = reader.readAsDataURL(file);
 
-  const handleEditClick = (event) => {};
-  const handleCollapseClick = (event) => {
-    setCollapseFirst(!collapseFirst);
+    reader.onloadend = function (e) {
+      this.setState({
+        selectedFile: [reader.result],
+      });
+    }.bind(this);
+    console.log(url); // Would see a path?
+
+    this.setState({
+      mainState: "uploaded",
+      selectedFile: event.target.files[0],
+      imageUploaded: 1,
+    });
   };
 
   //TODO do language dependence
   return (
     <div className={classes.root}>
-      <Paper className={classes.rootPaper} elevation={3}>
+      <Paper className={classes.rootPaper} elevation={10}>
         <div className={classes.leftPaper}>
           <div className={classes.imageContainer}>
-            <img src={faceImage} className={classes.faceImage} alt="fireSpot" />
+          <label htmlFor="contained-button-file"> 
+          
+            <Fab component="span">
+              <input
+                accept="image/*"
+                className={classes.input}
+                id="contained-button-file"
+                multiple
+                type="file"
+                onChange={handleUploadClick}
+              />
+              <img
+                src={logoImage}
+                className={classes.faceImage}
+                alt="fireSpot"
+              />
+            </Fab>
+          </label>
           </div>
+
           <List className={classes.leftList}>
             <ListItem>
               <ListItemAvatar>
@@ -279,69 +273,61 @@ export default function PaperRef() {
           </List>
 
           <div className={classes.variantNameTextField}>
-          <TextField 
-                id={"variantName"}
-                name= {variantName}
-                //     value={refState[param]} this lock the whole field with onBlur
-                defaultValue={placeHolderVariantName} //this may not work properly
-                 key={variantName}
-                
-                
-                onBlur={handleVariantNameChange} 
-                label={"Variant Name"}
+            <TextField
+              id={"title"}
+              name={title[0].content}
+              //     value={refState[param]} this lock the whole field with onBlur
+              defaultValue={title[0].content} //this may not work properly
+              key={title[0].content}
+              onBlur={handleTitleChange}
+              label={"Project Title "}
+            />
+          </div>
+
+          <div className={classes.bottomImageContainer}>
+          <label htmlFor="contained-button-file"> 
+          
+            <Fab component="span">
+              <input
+                accept="image/*"
+                className={classes.input}
+                id="contained-button-file"
+                multiple
+                type="file"
+                onChange={handleUploadClick}
               />
+              <img
+                src={projectImage}
+                className={classes.projectImage}
+                alt="fireSpot"
+              />
+            </Fab>
+          </label>
           </div>
-          <div className={classes.saveButton}>
-            <Button
-              variant="outlined"
-              onClick={(e) => {
-                console.log("refState", refState);
-                handleSaveVariant();
-                setOpen(false)
-              }}
-              color="primary"
-            >
-              Save variant
-            </Button>
-          </div>
+
+
         </div>
         <div className={classes.rightPaper}>
-{/*      wiht the current implementaiton its probably not needed
-     <PaperRefItem
-            title={i18n(lng, "PaperRef.expanderTitel.title")}
-            content={title}
-            contentTitle={title}
-            variantName={placeHolderVariantName}
-            propertyKey={"title"}
-            index={1}
-            refId={refState.referenceId}
-          /> */}
-          <PaperRefItem
+          <PaperRefItemCreate
             title={i18n(lng, "PaperRef.expanderTitel.goals")}
-            content={goals}
+            /*   content={goals} */
             contentTitle={title}
-            index={1}
             propertyKey={"goals"}
-            variantName={placeHolderVariantName}
             refId={refState.referenceId}
           />
 
-          <PaperRefItem
+          <PaperRefItemCreate
             title={i18n(lng, "PaperRef.expanderTitel.procedures")}
-            content={procedures}
+            /*  content={procedures} */
             contentTitle={title}
-            index={1}
             propertyKey={"procedures"}
-            variantName={placeHolderVariantName}
             refId={refState.referenceId}
           />
-          <PaperRefItem
+          <PaperRefItemCreate
             title={i18n(lng, "PaperRef.expanderTitel.results")}
-            content={results}
+            /*       content={results} */
             contentTitle={title}
-            index={1}
             propertyKey={"results"}
-            variantName={placeHolderVariantName}
             refId={refState.referenceId}
           />
         </div>
@@ -349,6 +335,3 @@ export default function PaperRef() {
     </div>
   );
 }
-
-
-

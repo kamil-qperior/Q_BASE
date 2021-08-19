@@ -120,7 +120,7 @@ export default function HorizontalLinearVariantStepper(props) {
               }}
               color="primary"
             >
-              generate slides
+              generate documents
             </Button>
           </div>
         ) : (

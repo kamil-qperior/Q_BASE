@@ -237,69 +237,9 @@ export default function StepFormVariant(props) {
           </div>
         </Paper>
       </div>
-
-      <div>
-        {/* old below new above */}
-
-        <Grid
-          container
-          spacing={2}
-          alignItems="center"
-          justify="center"
-          direction="column"
-        >
-          <Grid container spacing={3} justify="center" alignItems="center">
-            <Grid style={{ width: 250, margin: 20 }} item>
-              <Typography variant="h8" wrap="true">
-                {" "}
-                Title{" "}
-              </Typography>
-              <Typography wrap="true">
-                {rcTitle?.content ?? "No title found in reference contents."}
-              </Typography>
-            </Grid>
-            <Grid style={{ width: 250, margin: 20 }} item>
-              <TextField
-                id={"variantName"}
-                name={"variantName"}
-                //     value={refState[param]} this lock the whole field with onBlur
-                defaultValue={placeHolderVariantName} //this may not work properly
-                key={variantName}
-                //on focusing away from field
-                onBlur={handleChange}
-                label={"Variant Name"}
-              />
-            </Grid>
-          </Grid>
-
-          <CheckboxesGroup
-            title="Goals"
-            rcTitle={rcTitle}
-            content={goals}
-            variantName={chooseName()}
-            refId={referenceId}
-          />
-          <Grid item xs={12}></Grid>
-          <Grid item xs={12}>
-            <CheckboxesGroup
-              title="Procedures"
-              content={procedures}
-              variantName={chooseName()}
-              refId={referenceId}
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <CheckboxesGroup
-              title="Results"
-              content={results}
-              variantName={chooseName()}
-              refId={referenceId}
-            />
-          </Grid>
-        </Grid>
-      </div>
+    
     </div>
-  );
+  )
 
   function chooseName() {
     return variantName === null ? placeHolderVariantName : variantName;

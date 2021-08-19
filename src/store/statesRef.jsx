@@ -18,7 +18,7 @@ import {
 //used for 3 different atoms lists of different contents
 const contentListsState = atomFamily({
   key: "contentListsState",
-  default: [],
+  default: param => defaultBasedOnParam(param),
 });
 const variantNameState = atomFamily({
   key: "variantNameState",
@@ -51,6 +51,11 @@ const searchQueryState = atom({
 
 const activeStepState = atom({
   key: "activeStepState",
+  default: 0,
+});
+
+const isReferenceSavedState = atom({
+  key: "isReferenceSavedState",
   default: 0,
 });
 
@@ -231,6 +236,7 @@ export {
   activeStepState,
   referenceVariantIdsFromResult,
   formOpenState,
+  isReferenceSavedState,
   formEditState,
   chosenVariantLanguageState,
   refIdForEditState,
@@ -274,3 +280,16 @@ export {
     return filteredRefs;
   }
 
+
+  export const  defaultBasedOnParam = (param) => {
+
+    if(param==="title") {
+      return [{
+        content: "content title",
+        type: "title"
+       }]
+    } else {
+      return []
+    }
+
+}
