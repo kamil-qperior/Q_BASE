@@ -11,6 +11,8 @@ import TableContainer from "@material-ui/core/TableContainer";
 import TablePagination from "@material-ui/core/TablePagination";
 import FilterDialog from "./subComponents/FilterDialog";
 import DeleteIcon from "@material-ui/icons/Delete";
+import Tooltip from "@material-ui/core/Tooltip";
+
 import {
   languageCode,
   CVsData,
@@ -42,7 +44,11 @@ import ShortChip from "./subComponents/ShortChip";
 import SearchBarLeft from "./subComponents/SearchBarLeft";
 import Checkbox from "@material-ui/core/Checkbox";
 import DialogCV from "./subComponents/DialogCV";
-import { getCVs } from "./subComponents/restCalls/getCVService";
+import {
+  getCVs,
+  deleteSelectedCVs,
+  setSelectedCVs,
+} from "./subComponents/restCalls/CVService";
 import Select from "@material-ui/core/Select";
 import Toolbar from "@material-ui/core/Toolbar";
 import MenuItem from "@material-ui/core/MenuItem";
@@ -102,7 +108,7 @@ export default function SelectedTableItems() {
   const classes = useStyles();
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [page, setPage] = React.useState(0);
-  const [templateID, setTemplateID] = React.useState(20);
+  const [templateID, setTemplateID] = React.useState(10);
 
   const [employes] = useRecoilState(CVsDataWithFilter);
   let [CVsDataRaw, setCVsData] = useRecoilState(CVsData);
@@ -139,7 +145,28 @@ export default function SelectedTableItems() {
   const handleTemplateChange = (event) => {
     setTemplateID(event.target.value);
   };
-  const handleDownloadClick = (event) => {
+  const getFormattedCVs = () => {
+    let newValue = JSON.parse(JSON.stringify(CVsDataSelectedRaw));
+    newValue.forEach((el, index) => {
+      delete newValue[index].isSelected;
+      delete newValue[index].isExpanded;
+      delete newValue[index].isEdited;
+
+      delete newValue[index].id;
+      Object.keys(el).forEach((val) => {
+        if (val.includes("Selection")) {
+          newValue[index][val.split("Selection")[0]] = newValue[index][
+            val.split("Selection")[0]
+          ].filter((el, ixi) => newValue[index][val][ixi]);
+          delete newValue[index][val];
+        }
+      });
+    });
+    return newValue;
+  };
+  const handleDownloadClick = async (event) => {
+    await deleteSelectedCVs();
+    await setSelectedCVs(getFormattedCVs());
     getCVs(templateID);
   };
 
@@ -167,6 +194,7 @@ export default function SelectedTableItems() {
       </Toolbar>
     );
   };
+
   const Row = (props) => {
     const { row } = props;
     let consultingEmphasis = [...row.consultingEmphasis].filter(Boolean);
@@ -179,7 +207,7 @@ export default function SelectedTableItems() {
     let certificates = [...row.certificates].filter(Boolean);
     const [open, setOpen] = React.useState(false);
     const onSelectRow = (event, rowID) => {
-      console.log('row was selected');
+      console.log("row was selected");
       setShowCVPopover(true);
       setCVsDataSelected(
         CVsDataSelectedRaw.map((el) =>
@@ -210,26 +238,44 @@ export default function SelectedTableItems() {
           <TableCell>{row.topicChapter}</TableCell>
           <TableCell>{row.level}</TableCell>
           <TableCell>
-            <IconButton
-              // size="small"
-              // className={classes.collapseIcon}
-              color="primary"
-              onClick={(event) => onSelectRow(event, row.id)}
-              // data-type="DeleteIcon"
-            >
-              <EditIcon />
-            </IconButton>
+            <Tooltip title={i18n(lng, "CV.tableIcons.edit")} placement="bottom">
+              <IconButton
+                // size="small"
+                // className={classes.collapseIcon}
+                color="primary"
+                onClick={(event) => onSelectRow(event, row.id)}
+                // data-type="DeleteIcon"
+              >
+                <Badge
+                  anchorOrigin={{
+                    vertical: "top",
+                    horizontal: "left",
+                  }}
+                  color="secondary"
+                  variant="dot"
+                  invisible={row.isEdited <= 0}
+                  badgeContent={row.isEdited}
+                >
+                  <EditIcon />
+                </Badge>
+              </IconButton>
+            </Tooltip>
           </TableCell>
           <TableCell>
-            <IconButton
-              // size="small"
-              // className={classes.collapseIcon}
-              color="primary"
-              onClick={(event) => onDelteSelectedRow(event, row.id)}
-              // data-type="DeleteIcon"
+            <Tooltip
+              title={i18n(lng, "CV.tableIcons.delete")}
+              placement="bottom"
             >
-              <DeleteIcon />
-            </IconButton>
+              <IconButton
+                // size="small"
+                // className={classes.collapseIcon}
+                color="primary"
+                onClick={(event) => onDelteSelectedRow(event, row.id)}
+                // data-type="DeleteIcon"
+              >
+                <DeleteIcon />
+              </IconButton>
+            </Tooltip>
           </TableCell>
         </TableRow>
       </React.Fragment>

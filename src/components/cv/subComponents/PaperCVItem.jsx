@@ -7,6 +7,10 @@ import Collapse from "@material-ui/core/Collapse";
 import IconButton from "@material-ui/core/IconButton";
 import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
+import DeleteIcon from "@material-ui/icons/Delete";
+import TextField from "@material-ui/core/TextField";
+import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
+import SaveIcon from "@material-ui/icons/Save";
 import { i18n } from "../../../utils/i18n/i18n";
 
 import Checkbox from "@material-ui/core/Checkbox";
@@ -87,6 +91,9 @@ const useStyles = makeStyles((theme) => ({
   bulltetPoints: {
     "list-style-type": "disc",
   },
+  saveButton: {
+    "padding-right": "24px",
+  },
 }));
 
 export default function PaperCVItem({
@@ -105,9 +112,40 @@ export default function PaperCVItem({
   const handleCollapseClick = (event) => {
     setCollapseFirst(!collapseFirst);
   };
-  const handleCheckboxChange = (event, index, propertyKey, ix) => {
+  const handleItemChange = (event, index, propertyKey, ix) => {
     // setCVsData()
-    console.log(propertyKey);
+    if (modus === "write") {
+      let newValue = JSON.parse(JSON.stringify(CVsDataRaw));
+      newValue[index].isEdited = !newValue[index][propertyKey + "Selection"][ix]
+        ? newValue[index].isEdited - 1
+        : newValue[index].isEdited + 1;
+      newValue[index][propertyKey + "Selection"][ix] =
+        !newValue[index][propertyKey + "Selection"][ix];
+      setCVsData(newValue);
+    }
+    if (modus === "edit") {
+      console.log("edit");
+      let newValue = JSON.parse(JSON.stringify(CVsDataRaw));
+      newValue[index][propertyKey] = newValue[index][propertyKey].filter(
+        (el, indexo) => ix !== indexo
+      );
+      setCVsData(newValue);
+    }
+  };
+
+  const handleAddNewItem = (event, index, propertyKey, ix) => {
+    if (
+      modus === "edit" &&
+      document.getElementById(propertyKey).value.length > 0
+    ) {
+      console.log("newItem");
+      let newValue = JSON.parse(JSON.stringify(CVsDataRaw));
+      newValue[index][propertyKey].push(
+        document.getElementById(propertyKey).value
+      );
+      setCVsData(newValue);
+      document.getElementById(propertyKey).value = "";
+    }
   };
   return (
     <div className={classes.rightPaper}>
@@ -143,9 +181,14 @@ export default function PaperCVItem({
         <List className={classes.rightList} dense={true}>
           {CVsDataRaw[index][propertyKey].map((el, ix) =>
             el.length > 0 || el.rawName?.length > 0 || el.name?.length > 0 ? (
-              <ListItem button onClick={() => {}}>
+              <ListItem
+                button={modus !== "read"}
+                onClick={(event) =>
+                  handleItemChange(event, index, propertyKey, ix)
+                }
+              >
                 {typeof el === "string" ? (
-                  <ListItemText primary={"hallo" + el} />
+                  <ListItemText primary={el} />
                 ) : el.name ? (
                   <ListItemText primary={el.name} /> // Zertifikate
                 ) : (
@@ -170,27 +213,48 @@ export default function PaperCVItem({
                   <Checkbox
                     checked={CVsDataRaw[index][propertyKey + "Selection"][ix]}
                     onClick={(event) =>
-                      handleCheckboxChange(event, index, propertyKey, ix)
+                      handleItemChange(event, index, propertyKey, ix)
                     }
                     color="primary"
                     inputProps={{ "aria-label": "secondary checkbox" }}
                   />
                 ) : null}
+
+                {modus === "edit" ? (
+                  <IconButton
+                    color="primary"
+                    onClick={(event) =>
+                      handleItemChange(event, index, propertyKey, ix)
+                    }
+                  >
+                    <DeleteIcon />
+                  </IconButton>
+                ) : null}
               </ListItem>
             ) : null
           )}
-          {/* <ListItem>
-            <TextField
-              id="standard-full-width"
-              placeholder="Weiterer Beratungsschwerpunkt"
-              style={{ width: "20rem" }}
-            />
-            <ListItemSecondaryAction>
-              <IconButton edge="end" aria-label="delete">
-                <SaveIcon />
-              </IconButton>
-            </ListItemSecondaryAction>
-          </ListItem> */}
+          {modus === "edit" ? (
+            <ListItem>
+              <TextField
+                id={propertyKey}
+                placeholder="Weiterer Beratungsschwerpunkt"
+                style={{ width: "20rem" }}
+              />
+              <ListItemSecondaryAction>
+                <IconButton
+                  className={classes.saveButton}
+                  color="primary"
+                  edge="end"
+                  onClick={(event) =>
+                    handleAddNewItem(event, index, propertyKey)
+                  }
+                  aria-label="delete"
+                >
+                  <SaveIcon />
+                </IconButton>
+              </ListItemSecondaryAction>
+            </ListItem>
+          ) : null}
         </List>
       </Collapse>
     </div>
