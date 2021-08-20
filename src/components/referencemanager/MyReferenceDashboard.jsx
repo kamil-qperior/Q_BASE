@@ -14,6 +14,8 @@ import PropTypes from "prop-types";
 import React, { Suspense } from "react";
 import SwipeableViews from "react-swipeable-views";
 import { useRecoilState } from "recoil";
+import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+import {Badge, IconButton} from "@material-ui/core";
 import { getDeck } from "../../services/slidedeck/slideDeckServ";
 import {
   clientFilterHolder,
@@ -108,20 +110,27 @@ const useStyles = makeStyles((theme) => ({
     "background-color": "aliceblue",
   },
   generateSlideButton: {
-    "padding-top":"1rem",
+    "padding":"1rem",
     "background-color": "primary",
   },
   languageToggle: {
     
-    
     "text-align-last": "center;",
+    "margin":"1rem",
   },
   languageToggleText: {
     "display": "contents;",
   },
   languageToggleTextTypo: {
+    "margin":"1rem",
     "padding-bottom":"1rem",
   },
+  buttonContainer: {
+    "display":"flex",
+
+    "align-items": "baseline;",
+    justifyContent: "center"
+  }
 }));
 
 //v3 of the dashboard
@@ -193,7 +202,14 @@ export default function MyReferenceDashboard() {
           centered="true"
         >
           <Tab label={i18n(lng, "ReferenceSearch.header.searchRef")} />
-          <Tab label={i18n(lng, "ReferenceSearch.header.selectedRefs")} />
+          <Tab label={i18n(lng, "ReferenceSearch.header.selectedRefs")} > 
+          <IconButton color="inherit">
+                            <Badge badgeContent={2} color="secondary">
+                               <ChevronLeftIcon /> 
+                            </Badge>
+                        </IconButton>
+          </Tab>
+
           <Tab label={i18n(lng, "ReferenceSearch.header.generateSlides")} />
         </Tabs>
       </AppBar>
@@ -243,7 +259,8 @@ export default function MyReferenceDashboard() {
 
         {/*  selection tab*/}
         <TabPanel className={classes.tabContentTable} value={value} index={1}>
-          <div className={classes.languageToggle}>
+          <div spacing ={3} className={classes.buttonContainer}>
+
             <div className={classes.languageToggleText}>
             <Typography  className={classes.languageToggleTextTypo}>
             {i18n(lng, "ReferenceSearch.languageToggle.contentLanguage")}
@@ -251,6 +268,7 @@ export default function MyReferenceDashboard() {
             </Typography>
 
             </div>
+          <div className={classes.languageToggle}>
             <ToggleButtonGroup
               value={chosenVariantLanguge}
               exclusive
@@ -264,6 +282,19 @@ export default function MyReferenceDashboard() {
                 EN
               </ToggleButton>
             </ToggleButtonGroup>
+          </div>
+          <div className={classes.generateSlideButton}>
+                <Button
+                variant="contained"
+                  onClick={(e) => {
+                    console.log('referenceVariantIds for slides generation', referenceVariantIds);
+                    getDeck(referenceVariantIds);
+                  }}
+                  color="primary"
+                >
+                  generate documents
+                </Button>
+              </div>
           </div>
           <div className={classes.searchAndResultContainer}>
             <Suspense>
@@ -294,18 +325,7 @@ export default function MyReferenceDashboard() {
               {/*  <PaperRef data={filteredReferenceContents}></PaperRef> */}
             </Suspense>
           </div>
-          <div className={classes.generateSlideButton}>
-                <Button
-                variant="contained"
-                  onClick={(e) => {
-                    console.log('referenceVariantIds for slides generation', referenceVariantIds);
-                    getDeck(referenceVariantIds);
-                  }}
-                  color="primary"
-                >
-                  generate slides
-                </Button>
-              </div>
+
         </TabPanel>
 
         {/*  generate slides tab*/}

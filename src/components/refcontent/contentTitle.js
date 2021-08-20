@@ -73,12 +73,7 @@ export default function ContentTitleForm(props) {
             return <ContentItem title={title} key={item.id} item={item} />;
           })}
         </List>
-{/*         <Button onClick={e => {
-                       console.log('LOG currentList SELECTION', currentList);
-                      }}
-          color="primary">
-          LOG SELECTION
-        </Button>  */}
+
       </div>
     </div>
   );

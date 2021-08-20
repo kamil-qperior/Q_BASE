@@ -1,25 +1,18 @@
 import Button from "@material-ui/core/Button";
-import Paper from "@material-ui/core/Paper";
-import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogContentText from "@material-ui/core/DialogContentText";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import ScopedCssBaseline from "@material-ui/core/ScopedCssBaseline";
+import Paper from "@material-ui/core/Paper";
 import { makeStyles } from "@material-ui/core/styles";
 import React from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { createNewReference } from "../services/referenceService";
 import {
-  contentListsState,
+  activeStepState, contentListsState,
   formOpenState,
-  refTextFieldsState,
-  activeStepState,
+  isReferenceSavedState,
+  refTextFieldsState
 } from "../store/statesRef";
-import ContentForm from "./contentForm";
-import ImageUploadCard from "./imageUpload";
-import ContentTitleForm from "./refcontent/contentTitle";
 import ReferenceBasicInfoTextFields from "./referenceForm";
+import PaperRefCreate from "./referencemanager/PaperRefCreate";
 import HorizontalLinearReferenceStepper from "./stepper/referenceStepper";
 
 const useStyles = makeStyles((theme) => ({
@@ -38,6 +31,8 @@ const useStyles = makeStyles((theme) => ({
     display: "none",
   },
   rootPaper: {
+    "text-align": "-webkit-center;",
+    justifyContent: "center",
     minHeight: "65rem",
     marginTop: "2rem",
     width: "10%",
@@ -49,11 +44,7 @@ const useStyles = makeStyles((theme) => ({
 function getSteps() {
   return [
     "Basic Project Info",
-    "Title",
-    "Goals",
-    "Procedures",
-    "Results",
-    "Images",
+    "Project Content",
   ];
 }
 
@@ -62,15 +53,15 @@ function getStepContent(step) {
     case 0:
       return "Enter Project Metadata Information";
     case 1:
-      return "Enter single title of the project";
-    case 2:
+      return "Enter Reference Content";
+/*     case 2:
       return "Enter goals of the project";
     case 3:
       return "Enter procedures of the project";
     case 4:
-      return "Enter results of the project";
-    case 5:
-      return "Upload Images";
+      return "Enter results of the project"; */
+/*     case 2:
+      return "Upload Images"; */
     default:
       return "Unknown step";
   }
@@ -81,20 +72,22 @@ function getStepForms(step, useStyles) {
     case 0:
       return <ReferenceBasicInfoTextFields></ReferenceBasicInfoTextFields>;
     //bevore adding new forms adjust state atom
-    case 1:
-      return <ContentTitleForm title="title"></ContentTitleForm>;
-    case 2:
+     case 1:
+      return <PaperRefCreate></PaperRefCreate>; 
+  /*   case 1:
+      return <ContentTitleForm title="title"></ContentTitleForm>; */
+/*     case 2:
       return <ContentForm title="goal"></ContentForm>;
     case 3:
       return <ContentForm title="procedure"></ContentForm>;
     case 4:
-      return <ContentForm title="result"></ContentForm>;
-    case 5:
+      return <ContentForm title="result"></ContentForm>; */
+/*     case 2:
       return (
         <div>
           <ImageUploadCard></ImageUploadCard>
         </div>
-      );
+      ); */
 
     default:
       return "Unknown step";
@@ -108,12 +101,14 @@ export default function FormDialog() {
 
   const [open, setOpen] = useRecoilState(formOpenState);
   const [activeStep, setActiveStep] = useRecoilState(activeStepState);
+  const [isReferenceSaved, setIsRefernceSaved] = useRecoilState(isReferenceSavedState);
 
   const refs = useRecoilValue(refTextFieldsState);
+  //change the fields to accomodate using field names (addes s)
   const title = useRecoilValue(contentListsState("title"));
-  const goals = useRecoilValue(contentListsState("goal"));
-  const results = useRecoilValue(contentListsState("result"));
-  const procedures = useRecoilValue(contentListsState("procedure"));
+  const goals = useRecoilValue(contentListsState("goals"));
+  const results = useRecoilValue(contentListsState("results"));
+  const procedures = useRecoilValue(contentListsState("procedures"));
 
   //console.log('currentList in form dialog', currentList);
   const handleClickOpen = () => {
@@ -121,7 +116,6 @@ export default function FormDialog() {
   };
 
   const handleClose = () => {
-    console.log("we handling close");
     //TODO add more clean up
     setOpen(false);
     setActiveStep(0);
@@ -130,7 +124,7 @@ export default function FormDialog() {
   return (
     <div className={classes.root}>
       <Paper className={classes.rootPaper}>
-        <Grid container justify="center">
+        <Grid >
           {/* <Typography>Enter new Reference Basic Information</Typography> */}
           <HorizontalLinearReferenceStepper
             getStepForms={getStepForms}
@@ -146,6 +140,7 @@ export default function FormDialog() {
               //TODO make sure is not possible before last page
               createNewReference(refs, goals, procedures, results, title);
               setOpen(false);
+              setIsRefernceSaved(true);
             }}
             color="primary"
           >

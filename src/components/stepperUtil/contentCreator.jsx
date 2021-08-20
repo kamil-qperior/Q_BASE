@@ -1,18 +1,13 @@
 
-import {
-  RecoilRoot,
-  atom,
-  selector,
-  useRecoilState,
-  useRecoilValue,
-  useSetRecoilState,
-} from 'recoil';
-
-import { useState } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import { contentListsState, goalsListsState } from "../../store/statesRef"
 import Button from '@material-ui/core/Button';
+import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
+import { useState } from 'react';
+import {
+  useRecoilState
+} from 'recoil';
+import { contentListsState } from "../../store/statesRef";
+
 
 
 
@@ -28,13 +23,15 @@ const useStyles = makeStyles((theme) => ({
   },}))
 
 
+  let id = 0;
 export default function ContentCreator(props) {
 
-
   const classes = useStyles()
+  /* const [id, setId] = useState(0); */
   const [inputValue, setInputValue] = useState('');
   const title = props.title
 
+  //TODO language is not used here currently
   const [contentLists, setContentLists] = useRecoilState(contentListsState(title));
 
   
@@ -63,10 +60,13 @@ export default function ContentCreator(props) {
         }
       ], title)
     }
-
-
     
-    console.log('contentListsAccess after adding item', contentLists);
+    
+    
+    function getId() {
+      return id++;
+    }
+   
       
     setInputValue('');   
 
@@ -82,7 +82,7 @@ export default function ContentCreator(props) {
 
       <TextField
         autoFocus
-        className={classes.root}
+        /* className={classes.root} */
         value={inputValue}
         onChange={onChange}
         onKeyPress={(ev) => {
@@ -92,8 +92,7 @@ export default function ContentCreator(props) {
         }}
         id="content"
         label="Content"
-        
-        fullWidth
+        style = {{ width: 450 }}
         xs={6}
       />  
       <Button onClick={addItem} className={classes.button}>Add</Button>
@@ -104,7 +103,3 @@ export default function ContentCreator(props) {
 }
 
 // utility for creating unique Id
-let id = 0;
-function getId() {
-  return id++;
-}

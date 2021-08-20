@@ -1,12 +1,13 @@
 import Button from "@material-ui/core/Button";
 import Step from "@material-ui/core/Step";
+import Alert from '@material-ui/lab/Alert';
 import StepLabel from "@material-ui/core/StepLabel";
 import Stepper from "@material-ui/core/Stepper";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import React from "react";
-import { useRecoilState } from "recoil";
-import { activeStepState } from "../../store/statesRef";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { activeStepState, isReferenceSavedState } from "../../store/statesRef";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -24,12 +25,19 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: theme.spacing(1),
   },
   appBarSpacer: theme.mixins.toolbar,
+  navigationButtons: {
+    padding: "2rem",
+    "vertical-align": "bottom;",
+  },
+  navigationButtons2: {
+    padding: "2rem",
+  },
 }));
 
 export default function HorizontalLinearReferenceStepper(props) {
   const classes = useStyles();
   const [activeStep, setActiveStep] = useRecoilState(activeStepState);
-
+  const isReferenceSaved = useRecoilValue(isReferenceSavedState);
   const steps = props.getSteps();
 
   const handleNext = () => {
@@ -58,12 +66,14 @@ export default function HorizontalLinearReferenceStepper(props) {
           );
         })}
       </Stepper>
-      <div>
+      <div className={classes.navigationButtons}>
         {activeStep === steps.length ? (
           <div>
-            <Typography className={classes.instructions}>
-              All steps completed - you&apos;re finished
-            </Typography>
+            <Alert variant="outlined" severity={isReferenceSaved ? "success": "info"}>
+              You have captured all necessery data. Click "save reference" to
+              capture it permanently.
+              
+            </Alert>
             <Button onClick={handleReset} className={classes.button}>
               Reset
             </Button>
@@ -73,8 +83,8 @@ export default function HorizontalLinearReferenceStepper(props) {
             <Typography className={classes.instructions}>
               {props.getStepContent(activeStep)}
             </Typography>
-            <div>
-              <div>{props.getStepForms(activeStep)}</div>
+            <div>{props.getStepForms(activeStep)}</div>
+            <div className={classes.navigationButtons2}>
               <Button
                 disabled={activeStep === 0}
                 onClick={handleBack}

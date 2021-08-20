@@ -89,8 +89,13 @@ export const fetchReferenceDatabyParamArrays = async (value, param) => {
 
 export const createNewReference = async (referenceObj, goals, procedures, results, title) => {
 
-  const message = mapToApi(referenceObj) //TODO FINISH TAGS AND DATES
+  //TODO temp disabled for debugging
+  //const message = mapToApi(referenceObj) //TODO FINISH TAGS AND DATES
 
+  console.log('save goals ',goals);
+  console.log('save title ',title);
+  console.log('save procedures ',procedures);
+  
 
   const result = await fetch(`${referenceUrl}`, {
     headers: new Headers({
@@ -99,7 +104,7 @@ export const createNewReference = async (referenceObj, goals, procedures, result
       'Content-Type': 'application/json'
     }),
     method: 'POST',
-    body: JSON.stringify(message)
+    body: JSON.stringify(/* message */)
   })
   const res = await result.json();
 

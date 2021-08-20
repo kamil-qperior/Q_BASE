@@ -1,29 +1,27 @@
-import React from 'react';
+import { TableContainer } from '@material-ui/core';
+import Chip from '@material-ui/core/Chip';
+import IconButton from '@material-ui/core/IconButton';
 import Link from '@material-ui/core/Link';
-import {  useState } from 'react'
 import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
-import Chip from '@material-ui/core/Chip';
 import TableCell from '@material-ui/core/TableCell';
-import TablePagination from '@material-ui/core/TablePagination';
 import TableHead from '@material-ui/core/TableHead';
+import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
-import IconButton from '@material-ui/core/IconButton';
 import AddBoxIcon from '@material-ui/icons/AddBox';
-import {fetchReferenceContent, mapFromApi} from '../services/referenceService';
-
+import React, { useState } from 'react';
 import {
-  useRecoilState,
+  useRecoilState
 } from 'recoil';
+import { fetchReferenceContent, mapFromApi } from '../services/referenceService';
+import {
+  chosenRefsState, filteredReferenceContentsForEdit,
+  filteredReferences, formOpenState,
+  refTextFieldsState, searchQueryState
+} from "../store/statesRef";
 
-import {searchQueryState,
-  formOpenState,
-  refTextFieldsState,
-  filteredReferenceContentsForEdit,
-  filteredReferences,chosenRefsState,
-} from "../store/statesRef"
-import { TableContainer } from '@material-ui/core';
+
 
 
 
