@@ -102,6 +102,13 @@ const useStyles = makeStyles((theme) => ({
   buttonDownload: {
     "margin-left": "2rem",
   },
+  bages: {
+    "background-color": "aliceblue",
+  },
+  customBadge: {
+    backgroundColor: "#00AFD7",
+    color: "white",
+  },
 }));
 
 export default function SelectedTableItems() {
@@ -251,7 +258,7 @@ export default function SelectedTableItems() {
                     vertical: "top",
                     horizontal: "left",
                   }}
-                  color="secondary"
+                  classes={{ badge: classes.customBadge }}
                   variant="dot"
                   invisible={row.isEdited <= 0}
                   badgeContent={row.isEdited}
