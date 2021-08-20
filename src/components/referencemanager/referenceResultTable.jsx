@@ -1,4 +1,4 @@
-import { TableContainer, TableHead } from "@material-ui/core";
+import { TableContainer, TableHead, Badge, Tooltip } from "@material-ui/core";
 import Checkbox from "@material-ui/core/Checkbox";
 import Chip from "@material-ui/core/Chip";
 import IconButton from "@material-ui/core/IconButton";
@@ -16,14 +16,17 @@ import React, { useState } from "react";
 import { useRecoilState } from "recoil";
 import {
   fetchReferenceContent,
-  mapFromApi
+  mapFromApi,
 } from "../../services/referenceService";
 import { languageCode } from "../../store/states";
 import {
-  chosenRefsState, filteredReferenceContents, filteredReferenceContentsForEdit,
-  filteredReferences, formEditState,
+  chosenRefsState,
+  filteredReferenceContents,
+  filteredReferenceContentsForEdit,
+  filteredReferences,
+  formEditState,
   formOpenState,
-  refTextFieldsState
+  refTextFieldsState,
 } from "../../store/statesRef";
 import { i18n } from "../../utils/i18n/i18n";
 
@@ -32,6 +35,7 @@ const useStyles = makeStyles((theme) => ({
     // width: "100%",
     marginTop: theme.spacing(3),
     overflowX: "auto",
+ 
   },
   table: {
     minWidth: 700,
@@ -68,6 +72,10 @@ const useStyles = makeStyles((theme) => ({
     "&&:hover": {
       backgroundColor: "#0CB5F3",
     },
+      },
+  customBadge: {
+    backgroundColor: "#00AFD7",
+    color: "white",
   },
 }));
 
@@ -135,15 +143,7 @@ export default function ReferenceResultTable(data) {
                   </div>
                 </div>
               </TableCell>
-              {onlySelection ? (
-                <TableCell>
-                  <div className={classes.vAlgiment}>
-                    <div className={classes.tableHeader}>
-                      {i18n(lng, "Reference.tableHeader.ready")}
-                    </div>
-                  </div>
-                </TableCell>
-              ) : null}
+
               <TableCell>
                 <div className={classes.vAlgiment}>
                   <div className={classes.tableHeader}>
@@ -231,18 +231,12 @@ export default function ReferenceResultTable(data) {
               {/* only for selection view */}
               {onlySelection ? (
                 <TableCell>
-                  <div className={classes.tableHeader}>
-                    {" "}
-                    {i18n(lng, "Reference.tableHeader.edit")}
-                  </div>
+                  <div className={classes.tableHeader}></div>
                 </TableCell>
               ) : null}
               {onlySelection ? (
                 <TableCell>
-                  <div className={classes.tableHeader}>
-                    {" "}
-                    {i18n(lng, "Reference.tableHeader.delete")}
-                  </div>
+                  <div className={classes.tableHeader}></div>
                 </TableCell>
               ) : null}
             </TableRow>
@@ -272,11 +266,6 @@ export default function ReferenceResultTable(data) {
                   >
                     <Link>{row.name}</Link>
                   </TableCell>
-                  {onlySelection ? (
-                    <TableCell>
-                      <Checkbox checked={row?.configured === true} />
-                    </TableCell>
-                  ) : null}
 
                   <TableCell>{row.client.name}</TableCell>
                   <TableCell>{row.industry}</TableCell>
@@ -333,35 +322,56 @@ export default function ReferenceResultTable(data) {
                   ) : null}
                   {onlySelection ? (
                     <TableCell align="right">
-                      <IconButton
-                        onClick={handleRefPopUp(
-                          row,
-                          setFilteredReferenceContentsForEdit,
-                          setOpen,
-                          setRefState,
-                          setEnabledEdit,
-                          onlySelection
-                        )}
-                        color="primary"
-                        aria-label="edit"
+                      {/* row?.configured === true */}
+                      <Tooltip
+                        title={i18n(lng, "CV.tableIcons.edit")}
+                        placement="bottom"
                       >
-                        {" "}
-                        <EditIcon />{" "}
-                      </IconButton>
+                        <IconButton
+                          onClick={handleRefPopUp(
+                            row,
+                            setFilteredReferenceContentsForEdit,
+                            setOpen,
+                            setRefState,
+                            setEnabledEdit,
+                            onlySelection
+                          )}
+                          color="primary"
+                          aria-label="edit"
+                        >
+                          <Badge
+                            anchorOrigin={{
+                              vertical: "top",
+                              horizontal: "left",
+                            }}
+                            classes={{ badge: classes.customBadge }}
+                            variant="dot"
+                            invisible={!row?.configured}
+                            badgeContent={false}
+                          >
+                            <EditIcon />
+                          </Badge>
+                        </IconButton>
+                      </Tooltip>
                     </TableCell>
                   ) : null}
                   {onlySelection ? (
                     <TableCell align="right">
-                      <IconButton
-                        onClick={(e) =>
-                          setChosenRefs(changeRef(chosenRefs, row))
-                        }
-                        color="primary"
-                        aria-label="delete"
+                      <Tooltip
+                        title={i18n(lng, "CV.tableIcons.delete")}
+                        placement="bottom"
                       >
-                        {" "}
-                        <DeleteIcon />{" "}
-                      </IconButton>
+                        <IconButton
+                          onClick={(e) =>
+                            setChosenRefs(changeRef(chosenRefs, row))
+                          }
+                          color="primary"
+                          aria-label="delete"
+                        >
+                          {" "}
+                          <DeleteIcon />{" "}
+                        </IconButton>
+                      </Tooltip>
                     </TableCell>
                   ) : null}
                 </TableRow>

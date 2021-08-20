@@ -1,13 +1,10 @@
 //TODO get from DB
 
 import { atom, selector } from "recoil";
-
-import { filteredReferences } from "./statesRef";
 import {
-  fetchAllReferenceData,
-  fetchReferenceContent,
-  fetchReferenceDatabyParam,
+  fetchAllReferenceData
 } from "../services/referenceService";
+
 
 export const projectNames = ["project name"];
 
@@ -667,3 +664,4 @@ export {
   filterCountryData,
   clientFilterHolder,
 };
+

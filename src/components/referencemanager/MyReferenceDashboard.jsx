@@ -1,3 +1,4 @@
+import { MenuItem, Select } from "@material-ui/core";
 import AppBar from "@material-ui/core/AppBar";
 import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
@@ -6,16 +7,14 @@ import Popover from "@material-ui/core/Popover";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import Tab from "@material-ui/core/Tab";
 import Tabs from "@material-ui/core/Tabs";
+import SwipeableViews from "react-swipeable-views";
 import Typography from "@material-ui/core/Typography";
 import ToggleButton from "@material-ui/lab/ToggleButton";
 import ToggleButtonGroup from "@material-ui/lab/ToggleButtonGroup";
 import PopupState from "material-ui-popup-state";
 import PropTypes from "prop-types";
 import React, { Suspense } from "react";
-import SwipeableViews from "react-swipeable-views";
 import { useRecoilState } from "recoil";
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import {Badge, IconButton} from "@material-ui/core";
 import { getDeck } from "../../services/slidedeck/slideDeckServ";
 import {
   clientFilterHolder,
@@ -23,12 +22,14 @@ import {
   filterNameData,
   filterNameDataHolder,
 } from "../../store/filter";
-import { filterLanguagesData, languageCode } from "../../store/states";
+import { languageCode } from "../../store/states";
 import {
-  filteredReferenceContentsForEdit,
-  referenceVariantIdsFromResult,
-  formOpenState,
+  chosenRefsState,
   chosenVariantLanguageState,
+  filteredReferenceContentsForEdit,
+  formOpenState,
+  referenceVariantIdsFromResult,
+  selectedTemplateState,
 } from "../../store/statesRef";
 import { i18n } from "../../utils/i18n/i18n";
 import SlideDialog from "../variant/slideDialog";
@@ -36,7 +37,7 @@ import PaperRef from "./PaperRef";
 import ReferenceResultTable from "./referenceResultTable";
 import SearchBarLeftRefs from "./SearchBarLeftRefs";
 
-function TabPanel(props) {
+export function TabPanel(props) {
   const { children, value, index, ...other } = props;
   return (
     <Typography
@@ -100,6 +101,8 @@ const useStyles = makeStyles((theme) => ({
     // width: "100%",
     marginTop: theme.spacing(3),
     overflowX: "initial",
+
+    "justify-content": "center",
     display: "flex",
   },
   footer: {
@@ -110,27 +113,30 @@ const useStyles = makeStyles((theme) => ({
     "background-color": "aliceblue",
   },
   generateSlideButton: {
-    "padding":"1rem",
+    padding: "1rem",
     "background-color": "primary",
   },
   languageToggle: {
-    
     "text-align-last": "center;",
-    "margin":"1rem",
+    margin: "1rem",
   },
   languageToggleText: {
-    "display": "contents;",
+    display: "contents;",
   },
   languageToggleTextTypo: {
-    "margin":"1rem",
-    "padding-bottom":"1rem",
+    margin: "1rem",
+    "padding-bottom": "1rem",
+  },
+  selectTemplate: {
+    marginRight:"2rem",
+    width: "9rem",
   },
   buttonContainer: {
-    "display":"flex",
+    display: "flex",
 
     "align-items": "baseline;",
-    justifyContent: "center"
-  }
+    justifyContent: "center",
+  },
 }));
 
 //v3 of the dashboard
@@ -141,10 +147,13 @@ export default function MyReferenceDashboard() {
 
   const [value, setValue] = React.useState(0);
   const [counter, setCounter] = React.useState(0);
-  const [filterLanguages] = useRecoilState(filterLanguagesData);
+  const [chosenRefs] = useRecoilState(chosenRefsState);
   const [filterClient, setFilterClient] = useRecoilState(filterClientData);
   const [open, setOpen] = useRecoilState(formOpenState);
   const [clientFilterH, setFilterClientH] = useRecoilState(clientFilterHolder);
+  const [selectedTemplate, setSelectedTemplate] = useRecoilState(
+    selectedTemplateState
+  );
 
   const [chosenVariantLanguge, setChosenVariantLanguageState] = useRecoilState(
     chosenVariantLanguageState
@@ -154,7 +163,7 @@ export default function MyReferenceDashboard() {
   const [filterNameDataH, setFilterNameDataH] =
     useRecoilState(filterNameDataHolder);
 
-  //data for popup content also containers referenceID 
+  //data for popup content also containers referenceID
   const [filteredReferenceContents, setFilteredReferenceContentsForEdit] =
     useRecoilState(filteredReferenceContentsForEdit);
 
@@ -186,6 +195,10 @@ export default function MyReferenceDashboard() {
     setValue(index);
   };
 
+  const handleTemplateChange = (event) => {
+    setSelectedTemplate(event.target.value);
+  };
+
   const handleChosenLanguage = (event, newLanguage) => {
     setChosenVariantLanguageState(newLanguage);
   };
@@ -202,13 +215,14 @@ export default function MyReferenceDashboard() {
           centered="true"
         >
           <Tab label={i18n(lng, "ReferenceSearch.header.searchRef")} />
-          <Tab label={i18n(lng, "ReferenceSearch.header.selectedRefs")} > 
-          <IconButton color="inherit">
-                            <Badge badgeContent={2} color="secondary">
-                               <ChevronLeftIcon /> 
-                            </Badge>
-                        </IconButton>
-          </Tab>
+          <Tab
+            label={
+              i18n(lng, "ReferenceSearch.header.selectedRefs") +
+              " (" +
+              chosenRefs?.length +
+              ")"
+            }
+          />
 
           <Tab label={i18n(lng, "ReferenceSearch.header.generateSlides")} />
         </Tabs>
@@ -259,42 +273,53 @@ export default function MyReferenceDashboard() {
 
         {/*  selection tab*/}
         <TabPanel className={classes.tabContentTable} value={value} index={1}>
-          <div spacing ={3} className={classes.buttonContainer}>
-
+          <div spacing={3} className={classes.buttonContainer}>
             <div className={classes.languageToggleText}>
-            <Typography  className={classes.languageToggleTextTypo}>
-            {i18n(lng, "ReferenceSearch.languageToggle.contentLanguage")}
-            Inhaltssprache: 
-            </Typography>
-
+              <Typography className={classes.languageToggleTextTypo}>
+                {i18n(lng, "ReferenceSearch.languageToggle.contentLanguage")}
+                Inhaltssprache:
+              </Typography>
             </div>
-          <div className={classes.languageToggle}>
-            <ToggleButtonGroup
-              value={chosenVariantLanguge}
-              exclusive
-              onChange={handleChosenLanguage}
-              aria-label="text alignment"
-            >
-              <ToggleButton value="DE" aria-label="german">
-                DE
-              </ToggleButton>
-              <ToggleButton value="EN" aria-label="english">
-                EN
-              </ToggleButton>
-            </ToggleButtonGroup>
-          </div>
-          <div className={classes.generateSlideButton}>
-                <Button
+            <div className={classes.languageToggle}>
+              <ToggleButtonGroup
+                value={chosenVariantLanguge}
+                exclusive
+                onChange={handleChosenLanguage}
+                aria-label="text alignment"
+              >
+                <ToggleButton value="DE" aria-label="german">
+                  DE
+                </ToggleButton>
+                <ToggleButton value="EN" aria-label="english">
+                  EN
+                </ToggleButton>
+              </ToggleButtonGroup>
+            </div>
+            <div className={classes.generateSlideButton}>
+              <Select
+                labelId="select-template"
+                id="select-template"
+                className={classes.selectTemplate}
+                value={selectedTemplate}
+                onChange={handleTemplateChange}
+              >
+                <MenuItem value={"green"}>Q_PERIOR</MenuItem>
+                <MenuItem value={"blue"}>Alternative</MenuItem>
+              </Select>
+              <Button
                 variant="contained"
-                  onClick={(e) => {
-                    console.log('referenceVariantIds for slides generation', referenceVariantIds);
-                    getDeck(referenceVariantIds);
-                  }}
-                  color="primary"
-                >
-                  generate documents
-                </Button>
-              </div>
+                onClick={(e) => {
+                  console.log(
+                    "referenceVariantIds for slides generation",
+                    referenceVariantIds
+                  );
+                  getDeck(referenceVariantIds, selectedTemplate);
+                }}
+                color="primary"
+              >
+                generate documents
+              </Button>
+            </div>
           </div>
           <div className={classes.searchAndResultContainer}>
             <Suspense>
@@ -302,7 +327,7 @@ export default function MyReferenceDashboard() {
 
               {/* does it need to be here because of prerender, popup does not work otherwise */}
 
-              <PopupState    variant="popover" popupId="demo-popup-popover">
+              <PopupState variant="popover" popupId="demo-popup-popover">
                 {(popupState) => (
                   <div>
                     <Popover
@@ -317,7 +342,7 @@ export default function MyReferenceDashboard() {
                         horizontal: "right",
                       }}
                     >
-                      <PaperRef  />
+                      <PaperRef />
                     </Popover>
                   </div>
                 )}
@@ -325,7 +350,6 @@ export default function MyReferenceDashboard() {
               {/*  <PaperRef data={filteredReferenceContents}></PaperRef> */}
             </Suspense>
           </div>
-
         </TabPanel>
 
         {/*  generate slides tab*/}

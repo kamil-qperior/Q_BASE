@@ -1,13 +1,19 @@
 import Button from "@material-ui/core/Button";
 import Step from "@material-ui/core/Step";
 import Alert from '@material-ui/lab/Alert';
-import StepLabel from "@material-ui/core/StepLabel";
-import Stepper from "@material-ui/core/Stepper";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import React from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { activeStepState, isReferenceSavedState } from "../../store/statesRef";
+import { i18n } from "../../utils/i18n/i18n"
+import StepLabel from "@material-ui/core/StepLabel";
+import AppBar from "@material-ui/core/AppBar";
+import Tab from "@material-ui/core/Tab";
+import Tabs from "@material-ui/core/Tabs";
+import SwipeableViews from "react-swipeable-views";
+import { languageCode } from "../../store/states";
+import {TabPanel} from "../referencemanager/MyReferenceDashboard"
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -27,7 +33,8 @@ const useStyles = makeStyles((theme) => ({
   appBarSpacer: theme.mixins.toolbar,
   navigationButtons: {
     padding: "2rem",
-    "vertical-align": "bottom;",
+    
+    
   },
   navigationButtons2: {
     padding: "2rem",
@@ -39,7 +46,7 @@ export default function HorizontalLinearReferenceStepper(props) {
   const [activeStep, setActiveStep] = useRecoilState(activeStepState);
   const isReferenceSaved = useRecoilValue(isReferenceSavedState);
   const steps = props.getSteps();
-
+  const [lng] = useRecoilState(languageCode);
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
   };
@@ -54,25 +61,11 @@ export default function HorizontalLinearReferenceStepper(props) {
 
   return (
     <div className={classes.root}>
-      <Stepper activeStep={activeStep}>
-        {steps?.map((label, index) => {
-          const stepProps = {};
-          const labelProps = {};
-
-          return (
-            <Step key={label} {...stepProps}>
-              <StepLabel {...labelProps}>{label}</StepLabel>
-            </Step>
-          );
-        })}
-      </Stepper>
-      <div className={classes.navigationButtons}>
+      <div >
         {activeStep === steps.length ? (
-          <div>
+          <div  className={classes.navigationButtons}>
             <Alert variant="outlined" severity={isReferenceSaved ? "success": "info"}>
-              You have captured all necessery data. Click "save reference" to
-              capture it permanently.
-              
+            Great. You have entered all necessary data. Click "save reference" to store it permanently.    
             </Alert>
             <Button onClick={handleReset} className={classes.button}>
               Reset
@@ -80,9 +73,20 @@ export default function HorizontalLinearReferenceStepper(props) {
           </div>
         ) : (
           <div>
+
+        <SwipeableViews
+        // axis={theme.direction === "rtl" ? "x-reverse" : "x"}
+        index={activeStep}
+        onChangeIndex={handleNext} //fix
+        className={classes.tabContentTableView}
+      >
+         <TabPanel className={classes.tabContentTable} value={activeStep} index={0}>
+            </TabPanel>
+            </SwipeableViews>
             <Typography className={classes.instructions}>
               {props.getStepContent(activeStep)}
             </Typography>
+
             <div>{props.getStepForms(activeStep)}</div>
             <div className={classes.navigationButtons2}>
               <Button

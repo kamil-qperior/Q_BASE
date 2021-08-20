@@ -79,6 +79,9 @@
   "ReferenceSearch": {
     "header": {
       "searchRef": "Referenzensuche",
+      "enterBasicInfo": "Grundinformation",
+      "slideContent": "Projektinhalte",
+      "shareContent": "Teile mit Q_PERIOR",
       "selectedRefs": "Meine Auswahl",
       "generateSlides": "Übersicht"
     }

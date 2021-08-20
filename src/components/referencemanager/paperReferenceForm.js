@@ -7,10 +7,10 @@ import React from "react";
 import {
     useRecoilState
 } from "recoil";
-import { refTextFieldsState } from "../store/statesRef";
+import { refTextFieldsState } from "../../store/statesRef";
 import {
     cities, countries, industires, policies, procedures, status, technologies
-} from "./consts";
+} from "../consts";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -18,6 +18,7 @@ const useStyles = makeStyles((theme) => ({
     width: "70%",
     margin: 10,
     justifyContent: "center",
+    "text-align-last": "left;"
    
   },
   button: {
@@ -40,7 +41,7 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(1),
   },
   formPaper: {
-  
+    padding:"3rem"
   },
 }));
 

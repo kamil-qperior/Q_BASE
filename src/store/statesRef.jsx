@@ -1,19 +1,13 @@
 import { atom, atomFamily, selector } from "recoil";
-import { referenceTextFields } from "../components/referenceForm";
-import { filterStatusData, 
-  filterNameData,
-  filterCountryData,
-  filterIndustryData,
-  filterProcedureData,
-  filterPolicyData,
-  filterClientData,
-  filterTechnologyData,
- } from "./filter";
+import { referenceTextFields } from "../components/referencemanager/paperReferenceForm";
 import {
   fetchAllReferenceData,
-  fetchReferenceContent,
-  fetchReferenceDatabyParam,
+  fetchReferenceContent
 } from "../services/referenceService";
+import {
+  filterClientData, filterCountryData,
+  filterIndustryData, filterNameData, filterPolicyData, filterProcedureData, filterStatusData, filterTechnologyData
+} from "./filter";
 
 //used for 3 different atoms lists of different contents
 const contentListsState = atomFamily({
@@ -42,6 +36,11 @@ const refTextFieldsState = atom({
 const chosenRefsState = atom({
   key: "chosenRefsState",
   default: [],
+});
+
+const selectedTemplateState = atom({
+  key: "selectedTemplateState",
+  default: "green",
 });
 
 const searchQueryState = atom({
@@ -240,17 +239,12 @@ export {
   formEditState,
   chosenVariantLanguageState,
   refIdForEditState,
+  selectedTemplateState,
   filteredReferenceContentsForEdit,
 };
 
 
-  function filterFreeText(name, filteredRefs, key) {
-    if (name?.length > 0) {
-      filteredRefs = filteredRefs.filter((ref) => ref[key]?.toLowerCase().includes(name.toLowerCase())
-      );
-    }
-    return filteredRefs;
-  }
+
 
   function filterData(filterObj, filteredRefs, key) {
     if (!!filterObj.find((el) => el.selected === true)) {

@@ -1,31 +1,24 @@
 /* eslint-disable no-undef */
-import React from "react";
-import { useState } from "react";
-import Grid from "@material-ui/core/Grid";
-import CheckboxesGroup from "./checkboxgroup";
+import {
+  List,
+  ListItem, Typography
+} from "@material-ui/core";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import ListItemText from "@material-ui/core/ListItemText";
-import {
-  Typography,
-  TextField,
-  FormLabel,
-  List,
-  ListItem,
-} from "@material-ui/core";
 import Paper from "@material-ui/core/Paper";
-import { useRecoilState } from "recoil";
-import PaperRefItem from "../referencemanager/PaperRefItem";
-import Collapse from "@material-ui/core/Collapse";
 import { makeStyles } from "@material-ui/core/styles";
-import { i18n } from "../../utils/i18n/i18n";
-import {
-  filteredReferenceContents,
-  variantNameState,
-} from "../../store/statesRef";
+import React, { useState } from "react";
+import { useRecoilState } from "recoil";
 import {
   languageCode
 } from "../../store/states";
+import {
+  filteredReferenceContents,
+  variantNameState
+} from "../../store/statesRef";
+import { i18n } from "../../utils/i18n/i18n";
 import faceImage from "../referencemanager/Adac.png";
+import PaperRefItem from "../referencemanager/PaperRefItem";
 
 const useStyles = makeStyles((theme) => ({
   root: {

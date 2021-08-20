@@ -72,6 +72,9 @@
     "header": {
       "searchRef": "Reference search",
       "selectedRefs": "My selection",
+      "enterBasicInfo": "Basic Project Info",
+      "slideContent": "Project Content",
+      "shareContent": "Share with Q_PERIOR",
       "generateSlides": "Overview"
     }
   },

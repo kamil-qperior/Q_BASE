@@ -5,28 +5,46 @@ import { makeStyles } from "@material-ui/core/styles";
 import React from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { createNewReference } from "../services/referenceService";
+import { languageCode } from "../store/states";
 import {
-  activeStepState, contentListsState,
+  activeStepState,
+  contentListsState,
   formOpenState,
   isReferenceSavedState,
-  refTextFieldsState
+  refTextFieldsState,
 } from "../store/statesRef";
-import ReferenceBasicInfoTextFields from "./referenceForm";
+import ReferenceBasicInfoTextFields from "./referencemanager/paperReferenceForm";
 import PaperRefCreate from "./referencemanager/PaperRefCreate";
 import HorizontalLinearReferenceStepper from "./stepper/referenceStepper";
 
+import SwipeableViews from "react-swipeable-views";
+import { i18n } from "../utils/i18n/i18n";
+
+import StepLabel from "@material-ui/core/StepLabel";
+import AppBar from "@material-ui/core/AppBar";
+import Tab from "@material-ui/core/Tab";
+import Tabs from "@material-ui/core/Tabs";
+
 const useStyles = makeStyles((theme) => ({
   root: {
+    backgroundColor: theme.palette.background.paper,
+    width: "100%",
+    position: "relative",
+    minHeight: 70,
     display: "flex",
     flexWrap: "wrap",
+    "justify-content": "center",
+
+    "overflow-x": "initial",
+  },
+  /*  root: {
     "& > *": {
       margin: theme.spacing(1),
       width: theme.spacing(16),
       height: theme.spacing(16),
     },
     minHeight: "70rem",
-    "justify-content": "center",
-  },
+  }, */
   input: {
     display: "none",
   },
@@ -34,7 +52,7 @@ const useStyles = makeStyles((theme) => ({
     "text-align": "-webkit-center;",
     justifyContent: "center",
     minHeight: "65rem",
-    marginTop: "2rem",
+    marginTop: "0rem",
     width: "10%",
     "min-width": "94rem",
     display: "flex",
@@ -42,10 +60,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function getSteps() {
-  return [
-    "Basic Project Info",
-    "Project Content",
-  ];
+  return ["Basic Project Info", "Project Content"];
 }
 
 function getStepContent(step) {
@@ -54,14 +69,7 @@ function getStepContent(step) {
       return "Enter Project Metadata Information";
     case 1:
       return "Enter Reference Content";
-/*     case 2:
-      return "Enter goals of the project";
-    case 3:
-      return "Enter procedures of the project";
-    case 4:
-      return "Enter results of the project"; */
-/*     case 2:
-      return "Upload Images"; */
+
     default:
       return "Unknown step";
   }
@@ -72,22 +80,8 @@ function getStepForms(step, useStyles) {
     case 0:
       return <ReferenceBasicInfoTextFields></ReferenceBasicInfoTextFields>;
     //bevore adding new forms adjust state atom
-     case 1:
-      return <PaperRefCreate></PaperRefCreate>; 
-  /*   case 1:
-      return <ContentTitleForm title="title"></ContentTitleForm>; */
-/*     case 2:
-      return <ContentForm title="goal"></ContentForm>;
-    case 3:
-      return <ContentForm title="procedure"></ContentForm>;
-    case 4:
-      return <ContentForm title="result"></ContentForm>; */
-/*     case 2:
-      return (
-        <div>
-          <ImageUploadCard></ImageUploadCard>
-        </div>
-      ); */
+    case 1:
+      return <PaperRefCreate></PaperRefCreate>;
 
     default:
       return "Unknown step";
@@ -100,9 +94,12 @@ export default function FormDialog() {
   const classes = useStyles();
 
   const [open, setOpen] = useRecoilState(formOpenState);
-  const [activeStep, setActiveStep] = useRecoilState(activeStepState);
-  const [isReferenceSaved, setIsRefernceSaved] = useRecoilState(isReferenceSavedState);
 
+  const [activeStep, setActiveStep] = useRecoilState(activeStepState);
+  const [isReferenceSaved, setIsRefernceSaved] = useRecoilState(
+    isReferenceSavedState
+  );
+  const [lng] = useRecoilState(languageCode);
   const refs = useRecoilValue(refTextFieldsState);
   //change the fields to accomodate using field names (addes s)
   const title = useRecoilValue(contentListsState("title"));
@@ -110,22 +107,38 @@ export default function FormDialog() {
   const results = useRecoilValue(contentListsState("results"));
   const procedures = useRecoilValue(contentListsState("procedures"));
 
-  //console.log('currentList in form dialog', currentList);
-  const handleClickOpen = () => {
-    setOpen(true);
+
+
+  const handleChange = (event, newValue) => {
+    setActiveStep(newValue);
   };
+
 
   const handleClose = () => {
     //TODO add more clean up
     setOpen(false);
     setActiveStep(0);
   };
-
+  //used to be surrounded by paper
   return (
     <div className={classes.root}>
-      <Paper className={classes.rootPaper}>
-        <Grid >
-          {/* <Typography>Enter new Reference Basic Information</Typography> */}
+      <AppBar position="static" color="default">
+        <Tabs
+          value={activeStep}
+          onChange={handleChange}
+          indicatorColor="primary"
+          textColor="primary"
+          aria-label="action tabs example"
+          centered="true"
+        >
+          <Tab label={i18n(lng, "ReferenceSearch.header.enterBasicInfo")} />
+          <Tab label={i18n(lng, "ReferenceSearch.header.slideContent")} />
+
+          <Tab label={i18n(lng, "ReferenceSearch.header.shareContent")} />
+        </Tabs>
+      </AppBar>
+      <div className={classes.rootPaper}>
+        <Grid>
           <HorizontalLinearReferenceStepper
             getStepForms={getStepForms}
             getStepContent={getStepContent}
@@ -147,7 +160,9 @@ export default function FormDialog() {
             Save Reference
           </Button>
         </Grid>
-      </Paper>
+      </div>
+      {/* <Paper className={classes.rootPaper}>
+      </Paper> */}
     </div>
   );
 }

@@ -1,26 +1,26 @@
 import { Divider, ListItem } from "@material-ui/core";
 import AppBar from "@material-ui/core/AppBar";
-import Button from "@material-ui/core/Button";
 import Drawer from "@material-ui/core/Drawer";
 import IconButton from "@material-ui/core/IconButton";
+import Links from "@material-ui/core/Link";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import { makeStyles } from "@material-ui/core/styles";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
+import AccountBoxIcon from "@material-ui/icons/AccountBox";
+import BusinessIcon from '@material-ui/icons/Business';
+import BusinessCenterIcon from '@material-ui/icons/BusinessCenter';
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
-import DashboardIcon from "@material-ui/icons/Dashboard";
-import MenuIcon from "@material-ui/icons/Menu";
+import FindInPageIcon from "@material-ui/icons/FindInPage";
 import HomeIcon from "@material-ui/icons/Home";
-import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
-import Links from "@material-ui/core/Link";
+import MenuIcon from "@material-ui/icons/Menu";
 import clsx from "clsx";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { languageCode } from "../store/states";
 import { useRecoilState } from "recoil";
+import { languageCode } from "../store/states";
 import { i18n } from "../utils/i18n/i18n";
-import AccountBoxIcon from "@material-ui/icons/AccountBox";
-import FindInPageIcon from "@material-ui/icons/FindInPage";
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -107,27 +107,11 @@ const Header = () => {
             Home
           </Link>
         </ListItem>
+
+
         <ListItem button>
           <ListItemIcon>
-            <DashboardIcon />
-          </ListItemIcon>
-          <Link to="/refs" onClick={toggleDrawer}>
-            {" "}
-            References{" "}
-          </Link>
-        </ListItem>
-        <ListItem button>
-          <ListItemIcon>
-            <DashboardIcon />
-          </ListItemIcon>
-          <Link to="/referencemanager" onClick={toggleDrawer}>
-            {" "}
-            New References{" "}
-          </Link>
-        </ListItem>
-        <ListItem button>
-          <ListItemIcon>
-            <DashboardIcon />
+            <BusinessIcon />
           </ListItemIcon>
           <Link to="/referenceSearch" onClick={toggleDrawer}>
             {" "}
@@ -136,7 +120,7 @@ const Header = () => {
         </ListItem>
         <ListItem button>
           <ListItemIcon>
-            <DashboardIcon />
+            <BusinessCenterIcon />
           </ListItemIcon>
           <Link to="/createReference" onClick={toggleDrawer}>
             {" "}
