@@ -32,7 +32,7 @@ import {
   selectedTemplateState,
 } from "../../store/statesRef";
 import { i18n } from "../../utils/i18n/i18n";
-import SlideDialog from "../variant/slideDialog";
+import OverviewDialog from "../variant/oerviewDialog";
 import PaperRef from "./PaperRef";
 import ReferenceResultTable from "./referenceResultTable";
 import SearchBarLeftRefs from "./SearchBarLeftRefs";
@@ -352,14 +352,14 @@ export default function MyReferenceDashboard() {
           </div>
         </TabPanel>
 
-        {/*  generate slides tab*/}
+        {/*  currently used as overview page*/}
         <TabPanel
           className={classes.tabContent}
           value={value}
           index={2}
           dir={theme.direction}
         >
-          <SlideDialog></SlideDialog>
+          <OverviewDialog></OverviewDialog>
         </TabPanel>
       </SwipeableViews>
     </div>

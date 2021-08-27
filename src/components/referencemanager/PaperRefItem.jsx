@@ -7,15 +7,14 @@ import ListItemText from "@material-ui/core/ListItemText";
 import { makeStyles } from "@material-ui/core/styles";
 import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
-import { default as React} from "react";
+import { default as React } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { languageCode } from "../../store/states";
-import { chosenVariantLanguageState,
-   formEditState,
-   referenceVariantSelectionState,
-   variantNameState,
-   variantContentListsState
- } from "../../store/statesRef";
+import {
+  chosenVariantLanguageState,
+  referenceVariantSelectionState,
+  variantContentListsState,
+} from "../../store/statesRef";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -87,72 +86,79 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function PaperRefItem({ contentTitle,variantName, index,title,  content, propertyKey }) {
+export default function PaperRefItem({
+  contentTitle,
+  variantName,
+  index,
+  title,
+  content,
+  propertyKey,
+}) {
   const classes = useStyles();
   const [collapseFirst, setCollapseFirst] = React.useState(false);
-  //const [CVsDataRaw, setCVsData] = useRecoilState(theState);
-  const [enabledEdit, setEnabledEdit] = useRecoilState(formEditState);
+
   const [lng] = useRecoilState(languageCode);
 
   //TODO use the one with chosenref index
-  //TODO figure out saving of variant name tste
- // const [variantName, setVariantName] = useRecoilState(variantNameState(index)); // we changed it from step of stepper to index of the chosen list
 
-  const handleEditClick = (event) => {};
   const handleCollapseClick = (event) => {
     setCollapseFirst(!collapseFirst);
   };
 
+  //TODO second selected title is not finding content
+  const rcTitle = contentTitle[0]; //if its bilangual we only take on for now
+  const referenceId = rcTitle.referenceId; //warning this is the refid first title
 
-//props needed for edit of variant properties
+  const titleHeader = title;
+  const boxId = `${variantName + title}`;
 
-//TODO second selected title is not finding content
-const rcTitle = contentTitle[0]; //if its bilangual we only take on for now
-const titleContent = rcTitle.content;
-const referenceId = rcTitle.referenceId; //warning this is the refid first title 
+  const [loadedBefore, setLoadedBefore] = React.useState([]);
 
-const titleHeader = title;
-//const variantName = props.variantName;
-const boxId = `${variantName + title}`
+  const chosenVariantLanguage = useRecoilValue(chosenVariantLanguageState);
+  const languageFilteredContent = content.filter(
+    (c) => c.language === chosenVariantLanguage
+  );
 
+  const [boxState, setBoxState] = useRecoilState(
+    variantContentListsState(boxId)
+  );
 
-const [loadedBefore, setLoadedBefore] = React.useState([]);
+  const [referenceVariantSelection, setReferenceVariantSelection] =
+    useRecoilState(referenceVariantSelectionState);
 
-const chosenVariantLanguage = useRecoilValue(chosenVariantLanguageState);
+  //makes sure we initiate the state properly and once with full state
+  if (
+    loadedBefore.findIndex((alreadyLoadedBox) => alreadyLoadedBox === boxId) < 0
+  ) {
+    const initialState = languageFilteredContent.reduce(
+      (o, key) => Object.assign(o, { [key.id]: true }),
+      {}
+    );
+    setBoxState(initialState, boxId);
+    updateVariantSelection(
+      propertyKey,
+      initialState,
+      chosenVariantLanguage,
+      referenceId,
+      rcTitle
+    );
+    setLoadedBefore(loadedBefore.concat(boxId));
+  }
 
-const languageFilteredContent = content.filter(c => c.language===chosenVariantLanguage)
+  const handleChange = (event, propertyKey) => {
+    const newState = { ...boxState, [event.target.name]: event.target.checked };
+    setBoxState(newState, boxId); //since setState call back does not work properly here and does not wait for change to state, i pass newState to recoil update method
+    updateVariantSelection(
+      propertyKey,
+      newState,
+      chosenVariantLanguage,
+      referenceId,
+      rcTitle
+    );
+  };
 
-const [boxState, setBoxState] = useRecoilState(variantContentListsState(boxId));
-//console.log('boxState',boxState );
-
-const [referenceVariantSelection, setReferenceVariantSelection] =
-  useRecoilState(referenceVariantSelectionState);
-
-
-     //makes sure we initiate the state properly and once with full state
-if( loadedBefore.findIndex(alreadyLoadedBox => alreadyLoadedBox === boxId) < 0)  {
-
-  const initialState = languageFilteredContent.reduce((o, key) => Object.assign(o, { [key.id]: true }), {});
-  setBoxState(initialState, boxId)
-  updateVariantSelection(propertyKey, initialState, chosenVariantLanguage, referenceId, rcTitle)
-  setLoadedBefore(loadedBefore.concat(boxId))
-}
-
-const handleChange = (event, propertyKey) => {
-
-
-  const newState = { ...boxState, [event.target.name]: event.target.checked };
-  //console.log('newState inside change of checkbox',newState);
-  setBoxState(newState, boxId);  //since setState call back does not work properly here and does not wait for change to state, i pass newState to recoil update method
-  updateVariantSelection(propertyKey, newState, chosenVariantLanguage, referenceId, rcTitle)
-
-};
-
-
-//////////////
   return (
     <div className={classes.rightPaper}>
-      {/* {enabledEdit ? "enabled edit" : "not enabled edit"} */}
       <ListItem
         button
         className={classes.collapseListItem}
@@ -187,63 +193,63 @@ const handleChange = (event, propertyKey) => {
             <ListItem>
               <ListItemText primary={el.content} />
               <Checkbox
-                    
-                    checked={boxState[el.id] ?? true}
-                    onChange={(e) =>{
-                      handleChange(e, titleHeader)
-                    } }
-                    name={el.id}
-                  />
-
+                checked={boxState[el.id] ?? true}
+                onChange={(e) => {
+                  handleChange(e, titleHeader);
+                }}
+                name={el.id}
+              />
             </ListItem>
           ))}
-
         </List>
       </Collapse>
     </div>
   );
 
-
-  function updateVariantSelection(propertyKey, newState, chosenVariantLanguage, referenceId, rcTitle) {
-   
+  function updateVariantSelection(
+    propertyKey,
+    newState,
+    chosenVariantLanguage,
+    referenceId,
+    rcTitle
+  ) {
     setReferenceVariantSelection((prev) => {
       const variantForUpdate = prev.find(
         (variant) => variant.name === variantName
       );
-        
-      
+
       //done once
       if (!variantForUpdate) {
         return [
           ...prev,
           {
-            "name": variantName,
-            "referenceContents": {
-              "title": rcTitle?.content ?? "",  
-              [propertyKey.toLowerCase()]: getSelectedCheckboxes(newState), 
+            name: variantName,
+            referenceContents: {
+              title: rcTitle?.content ?? "",
+              [propertyKey.toLowerCase()]: getSelectedCheckboxes(newState),
             },
-            "language": chosenVariantLanguage,
-            "creator": {
-              "name":"Kamil",
-              "id":"1337"
+            language: chosenVariantLanguage,
+            creator: {
+              name: "Kamil",
+              id: "1337",
             },
-            "referenceId": referenceId, 
-            "creationDate": new Date(), 
-            "updateDate": new Date(), 
+            referenceId: referenceId,
+            creationDate: new Date(),
+            updateDate: new Date(),
           },
         ];
       }
-  
+
       //remove the one set previously
       prev = prev.filter((variant) => variant.name !== variantName);
-  
+
       //add to existing one
       return [
         ...prev,
         {
           ...variantForUpdate,
-          "updateDate": new Date(), 
-          "referenceContents": updateRefContentsObject(
+          updateDate: new Date(),
+          referenceContents: updateRefContentsObject(
             newState,
             propertyKey,
             variantForUpdate.referenceContents
@@ -251,13 +257,8 @@ const handleChange = (event, propertyKey) => {
         },
       ];
     });
-  
   }
-  
-
 }
-
-
 
 function updateRefContentsObject(newState, propertyKey, oldVariantRefContent) {
   const selectedContent = getSelectedCheckboxes(newState);
@@ -272,6 +273,7 @@ function updateRefContentsObject(newState, propertyKey, oldVariantRefContent) {
 }
 
 function getSelectedCheckboxes(state) {
-  return Object.entries(state).filter(contentEntry => contentEntry[1] === true).map(contentEntry => contentEntry[0]);
+  return Object.entries(state)
+    .filter((contentEntry) => contentEntry[1] === true)
+    .map((contentEntry) => contentEntry[0]);
 }
-

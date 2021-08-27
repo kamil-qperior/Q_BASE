@@ -129,8 +129,7 @@ export default function ReferenceResultTable(data) {
   }
  */
 
-  //TODO only page filtering works , not changing page
-  return (
+    return (
     <div>
       <TableContainer className={classes.customTableContainer}>
         <Table stickyHeader aria-label="sticky table">

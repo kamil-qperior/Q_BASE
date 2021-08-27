@@ -11,18 +11,16 @@ import ApartmentIcon from "@material-ui/icons/Apartment";
 import PersonIcon from "@material-ui/icons/Person";
 import WorkIcon from "@material-ui/icons/Work";
 import { default as React } from "react";
-import { useRecoilState, useRecoilValue } from "recoil";
-import { languageCode } from "../../store/states";
+import { useRecoilState } from "recoil";
+import { languageCode } from "../../../store/states";
 import {
   chosenVariantLanguageState,
   contentListsState,
-  formOpenState,
-  referenceVariantSelectionState,
-  refTextFieldsState,
-} from "../../store/statesRef";
-import { i18n } from "../../utils/i18n/i18n";
-import logoImage from "./Adac.png";
-import projectImage from "./adac_gross.jpg";
+  formOpenState, refTextFieldsState
+} from "../../../store/statesRef";
+import { i18n } from "../../../utils/i18n/i18n";
+import logoImage from "../Adac.png";
+import projectImage from "../adac_gross.jpg";
 import PaperRefItemCreate from "./PaperRefItemCreate";
 
 const useStyles = makeStyles((theme) => ({

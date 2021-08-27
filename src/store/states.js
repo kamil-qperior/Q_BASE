@@ -2,10 +2,10 @@ import {
     atom,
     selector
 } from "recoil";
+import certificationClusters from '../data/certificationCluster.json';
+import certificationFilter from '../data/certificationFilter.json';
+import employees from '../data/employeesAugust.json';
 
-import certificationFilter from '../data/certificationFilter.json'
-import certificationClusters from '../data/certificationCluster.json'
-import employees from '../data/employeesAugust.json'
 // let deepCopy = JSON.parse(JSON.stringify({ "Projektmanagement": certificationClusters }));
 let deepCopy = JSON.parse(JSON.stringify(certificationClusters));
 

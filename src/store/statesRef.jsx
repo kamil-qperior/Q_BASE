@@ -1,5 +1,5 @@
 import { atom, atomFamily, selector } from "recoil";
-import { referenceTextFields } from "../components/referencemanager/paperReferenceForm";
+import { referenceTextFields } from "../components/referencemanager/createreference/paperReferenceForm";
 import {
   fetchAllReferenceData,
   fetchReferenceContent

@@ -1,19 +1,13 @@
 import Button from "@material-ui/core/Button";
-import Step from "@material-ui/core/Step";
-import Alert from '@material-ui/lab/Alert';
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
+import Alert from '@material-ui/lab/Alert';
 import React from "react";
-import { useRecoilState, useRecoilValue } from "recoil";
-import { activeStepState, isReferenceSavedState } from "../../store/statesRef";
-import { i18n } from "../../utils/i18n/i18n"
-import StepLabel from "@material-ui/core/StepLabel";
-import AppBar from "@material-ui/core/AppBar";
-import Tab from "@material-ui/core/Tab";
-import Tabs from "@material-ui/core/Tabs";
 import SwipeableViews from "react-swipeable-views";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { languageCode } from "../../store/states";
-import {TabPanel} from "../referencemanager/MyReferenceDashboard"
+import { activeStepState, isReferenceSavedState } from "../../store/statesRef";
+import { TabPanel } from "../referencemanager/MyReferenceDashboard";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -23,8 +17,8 @@ const useStyles = makeStyles((theme) => ({
     marginRight: theme.spacing(1),
   },
   instructions: {
-    marginTop: theme.spacing(1),
-    marginBottom: theme.spacing(1),
+    marginTop: theme.spacing(2),
+    marginBottom: theme.spacing(2),
   },
   textField: {
     marginTop: theme.spacing(1),
@@ -37,10 +31,18 @@ const useStyles = makeStyles((theme) => ({
     
   },
   navigationButtons2: {
+   
     padding: "2rem",
+    
   },
+  tabContentTableView: {
+    
+    "display": "none"
+  },
+
 }));
 
+//has been adjusted to fit the switchable tab view
 export default function HorizontalLinearReferenceStepper(props) {
   const classes = useStyles();
   const [activeStep, setActiveStep] = useRecoilState(activeStepState);

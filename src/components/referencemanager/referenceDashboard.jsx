@@ -1,35 +1,21 @@
-import * as React from 'react';
-import { useState, Suspense } from 'react'
-import clsx from 'clsx';
-import { makeStyles } from '@material-ui/core/styles';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import Drawer from '@material-ui/core/Drawer';
 import Box from '@material-ui/core/Box';
-import Toolbar from '@material-ui/core/Toolbar';
-import Button from '@material-ui/core/Button';
-import List from '@material-ui/core/List';
-import Typography from '@material-ui/core/Typography';
-import Divider from '@material-ui/core/Divider';
-import IconButton from '@material-ui/core/IconButton';
-import Grid from '@material-ui/core/Grid';
-import Paper from '@material-ui/core/Paper';
 import Link from '@material-ui/core/Link';
-
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-
+import { makeStyles } from '@material-ui/core/styles';
+import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
+import * as React from 'react';
+import { Suspense, useState } from 'react';
+import {
+    useRecoilState
+} from 'recoil';
+import { chosenRefsState, searchQueryState } from "./../../store/statesRef";
 //import Deposits from './Deposits';
 import ReferenceResultTable from './referenceResultTable';
 
 
-import {
-    RecoilRoot,
-    atom,
-    selector,
-    useRecoilState,
-    useRecoilValue,
-} from 'recoil';
 
-import {searchQueryState, chosenRefsState} from "./../../store/statesRef"
+
+
 
 
 

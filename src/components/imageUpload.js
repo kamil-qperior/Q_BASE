@@ -81,6 +81,7 @@ const styles = (theme) => ({
   },
 });
 
+//TODO to be deleted
 class ImageUploadCard extends React.Component {
   state = {
     mainState: "initial", // initial, search, gallery, uploaded

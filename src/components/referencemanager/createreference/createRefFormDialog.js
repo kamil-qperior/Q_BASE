@@ -1,29 +1,26 @@
+import AppBar from "@material-ui/core/AppBar";
 import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
-import Paper from "@material-ui/core/Paper";
 import { makeStyles } from "@material-ui/core/styles";
+import Tab from "@material-ui/core/Tab";
+import Tabs from "@material-ui/core/Tabs";
 import React from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { createNewReference } from "../services/referenceService";
-import { languageCode } from "../store/states";
+import { createNewReference } from "../../../services/referenceService";
+import { languageCode } from "../../../store/states";
 import {
   activeStepState,
   contentListsState,
   formOpenState,
   isReferenceSavedState,
-  refTextFieldsState,
-} from "../store/statesRef";
-import ReferenceBasicInfoTextFields from "./referencemanager/paperReferenceForm";
-import PaperRefCreate from "./referencemanager/PaperRefCreate";
-import HorizontalLinearReferenceStepper from "./stepper/referenceStepper";
+  refTextFieldsState
+} from "../../../store/statesRef";
+import { i18n } from "../../../utils/i18n/i18n";
+import PaperRefCreate from "./PaperRefCreate";
+import ReferenceBasicInfoTextFields from "./paperReferenceForm";
+import HorizontalLinearReferenceStepper from "../../stepper/referenceStepper";
 
-import SwipeableViews from "react-swipeable-views";
-import { i18n } from "../utils/i18n/i18n";
 
-import StepLabel from "@material-ui/core/StepLabel";
-import AppBar from "@material-ui/core/AppBar";
-import Tab from "@material-ui/core/Tab";
-import Tabs from "@material-ui/core/Tabs";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -34,7 +31,6 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     flexWrap: "wrap",
     "justify-content": "center",
-
     "overflow-x": "initial",
   },
   /*  root: {
@@ -88,9 +84,9 @@ function getStepForms(step, useStyles) {
   }
 }
 
-//create reference form
 
-export default function FormDialog() {
+//create reference form
+export default function CreateRefFormDialog() {
   const classes = useStyles();
 
   const [open, setOpen] = useRecoilState(formOpenState);
@@ -119,7 +115,7 @@ export default function FormDialog() {
     setOpen(false);
     setActiveStep(0);
   };
-  //used to be surrounded by paper
+
   return (
     <div className={classes.root}>
       <AppBar position="static" color="default">
@@ -148,9 +144,9 @@ export default function FormDialog() {
           <Button onClick={handleClose} color="primary">
             Cancel
           </Button>
-          <Button
+          <Button  /* style={{display:"none"}} */
+          disabled={activeStep!==2}
             onClick={(e) => {
-              //TODO make sure is not possible before last page
               createNewReference(refs, goals, procedures, results, title);
               setOpen(false);
               setIsRefernceSaved(true);
@@ -161,8 +157,7 @@ export default function FormDialog() {
           </Button>
         </Grid>
       </div>
-      {/* <Paper className={classes.rootPaper}>
-      </Paper> */}
+
     </div>
   );
 }

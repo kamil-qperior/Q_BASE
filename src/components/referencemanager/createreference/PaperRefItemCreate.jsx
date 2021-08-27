@@ -7,14 +7,14 @@ import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
 import { default as React } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { languageCode } from "../../store/states";
+import { languageCode } from "../../../store/states";
 import {
   chosenVariantLanguageState,
   contentListsState,
-  referenceVariantSelectionState,
-} from "../../store/statesRef";
-import ContentCreator from "../stepperUtil/contentCreator";
-import ContentItem from "../stepperUtil/contentItem";
+  referenceVariantSelectionState
+} from "../../../store/statesRef";
+import ContentCreator from "../../stepperUtil/contentCreator";
+import ContentItem from "../../stepperUtil/contentItem";
 
 const useStyles = makeStyles((theme) => ({
 

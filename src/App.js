@@ -3,9 +3,9 @@ import { Suspense } from "react";
 
 import ReferenceDashboard from './components/referencemanager/referenceDashboard'
 import MyReferenceDashboard from './components/referencemanager/MyReferenceDashboard'
-import Dashboard from './components/dashboard'
+
 import Header from './components/Header'
-import FormDialog from './components/formDialog'
+import CreateRefFormDialog from './components/referencemanager/createreference/createRefFormDialog'
 import CertificationTable from './components/cv/CertificationTable';
 import MyCv from './components/cv/MyCv';
 import MyPaperCv from './components/cv/MyPaperCv';
@@ -42,19 +42,13 @@ function App() {
             <Route path="/myPaperCV">
               <MyPaperCv />
             </Route>
-            <Route path="/refs">
-              <Dashboard />
-            </Route>
-            <Route path="/referencemanager">
-              <ReferenceDashboard />
-            </Route>
             <Route path="/referenceSearch">
               <Suspense fallback={null}>
                 <MyReferenceDashboard />
               </Suspense >
             </Route>
             <Route path="/createReference">
-              <FormDialog />
+              <CreateRefFormDialog />
             </Route>
             <Route path="/">
               <Paper >
