@@ -134,12 +134,13 @@ export default function PaperRefItemCreate({
               <ContentItem  title={propertyKey} item={el} />
             </ListItem>
           ))}
-          <div>
+          <div >
             <ContentCreator
               titleHeader={titleHeader}
               title={propertyKey}
               language={"DE"}
               category={"business"}
+              
             />{" "}
             
           </div>

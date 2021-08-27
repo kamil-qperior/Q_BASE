@@ -8,6 +8,10 @@
     "languageToggle": {
       "contentLanguage": "Content language:"
     },
+    "steps": {
+      "enterMeta": "Enter Project Metadata Information",
+      "enterContent": "Enter Reference Content"
+    },
     "tableHeader": {
       "name": "Name",
       "ready": "Ready",
@@ -17,8 +21,8 @@
       "country": "Country",
       "status": "Status",
       "policy": "Policy",
-      "tech_tags": "Technology tags",
-      "procedure_tags": "Procedure tags",
+      "tech_tags": "Tag (technology)",
+      "procedure_tags": "Tag (business)",
       "project_start": "Project start",
       "project_end": "Project end",
       "person_days_total": "Person days total",
@@ -74,7 +78,7 @@
       "selectedRefs": "My selection",
       "enterBasicInfo": "Basic Project Info",
       "slideContent": "Project Content",
-      "shareContent": "Share with Q_PERIOR",
+      "shareContent": "Save reference",
       "generateSlides": "Overview"
     }
   },

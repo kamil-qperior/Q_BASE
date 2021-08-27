@@ -224,7 +224,7 @@ export default function MyReferenceDashboard() {
             }
           />
 
-          <Tab label={i18n(lng, "ReferenceSearch.header.generateSlides")} />
+          {/* temp disabled till we fix overview <Tab label={i18n(lng, "ReferenceSearch.header.generateSlides")} /> */}
         </Tabs>
       </AppBar>
       <SwipeableViews
@@ -303,16 +303,13 @@ export default function MyReferenceDashboard() {
                 value={selectedTemplate}
                 onChange={handleTemplateChange}
               >
-                <MenuItem value={"green"}>Q_PERIOR</MenuItem>
-                <MenuItem value={"blue"}>Alternative</MenuItem>
+                <MenuItem value={"green"}>Q_PERIOR_Green</MenuItem>
+                <MenuItem value={"blue"}>Q_PERIOR_Blue</MenuItem>
               </Select>
               <Button
                 variant="contained"
                 onClick={(e) => {
-                  console.log(
-                    "referenceVariantIds for slides generation",
-                    referenceVariantIds
-                  );
+
                   getDeck(referenceVariantIds, selectedTemplate);
                 }}
                 color="primary"
@@ -353,7 +350,7 @@ export default function MyReferenceDashboard() {
         </TabPanel>
 
         {/*  currently used as overview page*/}
-        <TabPanel
+        <TabPanel 
           className={classes.tabContent}
           value={value}
           index={2}

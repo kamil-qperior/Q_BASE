@@ -19,9 +19,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-/* function getSteps() {
-  return ["reference name", "test"];
-} */
+
 
 function getStepContent(step) {
   switch (step) {

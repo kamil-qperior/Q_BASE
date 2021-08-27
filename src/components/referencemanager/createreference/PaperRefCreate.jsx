@@ -22,6 +22,7 @@ import { i18n } from "../../../utils/i18n/i18n";
 import logoImage from "../Adac.png";
 import projectImage from "../adac_gross.jpg";
 import PaperRefItemCreate from "./PaperRefItemCreate";
+import EditIcon from '@material-ui/icons/Edit';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -153,6 +154,11 @@ const useStyles = makeStyles((theme) => ({
     "text-align-last": "center;",
     "padding-top": "30px;",
   },
+  editIcon: {
+    "align-self": "flex-end;",
+    "margin-left": "-5px;",
+    
+  },
 }));
 
 //for reference creation needs to replace content form
@@ -179,10 +185,6 @@ export default function PaperRefCreate() {
   };
 
   const handleTitleChange = (event) => {
-    const newName = event.target.value;
-
-    console.log("event.target.value", newName);
-    console.log("title", title);
     //TOOD make language variable
 
     //setTitle([{...title[0], content: newName}], "title");
@@ -229,6 +231,9 @@ export default function PaperRefCreate() {
                 className={classes.faceImage}
                 alt="fireSpot"
               />
+              <div className={classes.editIcon}>
+              <EditIcon/>
+              </div>
             </Fab>
           </label>
           </div>
@@ -299,7 +304,11 @@ export default function PaperRefCreate() {
                 className={classes.projectImage}
                 alt="fireSpot"
               />
+                            <div className={classes.editIcon}>
+              <EditIcon/>
+              </div>
             </Fab>
+
           </label>
           </div>
 

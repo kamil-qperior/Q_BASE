@@ -16,6 +16,8 @@ import LanguagePicker from "../variant/languangePicker";
 //import FormControl from '@material-ui/core/FormControl';
 import StepFormVariant from "../variant/stepFormVariant";
 import { getDeck } from '../../services/slidedeck/slideDeckServ';
+import { languageCode } from "../../store/states";
+
 const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
@@ -43,10 +45,11 @@ export function getStepForms(step) {
       return <StepFormVariant step={step}></StepFormVariant>;
   }
 }
-
+//only used for overview , deprecated
 export default function HorizontalLinearVariantStepper(props) {
   const classes = useStyles();
   const [activeStep, setActiveStep] = useRecoilState(activeStepState);
+  const [lng] = useRecoilState(languageCode);
   const [referenceVariantIds, setReferenceVariantIds] = useRecoilState(
     referenceVariantIdsFromResult
   );
@@ -111,9 +114,9 @@ export default function HorizontalLinearVariantStepper(props) {
               All steps completed - you can now generete slides from your
               references.
             </Typography>
-            <Button onClick={handleReset} className={classes.button}>
+{/*             <Button onClick={handleReset} className={classes.button}>
               Reset
-            </Button>
+            </Button> */}
             <Button
               onClick={(e) => {
                 getDeck(referenceVariantIds);
@@ -126,7 +129,7 @@ export default function HorizontalLinearVariantStepper(props) {
         ) : (
           <div>
             <Typography className={classes.instructions}>
-              {props.getStepContent(activeStep)}
+              {props.getStepContent(activeStep, lng)}
             </Typography>
             <div>
               <div>{getStepForms(activeStep)}</div>

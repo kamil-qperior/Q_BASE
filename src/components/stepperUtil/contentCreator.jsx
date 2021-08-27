@@ -16,6 +16,10 @@ const useStyles = makeStyles((theme) => ({
     color: "#3f50b5;",
     margin: 15,
   },
+  addContentInput: {
+    "text-align": "-webkit-left;",
+    paddingLeft: "1rem"
+  },
 }));
 
 let id = 0;
@@ -70,7 +74,7 @@ export default function ContentCreator(props) {
   };
 
   return (
-    <div>
+    <div  className={classes.addContentInput} >
       <TextField
         autoFocus
         /* className={classes.root} */

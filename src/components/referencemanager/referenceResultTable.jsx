@@ -272,10 +272,10 @@ export default function ReferenceResultTable(data) {
                   {/*                   <TableCell>{row.status}</TableCell>
                   <TableCell>{row.policy}</TableCell> */}
                   {!onlySelection ? (
-                    <TableCell>{row.projectBegin.substring(0, 10)}</TableCell>
+                    <TableCell>{row.projectBegin.substring(0, 7)}</TableCell>
                   ) : null}
                   {!onlySelection ? (
-                    <TableCell>{row.projectEnd.substring(0, 10)}</TableCell>
+                    <TableCell>{row.projectEnd.substring(0, 7)}</TableCell>
                   ) : null}
                   <TableCell>
                     {row.technologyTag.map((tag) => (

@@ -8,6 +8,10 @@
     "languageToggle": {
       "contentLanguage": "Inhaltssprache:"
     },
+    "steps": {
+      "enterMeta": "Trage Projektinformation ein",
+      "enterContent": "Trage Projektinhalte ein"
+    },
     "tableHeader": {
       "name": "Name",
       "ready": "Bereit",
@@ -17,8 +21,8 @@
       "country": "Land",
       "status": "Status",
       "policy": "Regel",
-      "tech_tags": "Technische Tag",
-      "procedure_tags": "Prozesse",
+      "tech_tags": "Tag (Technologie)",
+      "procedure_tags": "Tag (Fach)",
       "project_start": "Projekt Start",
       "project_end": "Projekt Ende",
       "person_days_total": "Personentage",
@@ -81,7 +85,7 @@
       "searchRef": "Referenzensuche",
       "enterBasicInfo": "Grundinformation",
       "slideContent": "Projektinhalte",
-      "shareContent": "Teile mit Q_PERIOR",
+      "shareContent": "Referenz speichern",
       "selectedRefs": "Meine Auswahl",
       "generateSlides": "Übersicht"
     }

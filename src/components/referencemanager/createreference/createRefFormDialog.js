@@ -59,12 +59,12 @@ function getSteps() {
   return ["Basic Project Info", "Project Content"];
 }
 
-function getStepContent(step) {
+function getStepContent(step, lng) {
   switch (step) {
     case 0:
-      return "Enter Project Metadata Information";
+      return i18n(lng, "Reference.steps.enterMeta") //"Enter Project Metadata Information";
     case 1:
-      return "Enter Reference Content";
+      return i18n(lng, "Reference.steps.enterContent") // "Enter Reference Content";
 
     default:
       return "Unknown step";
@@ -141,11 +141,13 @@ export default function CreateRefFormDialog() {
             getSteps={getSteps}
           ></HorizontalLinearReferenceStepper>
 
-          <Button onClick={handleClose} color="primary">
-            Cancel
+          <div style={ activeStep!==2 ? {display: "none"} : {}}>
+          <Button variant="outlined" onClick={handleClose} color="primary">
+            Reset
           </Button>
-          <Button  /* style={{display:"none"}} */
+          <Button  variant="contained" style={{margin:"1rem"}}
           disabled={activeStep!==2}
+          
             onClick={(e) => {
               createNewReference(refs, goals, procedures, results, title);
               setOpen(false);
@@ -155,6 +157,7 @@ export default function CreateRefFormDialog() {
           >
             Save Reference
           </Button>
+          </div>
         </Grid>
       </div>
 

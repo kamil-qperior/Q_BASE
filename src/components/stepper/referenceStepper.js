@@ -69,15 +69,14 @@ export default function HorizontalLinearReferenceStepper(props) {
             <Alert variant="outlined" severity={isReferenceSaved ? "success": "info"}>
             Great. You have entered all necessary data. Click "save reference" to store it permanently.    
             </Alert>
-            <Button onClick={handleReset} className={classes.button}>
+{/*             <Button onClick={handleReset} className={classes.button}>
               Reset
-            </Button>
+            </Button> */}
           </div>
         ) : (
           <div>
 
         <SwipeableViews
-        // axis={theme.direction === "rtl" ? "x-reverse" : "x"}
         index={activeStep}
         onChangeIndex={handleNext} //fix
         className={classes.tabContentTableView}
@@ -86,7 +85,7 @@ export default function HorizontalLinearReferenceStepper(props) {
             </TabPanel>
             </SwipeableViews>
             <Typography className={classes.instructions}>
-              {props.getStepContent(activeStep)}
+              {props.getStepContent(activeStep, lng)}
             </Typography>
 
             <div>{props.getStepForms(activeStep)}</div>
